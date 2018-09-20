@@ -1,0 +1,7 @@
+{
+  "name": "reatret.net",
+  "short_name": "reatret.net",
+  "description": "personal website",
+  "start_url": "/",
+  "display": "standalone"
+}
