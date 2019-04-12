@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
-import kiwi from './images/kiwi.png';
-import trex from './images/komodo.png';
-import komodo from './images/trex.png';
-import gitlab from './images/gitlab.png';
-import './App.css';
+import React, { Component } from 'react'
+import kiwi from './images/kiwi.png'
+import trex from './images/komodo.png'
+import komodo from './images/trex.png'
+import gArrow from './images/green_arrow.png'
+import rArrow from './images/red_arrow.png'
+import gitlab from './images/gitlab.png'
+import resume from './images/resume.png'
+import './App.css'
 
 const imgs = [kiwi, trex, komodo]
 const clickableStyle = {cursor: "pointer",
                        textDecoration: "underline"}
+const leftStyle = {display: "inline-block"}
+
 const FASTER = 0
 const SLOWER = 1
 
@@ -18,12 +23,35 @@ function spinImgAt(secs) {
   }
 }
 
+function createControl(name, fn) {
+  return (<div style={leftStyle}>
+            <div>
+              <img
+                className="arrow"
+                style={clickableStyle}
+                onClick={fn(FASTER)}
+                src={rArrow}
+                alt="arrow"/>
+            </div>
+            {name}
+            <div>
+              <img
+                className="garrow"
+                style={clickableStyle}
+                onClick={fn(SLOWER)}
+                src={gArrow}
+                alt="arrow"
+              />
+            </div>
+          </div>)
+}
+
 class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-                  imgIdx: 0,
+                  imgIdx: Math.trunc(Math.random() * imgs.length),
                   spinSpeed: 3,
                   swapSpeed: 3000
                  }
@@ -74,59 +102,59 @@ class App extends Component {
   }
 
   render() {
-    const {imgIdx, spinSpeed} = this.state;
+    const {imgIdx, spinSpeed} = this.state
     const logo = imgs[imgIdx]
     const spinStyle = spinImgAt(spinSpeed)
     return (
       <div className="App">
-        <header className="App-header">
-        <h2>reatret.net</h2>
-        <h5> by Daniel Loera </h5>
+        <div className="App-header">
+          {/* Title */}
+          <div>
+            <h2>reatret.net</h2>
+            <h5> by Daniel Loera </h5>
+          </div>
+          {/* Spinning Image */}
           <img src={logo}
                className="App-logo"
                alt="logo"
                style={spinStyle}/>
-          <p>
-            I'll update this one day, I swear. <br></br>
-            For now, watch these guys{" "}
-            <i>
-              spin
-            </i>.
-          </p>
-          <p>
-            Spin:{" "}
-            <span
-              style={clickableStyle}
-              onClick={this.spin(FASTER)}>
-              faster
-            </span>
-            {" "}
-            <span
-              style={clickableStyle}
-              onClick={this.spin(SLOWER)}>
-              slower
-            </span>
-            <br></br>
-            Swap:{" "}
-            <span
-              style={clickableStyle}
-              onClick={this.swap(FASTER)}>
-              faster
-            </span>
-            {" "}
-            <span
-              style={clickableStyle}
-              onClick={this.swap(SLOWER)}>
-              slower
-            </span>
-          </p>
-          <a href="https://gitlab.com/danielloera">
-            <span><img src={gitlab} alt="logo" className="gitlab"/> </span>
-          </a>
-        </header>
+          {/* Bottom Text + Controls */}
+          <div>
+            {createControl("Spin", this.spin)}
+            <div style={leftStyle} className="text">
+              <p>
+                I'll update this one day, I swear.
+                <br></br>
+                <span>
+                  For now, have fun with these guys.
+                </span>
+              </p>
+            </div>
+            {createControl("Swap", this.swap)}
+          </div>
+          {/* Links */}
+          <div>
+            <div className="imgLinkItem">
+              <a href="https://gitlab.com/danielloera">
+                <img src={gitlab} alt="gitlab" className="imgLink"/>
+                <div style={{marginBottom: "3vh"}}>
+                  Gitlab
+                </div>
+              </a>
+            </div>
+            <div className="imgLinkItem">
+              <a href="https://docs.google.com/document/d/18sWdFkdfeEGWD7KpvNJ7I25CUm_n0n1hrINJsOv3VzA">
+                <img src={resume} alt="resume" className="imgLink"/>
+                <div style={{marginBottom: "3vh"}}>
+                  Resume
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
