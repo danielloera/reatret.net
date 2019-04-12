@@ -1,3 +1,7 @@
+a {
+  color: white;
+}
+
 .App {
   text-align: center;
 }
@@ -34,12 +38,33 @@
 
 h2 {
   margin-bottom: -3vh;
+  color: pink;
 }
 h5 {
   margin-bottom: 15vh;
 }
 
-.gitlab {
+.imgLink {
   max-height: 10vmin;
-  margin-bottom: 5vmin;
+}
+
+.imgLinkItem {
+  display: inline-block;
+  padding-right: 2vw;
+}
+
+.arrow {
+  max-width: 5vh;
+  max-height: 5vw;
+}
+
+.garrow {
+  max-width: 5vh;
+  max-height: 5vw;
+  margin-top: 5px;
+}
+
+.text {
+  padding-left: 10vw;
+  padding-right: 10vw;
 }
