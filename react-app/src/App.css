@@ -3,13 +3,14 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 3s linear;
   height: 40vmin;
   pointer-events: none;
+  margin-bottom: 12vmin;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #6A1B9A;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -30,4 +31,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+h2 {
+  margin-bottom: -3vmin;
+}
+h5 {
+  margin-bottom: 15vmin;
+}
+
+.gitlab {
+  max-height: 10vmin;
+  margin-bottom: 5vmin;
 }
