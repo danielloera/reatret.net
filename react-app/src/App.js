@@ -119,7 +119,7 @@ class App extends Component {
                alt="logo"
                style={spinStyle}/>
           {/* Bottom Text + Controls */}
-          <div>
+          <div className="controls">
             {createControl("Spin", this.spin)}
             <div style={leftStyle} className="text">
               <p>
