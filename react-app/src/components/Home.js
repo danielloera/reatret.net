@@ -210,7 +210,7 @@ class Home extends Component {
               Have fun <i>spinning</i>.
             </Typography>
           </CardContent>
-          <CardActions>
+          <CardActions style={{justifyContent: 'center'}}>
              {createControl("Spin", this.spin)}
              <Button size="small" variant="contained" color="secondary" onClick={this.reset}>Reset</Button>
              {createControl("Swap", this.swap)}
