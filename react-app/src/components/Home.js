@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import kiwi from '../images/kiwi.png'
 import trex from '../images/komodo.png'
 import komodo from '../images/trex.png'
@@ -71,13 +71,13 @@ function createSnackBar(v, h, message, open, handleClose) {
 
 function createControl(name, fn) {
   return [
-      <IconButton
+      <IconButton key={`${name}1`}
         aria-label={`${name} Slower`}
         onClick={fn(SLOWER)}>
         <RWIcon/>
       </IconButton>,
-      <Typography >{name}</Typography>,
-      <IconButton
+      <Typography key={`${name}2`}>{name}</Typography>,
+      <IconButton key={`${name}3`}
         aria-label={`${name} Faster`}
         onClick={fn(FASTER)}>
         <FFIcon/>
@@ -87,7 +87,8 @@ function createControl(name, fn) {
 
 function createLinks(links) {
   return links.map((item) => (
-    <span style={{display: "inline-block"}}>
+    <span key={item.name}
+          style={{display: "inline-block"}}>
       <a href={item.link}>
       <IconButton aria-label={item.name}>
       {item.icon}
@@ -226,6 +227,6 @@ class Home extends Component {
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles)(Home)

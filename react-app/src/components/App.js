@@ -34,11 +34,11 @@ class App extends Component {
   render() {
     const {classes} = this.props
     return (
-      <React.Fragment className={classes.root}>
+      <React.Fragment>
         <MuiThemeProvider theme={theme}>
           <CssBaseline/>
           <NavBar/>
-            <Switch>
+            <Switch className={classes.root}>
               <Route exact path='/' component={Home}/>
             </Switch>
         </MuiThemeProvider>
