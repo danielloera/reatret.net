@@ -18,11 +18,12 @@ const theme = createMuiTheme(
     useNextVariants: true,
   },
   palette: {
+    type: 'dark',
     primary: {
-      main: '#b39ddb'
+        main: '#43a047',
       },
     secondary: {
-      main: '#f48fb1'
+        main: '#ff80ab',
       }
     }
   }
@@ -33,15 +34,15 @@ class App extends Component {
   render() {
     const {classes} = this.props
     return (
-      <div className={classes.root}>
-        <CssBaseline/>
+      <React.Fragment className={classes.root}>
         <MuiThemeProvider theme={theme}>
+          <CssBaseline/>
           <NavBar/>
             <Switch>
               <Route exact path='/' component={Home}/>
             </Switch>
         </MuiThemeProvider>
-      </div>
+      </React.Fragment>
     )
   }
 }
