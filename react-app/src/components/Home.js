@@ -21,10 +21,7 @@ const styles = {
   card: {
     minWidth: "30vh",
     maxWidth: "100vw",
-  },
-  link: {
-    marginTop: '3vh',
-  },
+  }
 }
 
 const LINKS = [
@@ -192,6 +189,7 @@ class Home extends Component {
     const spinStyle = spinImgAt(spinSpeed)
     return (
       <div className="Home">
+        {/* Snackbars */}
         {createSnackBar('bottom', 'left', spinMsg, spinSnack,
                         () => {this.setState({spinSnack: false})})}
         {createSnackBar('bottom', 'right', swapMsg, swapSnack,
@@ -201,13 +199,15 @@ class Home extends Component {
         className="Spinning-Image"
         alt="logo"
         style={spinStyle}/>
-        {/* Bottom Text + Controls */}
+        {/* Control Card */}
         <Card className={classes.card} elevation={5}>
           <CardContent>
             <Typography component="p">
-              I'll update this one day, I swear.
+              Hi, I'm Daniel. I love making things.
               <br/>
-              For now, have fun with these guys.
+              You can see some of them on this site or linked below.
+              <br/>
+              Have fun <i>spinning</i>.
             </Typography>
           </CardContent>
           <CardActions>
@@ -217,7 +217,7 @@ class Home extends Component {
           </CardActions>
         </Card>
         {/* Links */}
-        <div className={classes.link}>
+        <div>
         {createLinks(LINKS)}
         </div>
       </div>
