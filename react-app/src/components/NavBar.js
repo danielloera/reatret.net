@@ -14,7 +14,9 @@ const styles = (theme) => ({
     marginRight: 20,
   },
   bar: {
-    marginBottom: "0vw"
+    marginBottom: "0vw",
+    position: "sticky",
+    top: 0
   }
 })
 
