@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import TempDrawer from './TempDrawer'
 
+const HIDE_SPEED = 0.2
+
 const styles = (theme) => ({
   menuButton: {
     marginLeft: -12,
@@ -20,11 +22,11 @@ const styles = (theme) => ({
   },
   show: {
     transform: 'translateY(0)',
-    transition: 'transform .5s',
+    transition: `transform ${HIDE_SPEED}s`,
   },
   hide: {
     transform: 'translateY(-110%)',
-    transition: 'transform .5s',
+    transition: `transform ${HIDE_SPEED}s`,
   },
 })
 

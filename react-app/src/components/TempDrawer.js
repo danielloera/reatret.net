@@ -8,7 +8,8 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import SpiralIcon from '@material-ui/icons/ToysTwoTone'
+import SpiralIcon from '@material-ui/icons/Toys'
+import HomeIcon from '@material-ui/icons/Home'
 
 const styles = {
   list: {
@@ -20,7 +21,12 @@ const styles = {
 // List of all Drawer Items
 const DRAWER_LIST = [
   {
-    text: "Prime Ulam Spirals",
+    text: "Home",
+    icon: (<HomeIcon/>),
+    link: "/"
+  },
+  {
+    text: "Prime Spirals",
     icon: (<SpiralIcon/>),
     link: "/primeulam"
   },
