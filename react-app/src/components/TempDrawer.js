@@ -12,8 +12,8 @@ import SpiralIcon from '@material-ui/icons/ToysTwoTone'
 
 const styles = {
   list: {
-    minWidth: '10vw',
-    maxWidth: '30vw',
+    minWidth: 'calc(10ch + 10vw)',
+    maxWidth: 'calc(20ch + 10vw)',
   }
 }
 
