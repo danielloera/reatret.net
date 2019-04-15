@@ -17,7 +17,11 @@ const styles = (theme) => ({
   controls: {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     marginTop: '2vh',
+    marginLeft: theme.spacing.unit*3,
+    marginRight: theme.spacing.unit*3,
+    marginBottom: '10vh',
   },
   slider: {
     width: '15vh',
@@ -120,11 +124,23 @@ const TEXT_FIELDS = [
   {
     name: "Grid Size",
     id: "primeSize"
-  }
+  },
+  {
+    name: "Shape Size",
+    id: "shapeSize"
+  },
+  {
+    name: "Staring Number",
+    id: "start"
+  },
 ]
 
-function createTextFields(fields, value, cn, fn) {
-  return fields.map((field) => (
+function createTextFields(fields, values, cn, fn) {
+  const doms = []
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i]
+    const value = values[i]
+    doms.push((
     <TextField
           key={field.name}
           id={field.name}
@@ -133,8 +149,11 @@ function createTextFields(fields, value, cn, fn) {
           value={value}
           onChange={fn(field.id)}
           margin="normal"
+          variant="outlined"
         />
-  ))
+    ))
+  }
+  return doms
 }
 
 class PrimeUlam extends Component {
@@ -159,11 +178,20 @@ class PrimeUlam extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {primeSize, size, start, primes} = this.state
+    const {primeSize, start} = this.state
     if (primeSize !== prevState.primeSize) {
       if (prevState.primeSize < primeSize) {
         this.setState({
           primes: primesSieve(Math.pow(primeSize + start, 2))
+        })
+      }
+    }
+    if (start !== prevState.start) {
+      const newTotal = Math.pow(primeSize + start, 2)
+      const oldTotal = Math.pow(primeSize + prevState.start, 2)
+      if (oldTotal < newTotal) {
+        this.setState({
+          primes: primesSieve(newTotal)
         })
       }
     }
@@ -188,21 +216,25 @@ class PrimeUlam extends Component {
           let currShape = null
           const jx = x * primeJump
           const jy = y * primeJump
+          const key = `${x} ${y}`
           switch (true) {
             case shape === TRIANLGE:
               currShape = (<RegularPolygon
+                              key={key}
                               x={jx} y={jy}
                               sides={3} radius={shapeSize}
                               fill={color}/>)
               break
             case shape === SQUARE:
               currShape = (<Rect
+                              key={key}
                               x={jx} y={jy}
                               width={shapeSize} height={shapeSize}
                               fill={color}/>)
               break
             default:
               currShape = (<Circle
+                              key={key}
                               x={jx} y={jy}
                               width={shapeSize} height={shapeSize}
                               fill={color}/>)
@@ -217,15 +249,15 @@ class PrimeUlam extends Component {
   handleChange(id){
     return (event) => {
       const res = parseInt(event.target.value)
-      if (res) {
-        this.setState({[id]: res})
-      }
+      const val = res ? res : ""
+      this.setState({[id]: val})
     }
   }
 
   render() {
     const {classes} = this.props
-    const {stageSize, primeSize} = this.state
+    const {stageSize, primeSize, shapeSize, start} = this.state
+    const numberVars = [primeSize, shapeSize, start]
     return (
       <div>
         <div className={classes.root}>
@@ -243,7 +275,7 @@ class PrimeUlam extends Component {
         </div>
         {/* Controls */}
         <form className={classes.controls} noValidate autoComplete="off">
-          {createTextFields(TEXT_FIELDS, primeSize,
+          {createTextFields(TEXT_FIELDS, numberVars,
                             classes.textField, this.handleChange)}
         </form>
       </div>
