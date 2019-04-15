@@ -130,7 +130,7 @@ const TEXT_FIELDS = [
     id: "shapeSize"
   },
   {
-    name: "Staring Number",
+    name: "Starting Number",
     id: "start"
   },
 ]
