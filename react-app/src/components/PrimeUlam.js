@@ -26,7 +26,7 @@ const styles = (theme) => ({
    textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
+    maxWidth: '15ch',
   },
 })
 
@@ -118,7 +118,7 @@ function primesSieve(limit) {
 
 const TEXT_FIELDS = [
   {
-    name: "Number of Primes",
+    name: "Grid Size",
     id: "primeSize"
   }
 ]
@@ -159,12 +159,13 @@ class PrimeUlam extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {primeSize, size, start} = this.state
+    const {primeSize, size, start, primes} = this.state
     if (primeSize !== prevState.primeSize) {
-      const newPrimes = primesSieve(Math.pow(primeSize + start, 2))
-      this.setState({
-        primes: newPrimes
-      })
+      if (prevState.primeSize < primeSize) {
+        this.setState({
+          primes: primesSieve(Math.pow(primeSize + start, 2))
+        })
+      }
     }
   }
 
