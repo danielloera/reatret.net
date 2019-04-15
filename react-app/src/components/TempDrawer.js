@@ -8,20 +8,21 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import SmileIcon from '@material-ui/icons/InsertEmoticon'
+import SpiralIcon from '@material-ui/icons/ToysTwoTone'
 
 const styles = {
   list: {
-    width: 250,
+    minWidth: '10vw',
+    maxWidth: '30vw',
   }
 }
 
 // List of all Drawer Items
 const DRAWER_LIST = [
   {
-    text: "More coming soon...",
-    icon: (<SmileIcon/>),
-    link: "/"
+    text: "Prime Ulam Spirals",
+    icon: (<SpiralIcon/>),
+    link: "/primeulam"
   },
 ]
 

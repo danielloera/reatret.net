@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button'
 import RWIcon from '@material-ui/icons/FastRewind'
 import FFIcon from '@material-ui/icons/FastForward'
 import CodeIcon from '@material-ui/icons/Code'
-import ResumeIcon from '@material-ui/icons/Description'
+import ResumeIcon from '@material-ui/icons/DescriptionTwoTone'
 import Typography from '@material-ui/core/Typography'
 import './Home.css'
 
