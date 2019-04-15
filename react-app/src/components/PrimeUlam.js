@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import { Stage, Layer, Rect, Circle, RegularPolygon, Text } from 'react-konva'
+import { Stage, Layer, Rect, Circle, RegularPolygon } from 'react-konva'
 import TextField from '@material-ui/core/TextField'
+import Snackbar from '@material-ui/core/Snackbar'
+import threads from 'threads'
 
 const styles = (theme) => ({
   root: {
@@ -21,7 +23,7 @@ const styles = (theme) => ({
     marginTop: '2vh',
     marginLeft: theme.spacing.unit*3,
     marginRight: theme.spacing.unit*3,
-    marginBottom: '10vh',
+    marginBottom: '20vh',
   },
   slider: {
     width: '15vh',
@@ -36,79 +38,66 @@ const styles = (theme) => ({
 
 const SCREEN_PERCENTAGE = 0.80
 
-const UP = 0
-const LEFT = 1
-const DOWN = 2
-const RIGHT = 3
-
 const CIRCLE = 0
 const SQUARE = 1
-const TRIANLGE = 2
+const TRIANGLE = 2
 
-const NEXT_MOVEMENT = {
-            [UP]: LEFT,
-            [LEFT]: DOWN,
-            [DOWN]: RIGHT,
-            [RIGHT]: UP
-}
-
-function neighbor(currMovement, x, y, board) {
-  if (currMovement === UP){
-    return board[x][y - 1]
+function getSpiralIdx(n) {
+  const k = Math.ceil((Math.sqrt(n) - 1) / 2)
+  let t = 2 * k + 1
+  let m = Math.pow(t, 2)
+  t -= 1
+  if (n >= m - t) {
+    return {x: k-(m-n), y: -k}
+  } else {
+    m -= t
   }
-  if (currMovement === LEFT){
-    return board[x + 1][y]
+  if (n >= m - t) {
+    return {x: -k, y: -k + (m - n)}
+  } else {
+    m -= t
   }
-  if (currMovement === DOWN){
-    return board[x][y + 1]
+  if (n >= m - t) {
+    return {x: -k + (m-n), y: k}
   }
-  return board[x - 1][y]
-}
-
-function move(currMovement, x, y) {
-  if (currMovement === UP){
-    return { x: x - 1, y: y }
-  }
-  if (currMovement === LEFT){
-    return { x: x, y: y - 1 }
-  }
-  if (currMovement === DOWN){
-    return { x: x + 1, y: y }
-  }
-  return { x: x, y: y + 1 }
+  return {x: k, y: k-(m-n-t)}
 }
 
 function spiralize(board, num) {
-  const size = board.length
-  let x = Math.trunc(size / 2)
-  let y = x
-  board[x][y] = num
-  let movement = RIGHT
-  let newMove = move(movement, x, y)
-  x = newMove.x
-  y = newMove.y
-  num += 1
-  while (x >= 0 && x < size && y >= 0 && y < size) {
-    if (neighbor(movement, x, y, board) !== null) {
-      board[x][y] = num
-      newMove = move(movement, x, y)
-      x = newMove.x
-      y = newMove.y
-      num += 1
-    } else {
-      movement = NEXT_MOVEMENT[movement]
-    }
+  const size = Math.pow(board.length, 2)
+  const len = board.length
+  const rawHalf = len / 2
+  const half = len % 2 === 0 ?
+              Math.ceil(rawHalf) - 1:
+              Math.floor(rawHalf)
+  for (let i = 0; i < size; i++) {
+    const idx = getSpiralIdx(i)
+    board[idx.x + half][idx.y + half] = num
+    num += 1
   }
 }
 
 // Adapted from "Pi Delport" on stackoverflow
-function primesSieve(limit) {
-  const a = Array(limit)
-  a[0] = false
-  a[1] = false
-  a.fill(true, 2, limit)
+function primesSieve(limit, prevData) {
+  let a = null
+  let start = 0
+  if (prevData) {
+    a = prevData
+    const prevLen = prevData.length
+    start = prevLen
+    // Limit MUST be greater then prev data len
+    const diff = limit - prevLen
+    for (let i = 0; i < diff; i++) {
+      a.push(true)
+    }
+  } else {
+    a = Array(limit)
+    a[0] = false
+    a[1] = false
+    a.fill(true, 2, limit)
+  }
   const ans = new Set([])
-  for(let i = 0; i < a.length; i++) {
+  for(let i = start; i < a.length; i++) {
     const isPrime = a[i]
     if (isPrime) {
       ans.add(i)
@@ -117,7 +106,7 @@ function primesSieve(limit) {
       }
     }
   }
-  return ans
+  return {primes: ans, prevData: a}
 }
 
 const TEXT_FIELDS = [
@@ -163,7 +152,10 @@ class PrimeUlam extends Component {
     const size = Math.trunc(Math.min(window.innerWidth, window.innerHeight) * SCREEN_PERCENTAGE)
     const start = 1
     const primeSize = 101
-    const primes = primesSieve(Math.pow(primeSize + start, 2))
+    const ps = primesSieve(Math.pow(primeSize + start, 2))
+    this.prevPrimes = ps.data
+    this.maxPrimeSize = primeSize
+    this.spiral = null
     this.state = {
       bgColor: "white",
       color: "black",
@@ -172,35 +164,93 @@ class PrimeUlam extends Component {
       start: start,
       stageSize: size,
       primeSize: primeSize,
-      primes: primes,
+      primes: ps.primes,
+      notify: false,
+      msg: '',
     }
     this.handleChange = this.handleChange.bind(this)
   }
 
+  notify(msg, then) {
+    this.setState({
+      msg: msg,
+      notify: true
+    }, then)
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const {primeSize, start} = this.state
-    if (primeSize !== prevState.primeSize) {
-      if (prevState.primeSize < primeSize) {
-        this.setState({
-          primes: primesSieve(Math.pow(primeSize + start, 2))
-        })
+    let newMaxPrimeSize = false
+    if (primeSize > this.maxPrimeSize) {
+      this.maxPrimeSize = primeSize
+      newMaxPrimeSize = true
+    }
+    if (newMaxPrimeSize) {
+      const limit = Math.pow(primeSize + start, 2)
+      this.notify(`Calculating primes...`)
+      this.updatePrimes(limit)
+    }
+    if (start && start !== prevState.start) {
+      this.notify(`Calculating primes...`)
+      const newLimit = Math.pow(primeSize + start, 2)
+      const oldLimit = Math.pow(primeSize + prevState.start, 2)
+      if (oldLimit < newLimit) {
+        this.updatePrimes(newLimit)
       }
     }
-    if (start !== prevState.start) {
-      const newTotal = Math.pow(primeSize + start, 2)
-      const oldTotal = Math.pow(primeSize + prevState.start, 2)
-      if (oldTotal < newTotal) {
-        this.setState({
-          primes: primesSieve(newTotal)
-        })
+  }
+
+  updatePrimes(limit) {
+    const primeThread = threads.spawn((input, done) => {
+      const ps = function primesSieve(limit, prevData) {
+        let a = null
+        let start = 0
+        if (prevData) {
+          a = prevData
+          const prevLen = prevData.length
+          start = prevLen
+          // Limit MUST be greater then prev data len
+          const diff = limit - prevLen
+          for (let i = 0; i < diff; i++) {
+            a.push(true)
+          }
+        } else {
+          a = Array(limit)
+          a[0] = false
+          a[1] = false
+          a.fill(true, 2, limit)
+        }
+        const ans = new Set([])
+        for(let i = start; i < a.length; i++) {
+          const isPrime = a[i]
+          if (isPrime) {
+            ans.add(i)
+            for (let n = i*i; n < limit; n+=i) {
+              a[n] = false
+            }
+          }
+        }
+        return {primes: ans, prevData: a}
       }
-    }
+      done({ps: ps(input.limit, input.prevPrimes)})
+    })
+    .send({limit: limit, prevPrimes: this.prevPrimes})
+    .on('message', (response) => {
+      this.prevPrimes = response.ps.data
+      this.setState({
+        primes: response.ps.primes
+      })
+      primeThread.kill()
+    })
   }
 
   makeSpiral() {
     const {start, primeSize, stageSize, shapeSize,
            shape, color, primes} = this.state
-    if (!stageSize || !primeSize) return [<Text text="" />]
+    if (!stageSize || !primeSize || !start ||
+        !shapeSize) {
+      return null
+    }
     const board = []
     const primeJump = Math.ceil(stageSize / primeSize)
     for (let i = 0; i < primeSize; i++) {
@@ -218,7 +268,7 @@ class PrimeUlam extends Component {
           const jy = y * primeJump
           const key = `${x} ${y}`
           switch (true) {
-            case shape === TRIANLGE:
+            case shape === TRIANGLE:
               currShape = (<RegularPolygon
                               key={key}
                               x={jx} y={jy}
@@ -256,10 +306,24 @@ class PrimeUlam extends Component {
 
   render() {
     const {classes} = this.props
-    const {stageSize, primeSize, shapeSize, start} = this.state
+    const {stageSize, primeSize, shapeSize,
+           start, notify, msg} = this.state
     const numberVars = [primeSize, shapeSize, start]
+    this.spiral = this.makeSpiral() || this.spiral
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        open={notify}
+        autoHideDuration={2000}
+        onClose={()=> {this.setState({notify: false})}}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">{msg}</span>}/>
         <div className={classes.root}>
           <Stage className={classes.stage}
                  width={stageSize}
@@ -269,7 +333,7 @@ class PrimeUlam extends Component {
               <Rect x={0} y={0} width={stageSize} height={stageSize}
                     fill={this.state.bgColor} shadowBlur={5}/>
               {/* Spiral Shapes */}
-              {this.makeSpiral()}
+              {this.spiral}
             </Layer>
           </Stage>
         </div>

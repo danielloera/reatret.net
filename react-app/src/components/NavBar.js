@@ -19,6 +19,8 @@ const styles = (theme) => ({
   },
   bar: {
     marginBottom: "0vw",
+    position: 'sticky',
+    top: 0
   },
   show: {
     transform: 'translateY(0)',
