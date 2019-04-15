@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Home from './Home'
 import NavBar from './NavBar'
+import Home from './Home'
+import PrimeUlam from './PrimeUlam'
 
 const styles = (theme) => ({
     root: {
@@ -40,6 +41,7 @@ class App extends Component {
           <NavBar/>
             <Switch className={classes.root}>
               <Route exact path='/' component={Home}/>
+              <Route exact path='/primeulam' component={PrimeUlam}/>
             </Switch>
         </MuiThemeProvider>
       </React.Fragment>
