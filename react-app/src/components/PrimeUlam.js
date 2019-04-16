@@ -89,8 +89,8 @@ function createSliders(fields, values, classes, fn) {
         id={field.name}>
           <Typography align="left" className={classes.slideLabel} color="textSecondary">{`${field.name}:\xa0${value}`}</Typography>
           <TSlider
-            handleStyle={{backgroundColor: 'pink', borderColor: 'pink'}}
-            trackStyle={{backgroundColor: 'pink', borderColor: 'pink'}}
+            handleStyle={{backgroundColor: '#ff80ab', borderColor: '#ff80ab'}}
+            trackStyle={{backgroundColor: '#ff80ab', borderColor: '#ff80ab'}}
             className={classes.slider}
             min={field.min}
             max={field.max}
@@ -118,7 +118,7 @@ class PrimeUlam extends Component {
       bgColor: "white",
       color: "black",
       shape: CIRCLE,
-      shapeSize: 5,
+      shapeSize: 7,
       start: start,
       stageSize: size,
       primeSize: primeSize,
@@ -232,36 +232,29 @@ class PrimeUlam extends Component {
     }
     spiralize(board, start)
     const shapes = []
+    let ShapeClass = null
+    switch (true) {
+      case shape === TRIANGLE:
+        ShapeClass = RegularPolygon
+        break
+      case shape === SQUARE:
+        ShapeClass = Rect
+        break
+      default:
+        ShapeClass = Circle
+    }
     for (let x = 0; x < primeSize; x++) {
       for (let y = 0; y < primeSize; y++) {
         if (primes.has(board[x][y])) {
-          let currShape = null
           const jx = x * primeJump
           const jy = y * primeJump
           const key = `${x} ${y}`
-          switch (true) {
-            case shape === TRIANGLE:
-              currShape = (<RegularPolygon
-                              key={key}
-                              x={jx} y={jy}
-                              sides={3} radius={shapeSize}
-                              fill={color}/>)
-              break
-            case shape === SQUARE:
-              currShape = (<Rect
-                              key={key}
-                              x={jx} y={jy}
-                              width={shapeSize} height={shapeSize}
-                              fill={color}/>)
-              break
-            default:
-              currShape = (<Circle
-                              key={key}
-                              x={jx} y={jy}
-                              width={shapeSize} height={shapeSize}
-                              fill={color}/>)
-          }
-          shapes.push(currShape)
+          shapes.push((<ShapeClass
+                          key={key}
+                          x={jx} y={jy}
+                          sides={3} radius={shapeSize}
+                          width={shapeSize} height={shapeSize}
+                          fill={color}/>))
         }
       }
     }
