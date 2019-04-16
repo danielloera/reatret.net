@@ -6,6 +6,8 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
 import FormControl from '@material-ui/core/FormControl'
 import Typography from '@material-ui/core/Typography'
 import threads from 'threads'
@@ -126,7 +128,7 @@ class PrimeUlam extends Component {
       notify: false,
       msg: '',
     }
-    this.handleChange = this.handleChange.bind(this)
+    this.handleSlider = this.handleSlider.bind(this)
     this.makeSpiral = this.makeSpiral.bind(this)
     this.layer = null
   }
@@ -261,7 +263,7 @@ class PrimeUlam extends Component {
     this.setState({spiral: shapes})
   }
 
-  handleChange(id){
+  handleSlider(id){
     return (val) => {
       this.setState({[id]: val})
     }
@@ -276,7 +278,7 @@ class PrimeUlam extends Component {
     if (this.layer) this.layer.batchDraw()
     return (
       <div className={classes.title}>
-        <Typography align="center" variant="h4"> Ulam Spiral Generator</Typography>
+        <Typography align="center" variant="h5"> Ulam Spiral Generator</Typography>
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
@@ -303,49 +305,57 @@ class PrimeUlam extends Component {
           </Stage>
         </div>
         {/* Controls */}
-        <form className={classes.controls} noValidate autoComplete="off">
-          {createSliders(SLIDER_FIELDS, numberVars, classes, this.handleChange)}
-          <div className={classes.cPickers}>
-            <span className={classes.colorPicker}>
-              <Typography align="left" color="textSecondary">Background Color</Typography>
-              <ColorPicker
-                className={classes.colorPicker}
-                name='bgColor'
-                defaultValue={bgColor}
-                onChange={(c) => {
-                  if (!c) return
-                  this.setState({bgColor: c})}
-              }/>
-            </span>
-            <span className={classes.colorPicker}>
-             <Typography align="left" color="textSecondary">Shape Color</Typography>
-             <ColorPicker
-                name='color'
-                defaultValue={color}
-                onChange={(c) => {
-                    if(!c) return
-                    this.setState({color: c}, this.makeSpiral)
-              }}/>
-            </span>
+        <div className={classes.cardHolder}>
+        <Card className={classes.card} elevation={4}>
+          <CardContent>
+            <Typography className={classes.controlsLabel} variant="h6">Controls</Typography>
+            <form className={classes.controls} noValidate autoComplete="off">
+              {createSliders(SLIDER_FIELDS, numberVars, classes, this.handleSlider)}
+              <div className={classes.cPickers}>
+                <span className={classes.colorPicker}>
+                  <Typography align="left" color="textSecondary">Background Color</Typography>
+                  <ColorPicker
+                    className={classes.colorPicker}
+                    name='bgColor'
+                    defaultValue={bgColor}
+                    onChange={(c) => {
+                      if (!c) return
+                      this.setState({bgColor: c})}
+                  }/>
+                </span>
+                <span className={classes.colorPicker}>
+                 <Typography align="left" color="textSecondary">Shape Color</Typography>
+                 <ColorPicker
+                    name='color'
+                    defaultValue={color}
+                    onChange={(c) => {
+                        if(!c) return
+                        this.setState({color: c}, this.makeSpiral)
+                  }}/>
+                </span>
+            </div>
+            <FormControl className={classes.shapePicker}>
+              <InputLabel htmlFor="select">Shape</InputLabel>
+              <Select
+                value={this.state.shape}
+                onChange={(event)=> {
+                    this.setState({[event.target.name]: event.target.value},
+                      this.makeSpiral)
+                  }}
+                inputProps={{
+                  name: 'shape',
+                  id: 'select',
+                }}>
+                <MenuItem value={0}>Circle</MenuItem>
+                <MenuItem value={1}>Square</MenuItem>
+                <MenuItem value={2}>Triangle</MenuItem>
+              </Select>
+            </FormControl>
+            </form>
+          </CardContent>
+        </Card>
         </div>
-        <FormControl className={classes.shapePicker}>
-          <InputLabel htmlFor="select">Shape</InputLabel>
-          <Select
-            value={this.state.shape}
-            onChange={(event)=> {
-                this.setState({[event.target.name]: event.target.value},
-                  this.makeSpiral)
-              }}
-            inputProps={{
-              name: 'shape',
-              id: 'select',
-            }}>
-            <MenuItem value={0}>Circle</MenuItem>
-            <MenuItem value={1}>Square</MenuItem>
-            <MenuItem value={2}>Triangle</MenuItem>
-          </Select>
-        </FormControl>
-        </form>
+        {/* Bottom Text */}
         <div className={classes.endingText}>
           <Typography component="p" >
             This project was inspired by{" "}
@@ -378,34 +388,46 @@ const styles = (theme) => ({
   stage: {
     marginTop: '3vh',
   },
+  card: {
+    marginTop: '2rem',
+    padding: '1rem',
+    minWidth: '30vw',
+    maxWidth: '90vw',
+  },
+  cardHolder: {
+    justifyContent: 'center',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  controlsLabel: {
+  },
   controls: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: '2vh',
     marginLeft: theme.spacing.unit*3,
     marginRight: theme.spacing.unit*3,
   },
   sliderField: {
     width: '15ch',
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit*3,
     marginLeft: theme.spacing.unit*3,
     marginRight: theme.spacing.unit,
   },
   colorPicker: {
     marginLeft: theme.spacing.unit*2,
     marginRight: theme.spacing.unit*2,
-    maxWidth: '15ch',
+    maxWidth: '15rem',
   },
   cPickers: {
     display: 'flex',
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit*3,
   },
   slideLabel: {
     marginBottom: theme.spacing.unit*3
   },
   shapePicker: {
-    marginTop: theme.spacing.unit*2
+    marginTop: theme.spacing.unit*4
   },
   endingText: {
     marginTop: '7vh',
