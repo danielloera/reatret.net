@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import { Stage, Layer, Rect, Circle, RegularPolygon } from 'react-konva'
+import { Stage, FastLayer, Rect, Circle, RegularPolygon } from 'react-konva'
 import Snackbar from '@material-ui/core/Snackbar'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -12,7 +12,6 @@ import threads from 'threads'
 import Slider from 'rc-slider'
 import ColorPicker from 'material-ui-color-picker'
 import 'rc-slider/assets/index.css'
-import 'rc-tooltip/assets/bootstrap.css'
 const TSlider = Slider.createSliderWithTooltip(Slider)
 
 const SCREEN_PERCENTAGE = 0.80
@@ -129,6 +128,7 @@ class PrimeUlam extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.makeSpiral = this.makeSpiral.bind(this)
+    this.layer = null
   }
 
   notify(msg, then) {
@@ -280,6 +280,7 @@ class PrimeUlam extends Component {
            start, notify, msg, spiral,
            color, bgColor} = this.state
     const numberVars = [primeSize, shapeSize, start]
+    if (this.layer) this.layer.batchDraw()
     return (
       <div className={classes.title}>
         <Typography align="center" variant="h4"> Ulam Spiral Generator</Typography>
@@ -299,13 +300,13 @@ class PrimeUlam extends Component {
           <Stage className={classes.stage}
                  width={stageSize}
                  height={stageSize}>
-            <Layer>
+            <FastLayer ref={(ref)=> this.layer = ref}>
               {/* Background */}
               <Rect x={0} y={0} width={stageSize} height={stageSize}
                     fill={this.state.bgColor} shadowBlur={5}/>
               {/* Spiral Shapes */}
               {spiral}
-            </Layer>
+            </FastLayer>
           </Stage>
         </div>
         {/* Controls */}
@@ -356,7 +357,7 @@ class PrimeUlam extends Component {
           <Typography component="p" >
             This project was inspired by{" "}
             <a href="https://www.youtube.com/watch?v=iFuR97YcSLM">this</a>
-            {" "} awesome numberphile video. <br/>
+            {" "} awesome numberphile video.
             You can read more about Prime Ulam Spirals{" "}
             <a href="https://en.wikipedia.org/wiki/Ulam_spiral">here.</a><br/>
             You can also check out the{" "}
@@ -371,7 +372,7 @@ class PrimeUlam extends Component {
 
 const styles = (theme) => ({
   title: {
-    marginTop: '4vh',
+    marginTop: '3vh',
     textAlign: 'center',
     padding: theme.spacing.unit*2,
   },
