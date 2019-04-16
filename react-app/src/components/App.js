@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import NavBar from './NavBar'
 import Home from './Home'
 import PrimeUlam from './PrimeUlam'
+import './App.css'
 
 const styles = (theme) => ({
     root: {

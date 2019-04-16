@@ -2,41 +2,21 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import { Stage, Layer, Rect, Circle, RegularPolygon } from 'react-konva'
-import TextField from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
+import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Typography from '@material-ui/core/Typography'
 import threads from 'threads'
-
-const styles = (theme) => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-  },
-  stage: {
-    marginTop: '3vh',
-  },
-  controls: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginTop: '2vh',
-    marginLeft: theme.spacing.unit*3,
-    marginRight: theme.spacing.unit*3,
-    marginBottom: '20vh',
-  },
-  slider: {
-    width: '15vh',
-    marginTop: '1vh'
-  },
-   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    maxWidth: '15ch',
-  },
-})
+import Slider from 'rc-slider'
+import ColorPicker from 'material-ui-color-picker'
+import 'rc-slider/assets/index.css'
+import 'rc-tooltip/assets/bootstrap.css'
+const TSlider = Slider.createSliderWithTooltip(Slider)
 
 const SCREEN_PERCENTAGE = 0.80
+const CALC_PRIMES = "Calculating Primes..."
 
 const CIRCLE = 0
 const SQUARE = 1
@@ -48,19 +28,19 @@ function getSpiralIdx(n) {
   let m = Math.pow(t, 2)
   t -= 1
   if (n >= m - t) {
-    return {x: k-(m-n), y: -k}
+    return {x: k-(m-n), y: k}
   } else {
     m -= t
   }
   if (n >= m - t) {
-    return {x: -k, y: -k + (m - n)}
+    return {x: -k, y: k - (m - n)}
   } else {
     m -= t
   }
   if (n >= m - t) {
-    return {x: -k + (m-n), y: k}
+    return {x: -k + (m-n), y: -k}
   }
-  return {x: k, y: k-(m-n-t)}
+  return {x: k, y: -k+(m-n-t)}
 }
 
 function spiralize(board, num) {
@@ -70,76 +50,55 @@ function spiralize(board, num) {
   const half = len % 2 === 0 ?
               Math.ceil(rawHalf) - 1:
               Math.floor(rawHalf)
-  for (let i = 0; i < size; i++) {
+  for (let i = 1; i <= size; i++) {
     const idx = getSpiralIdx(i)
     board[idx.x + half][idx.y + half] = num
     num += 1
   }
 }
 
-// Adapted from "Pi Delport" on stackoverflow
-function primesSieve(limit, prevData) {
-  let a = null
-  let start = 0
-  if (prevData) {
-    a = prevData
-    const prevLen = prevData.length
-    start = prevLen
-    // Limit MUST be greater then prev data len
-    const diff = limit - prevLen
-    for (let i = 0; i < diff; i++) {
-      a.push(true)
-    }
-  } else {
-    a = Array(limit)
-    a[0] = false
-    a[1] = false
-    a.fill(true, 2, limit)
-  }
-  const ans = new Set([])
-  for(let i = start; i < a.length; i++) {
-    const isPrime = a[i]
-    if (isPrime) {
-      ans.add(i)
-      for (let n = i*i; n < limit; n+=i) {
-        a[n] = false
-      }
-    }
-  }
-  return {primes: ans, prevData: a}
-}
-
-const TEXT_FIELDS = [
+const SLIDER_FIELDS = [
   {
-    name: "Grid Size",
-    id: "primeSize"
+    name: "Grid Size (NxN)",
+    id: "primeSize",
+    min: 5,
+    max: 1001,
   },
   {
     name: "Shape Size",
-    id: "shapeSize"
+    id: "shapeSize",
+    min: 1,
+    max: 100,
   },
   {
     name: "Starting Number",
-    id: "start"
+    id: "start",
+    min: 1,
+    max: 500,
   },
 ]
 
-function createTextFields(fields, values, cn, fn) {
+function createSliders(fields, values, classes, fn) {
   const doms = []
   for (let i = 0; i < fields.length; i++) {
     const field = fields[i]
     const value = values[i]
     doms.push((
-    <TextField
-          key={field.name}
-          id={field.name}
-          label={field.name}
-          className={cn}
-          value={value}
-          onChange={fn(field.id)}
-          margin="normal"
-          variant="outlined"
-        />
+      <div
+        className={classes.sliderField}
+        key={field.name}
+        id={field.name}>
+          <Typography align="left" className={classes.slideLabel} color="textSecondary">{`${field.name}:\t${value}`}</Typography>
+          <TSlider
+            handleStyle={{backgroundColor: 'pink', borderColor: 'pink'}}
+            trackStyle={{backgroundColor: 'pink', borderColor: 'pink'}}
+            className={classes.slider}
+            min={field.min}
+            max={field.max}
+            step={1}
+            defaultValue={value}
+            onAfterChange={fn(field.id)}/>
+      </div>
     ))
   }
   return doms
@@ -152,11 +111,11 @@ class PrimeUlam extends Component {
     const size = Math.trunc(Math.min(window.innerWidth, window.innerHeight) * SCREEN_PERCENTAGE)
     const start = 1
     const primeSize = 101
-    const ps = primesSieve(Math.pow(primeSize + start, 2))
-    this.prevPrimes = ps.data
+    this.prevPrimes = null
     this.maxPrimeSize = primeSize
-    this.spiral = null
+    this.maxStart = start
     this.state = {
+      spiral: null,
       bgColor: "white",
       color: "black",
       shape: CIRCLE,
@@ -164,11 +123,12 @@ class PrimeUlam extends Component {
       start: start,
       stageSize: size,
       primeSize: primeSize,
-      primes: ps.primes,
+      primes: null,
       notify: false,
       msg: '',
     }
     this.handleChange = this.handleChange.bind(this)
+    this.makeSpiral = this.makeSpiral.bind(this)
   }
 
   notify(msg, then) {
@@ -178,34 +138,47 @@ class PrimeUlam extends Component {
     }, then)
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidMount() {
     const {primeSize, start} = this.state
-    let newMaxPrimeSize = false
-    if (primeSize > this.maxPrimeSize) {
-      this.maxPrimeSize = primeSize
-      newMaxPrimeSize = true
-    }
-    if (newMaxPrimeSize) {
-      const limit = Math.pow(primeSize + start, 2)
-      this.notify(`Calculating primes...`)
-      this.updatePrimes(limit)
+    this.notify(CALC_PRIMES)
+    this.updatePrimes(Math.pow(primeSize + start, 2),
+                      this.makeSpiral)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {primeSize, start, shapeSize} = this.state
+    if (primeSize !== prevState.primeSize) {
+      if (this.maxPrimeSize < primeSize) {
+        this.notify(CALC_PRIMES)
+        this.maxPrimeSize = primeSize
+        const limit = Math.pow(primeSize + start, 2)
+        this.updatePrimes(limit, this.makeSpiral)
+      } else {
+        this.makeSpiral()
+      }
     }
     if (start && start !== prevState.start) {
-      this.notify(`Calculating primes...`)
-      const newLimit = Math.pow(primeSize + start, 2)
-      const oldLimit = Math.pow(primeSize + prevState.start, 2)
+      const newLimit = Math.pow(this.maxPrimeSize + start, 2)
+      const oldLimit = Math.pow(this.maxPrimeSize + this.maxStart, 2)
       if (oldLimit < newLimit) {
-        this.updatePrimes(newLimit)
+        this.notify(CALC_PRIMES)
+        this.maxStart = start
+        this.updatePrimes(newLimit, this.makeSpiral)
+      } else {
+        this.makeSpiral()
       }
+    }
+    if (shapeSize !== prevState.shapeSize) {
+      this.makeSpiral()
     }
   }
 
-  updatePrimes(limit) {
+  updatePrimes(limit, then) {
     const primeThread = threads.spawn((input, done) => {
       const ps = function primesSieve(limit, prevData) {
         let a = null
         let start = 0
-        if (prevData) {
+        if (prevData && prevData.length < limit) {
           a = prevData
           const prevLen = prevData.length
           start = prevLen
@@ -234,13 +207,12 @@ class PrimeUlam extends Component {
       }
       done({ps: ps(input.limit, input.prevPrimes)})
     })
-    .send({limit: limit, prevPrimes: this.prevPrimes})
+    primeThread.send({limit: limit, prevPrimes: this.prevPrimes})
     .on('message', (response) => {
       this.prevPrimes = response.ps.data
       this.setState({
         primes: response.ps.primes
-      })
-      primeThread.kill()
+      }, then)
     })
   }
 
@@ -293,13 +265,11 @@ class PrimeUlam extends Component {
         }
       }
     }
-    return shapes
+    this.setState({spiral: shapes})
   }
 
   handleChange(id){
-    return (event) => {
-      const res = parseInt(event.target.value)
-      const val = res ? res : ""
+    return (val) => {
       this.setState({[id]: val})
     }
   }
@@ -307,11 +277,12 @@ class PrimeUlam extends Component {
   render() {
     const {classes} = this.props
     const {stageSize, primeSize, shapeSize,
-           start, notify, msg} = this.state
+           start, notify, msg, spiral,
+           color, bgColor} = this.state
     const numberVars = [primeSize, shapeSize, start]
-    this.spiral = this.makeSpiral() || this.spiral
     return (
-      <div>
+      <div className={classes.title}>
+        <Typography align="center" variant="h4"> Ulam Spiral Generator</Typography>
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
@@ -333,19 +304,119 @@ class PrimeUlam extends Component {
               <Rect x={0} y={0} width={stageSize} height={stageSize}
                     fill={this.state.bgColor} shadowBlur={5}/>
               {/* Spiral Shapes */}
-              {this.spiral}
+              {spiral}
             </Layer>
           </Stage>
         </div>
         {/* Controls */}
         <form className={classes.controls} noValidate autoComplete="off">
-          {createTextFields(TEXT_FIELDS, numberVars,
-                            classes.textField, this.handleChange)}
+          {createSliders(SLIDER_FIELDS, numberVars, classes, this.handleChange)}
+          <div className={classes.cPickers}>
+            <span className={classes.colorPicker}>
+              <Typography align="left" color="textSecondary">Background Color</Typography>
+              <ColorPicker
+                className={classes.colorPicker}
+                name='bgColor'
+                defaultValue={bgColor}
+                onChange={(c) => {
+                  if (!c) return
+                  this.setState({bgColor: c})}
+              }/>
+            </span>
+            <span className={classes.colorPicker}>
+             <Typography align="left" color="textSecondary">Shape Color</Typography>
+             <ColorPicker
+                name='color'
+                defaultValue={color}
+                onChange={(c) => {
+                    if(!c) return
+                    this.setState({color: c}, this.makeSpiral)
+              }}/>
+            </span>
+        </div>
+        <FormControl className={classes.shapePicker}>
+          <InputLabel htmlFor="select">Shape</InputLabel>
+          <Select
+            value={this.state.shape}
+            onChange={(event)=> {
+                this.setState({[event.target.name]: event.target.value},
+                  this.makeSpiral)
+              }}
+            inputProps={{
+              name: 'shape',
+              id: 'select',
+            }}>
+            <MenuItem value={0}>Circle</MenuItem>
+            <MenuItem value={1}>Square</MenuItem>
+            <MenuItem value={2}>Triangle</MenuItem>
+          </Select>
+        </FormControl>
         </form>
+        <div className={classes.endingText}>
+          <Typography style={{fontSize: "2vmin"}}>
+            This project was inspired by{" "}
+            <a href="https://www.youtube.com/watch?v=iFuR97YcSLM">this</a>
+            {" "} awesome numberphile video. <br/>
+            You can read more about Prime Ulam Spirals{" "}
+            <a href="https://en.wikipedia.org/wiki/Ulam_spiral">here.</a><br/>
+            You can also check out the{" "}
+            <a href="https://gitlab.com/danielloera/primeulam">python version</a>
+            {" "}I made.
+          </Typography>
+        </div>
       </div>
     )
   }
 }
+
+const styles = (theme) => ({
+  title: {
+    marginTop: '4vh',
+    textAlign: 'center',
+  },
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  stage: {
+    marginTop: '3vh',
+  },
+  controls: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: '2vh',
+    marginLeft: theme.spacing.unit*3,
+    marginRight: theme.spacing.unit*3,
+  },
+  sliderField: {
+    width: '15ch',
+    marginTop: theme.spacing.unit,
+    marginLeft: theme.spacing.unit*3,
+    marginRight: theme.spacing.unit,
+  },
+  colorPicker: {
+    marginLeft: theme.spacing.unit*2,
+    marginRight: theme.spacing.unit*2,
+    maxWidth: '15ch',
+  },
+  cPickers: {
+    display: 'flex',
+    marginTop: theme.spacing.unit,
+  },
+  slideLabel: {
+    marginBottom: theme.spacing.unit*3
+  },
+  shapePicker: {
+    marginTop: theme.spacing.unit
+  },
+  endingText: {
+    marginTop: '7vh',
+    marginBottom: '25vh',
+  }
+})
 
 PrimeUlam.propTypes = {
   classes: PropTypes.object.isRequired,
