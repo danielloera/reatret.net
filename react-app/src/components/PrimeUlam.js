@@ -59,19 +59,19 @@ function spiralize(board, num) {
 
 const SLIDER_FIELDS = [
   {
-    name: "Grid Size (NxN)",
+    name: "Grid\xa0Size\xa0(NxN)",
     id: "primeSize",
     min: 5,
     max: 1001,
   },
   {
-    name: "Shape Size",
+    name: "Shape\xa0Size",
     id: "shapeSize",
     min: 1,
     max: 100,
   },
   {
-    name: "Starting Number",
+    name: "Starting\xa0Number",
     id: "start",
     min: 1,
     max: 500,
@@ -88,7 +88,7 @@ function createSliders(fields, values, classes, fn) {
         className={classes.sliderField}
         key={field.name}
         id={field.name}>
-          <Typography align="left" className={classes.slideLabel} color="textSecondary">{`${field.name}:\t${value}`}</Typography>
+          <Typography align="left" className={classes.slideLabel} color="textSecondary">{`${field.name}:\xa0${value}`}</Typography>
           <TSlider
             handleStyle={{backgroundColor: 'pink', borderColor: 'pink'}}
             trackStyle={{backgroundColor: 'pink', borderColor: 'pink'}}
@@ -353,7 +353,7 @@ class PrimeUlam extends Component {
         </FormControl>
         </form>
         <div className={classes.endingText}>
-          <Typography style={{fontSize: "2vmin"}}>
+          <Typography component="p" >
             This project was inspired by{" "}
             <a href="https://www.youtube.com/watch?v=iFuR97YcSLM">this</a>
             {" "} awesome numberphile video. <br/>
@@ -373,6 +373,7 @@ const styles = (theme) => ({
   title: {
     marginTop: '4vh',
     textAlign: 'center',
+    padding: theme.spacing.unit*2,
   },
   root: {
     display: 'flex',
@@ -410,11 +411,12 @@ const styles = (theme) => ({
     marginBottom: theme.spacing.unit*3
   },
   shapePicker: {
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing.unit*2
   },
   endingText: {
     marginTop: '7vh',
     marginBottom: '25vh',
+    padding: theme.spacing.unit*2
   }
 })
 
