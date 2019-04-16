@@ -26,7 +26,7 @@ const DRAWER_LIST = [
     link: "/"
   },
   {
-    text: "Prime Spirals",
+    text: "Ulam Spirals",
     icon: (<SpiralIcon/>),
     link: "/primeulam"
   },

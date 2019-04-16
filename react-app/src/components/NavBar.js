@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import TempDrawer from './TempDrawer'
 
-const HIDE_SPEED = 0.2
+const HIDE_SPEED = 0.4
 
 const styles = (theme) => ({
   menuButton: {
