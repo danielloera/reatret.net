@@ -144,9 +144,7 @@ class PrimeUlam extends Component {
   }
 
   componentDidMount() {
-    const {primeSize, start, stageSize, bgColor} = this.state
-    this.backgroundRect = (<Rect x={0} y={0} width={stageSize} height={stageSize}
-                                 fill={bgColor} shadowBlur={5}/>)
+    const {primeSize, start} = this.state
     this.updatePrimes(Math.pow(primeSize + start, 2))
   }
 
@@ -270,12 +268,7 @@ class PrimeUlam extends Component {
         }
       }
     }
-    const spiral = (
-      <FastLayer ref={(ref)=> this.layer = ref}>
-        {this.backgroundRect}
-        {shapes}
-      </FastLayer>)
-    this.setState({spiral: spiral})
+    this.setState({spiral: shapes})
   }
 
   handleSlider(id){
@@ -307,7 +300,12 @@ class PrimeUlam extends Component {
           <Stage className={classes.stage}
                  width={stageSize}
                  height={stageSize}>
-            {spiral}
+            <FastLayer ref={(ref)=> this.layer = ref}>
+              <Rect x={0} y={0}
+                    width={stageSize} height={stageSize}
+                    fill={bgColor} shadowBlur={5}/>
+              {spiral}
+            </FastLayer>
           </Stage>
         </div>
         {/* Controls */}
