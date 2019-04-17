@@ -18,6 +18,7 @@ const TSlider = Slider.createSliderWithTooltip(Slider)
 
 const SCREEN_PERCENTAGE = 0.80
 const CALC_PRIMES = "Calculating Primes..."
+const RENDER = "Rendering..."
 
 const CIRCLE = 0
 const SQUARE = 1
@@ -114,6 +115,7 @@ class PrimeUlam extends Component {
     const primeSize = 101
     this.board = null
     this.prevPrimes = null
+    this.backgroundRect = null
     this.maxPrimeSize = primeSize
     this.maxStart = start
     this.state = {
@@ -142,7 +144,9 @@ class PrimeUlam extends Component {
   }
 
   componentDidMount() {
-    const {primeSize, start} = this.state
+    const {primeSize, start, stageSize, bgColor} = this.state
+    this.backgroundRect = (<Rect x={0} y={0} width={stageSize} height={stageSize}
+                                 fill={bgColor} shadowBlur={5}/>)
     this.updatePrimes(Math.pow(primeSize + start, 2))
   }
 
@@ -154,7 +158,7 @@ class PrimeUlam extends Component {
         const limit = Math.pow(primeSize + start, 2)
         this.updatePrimes(limit)
       } else {
-        this.makeSpiral()
+        this.notify(RENDER, this.makeSpiral)
       }
     }
     if (start && start !== prevState.start) {
@@ -164,11 +168,13 @@ class PrimeUlam extends Component {
         this.maxStart = start
         this.updatePrimes(newLimit)
       } else {
-        this.makeSpiral(false, true)
+        this.notify(RENDER, (ns)=> {
+          this.makeSpiral(false, true)
+        })
       }
     }
     if (shapeSize !== prevState.shapeSize) {
-      this.makeSpiral()
+      this.notify(RENDER, this.makeSpiral)
     }
   }
 
@@ -228,7 +234,6 @@ class PrimeUlam extends Component {
       this.board = []
       for (let i = 0; i < primeSize; i++) {
         const tempArr = Array(primeSize)
-        tempArr.fill(null, 0, primeSize)
         this.board.push(tempArr)
       }
     }
@@ -253,16 +258,24 @@ class PrimeUlam extends Component {
           const jx = x * primeJump
           const jy = y * primeJump
           const key = `${x} ${y}`
-          shapes.push((<ShapeClass
+          const shape = (<ShapeClass
                           key={key}
                           x={jx} y={jy}
                           sides={3} radius={shapeSize}
                           width={shapeSize} height={shapeSize}
-                          fill={color}/>))
+                          fill={color}
+                          listening={false}
+                          perfectDrawEnabled={false}/>)
+          shapes.push(shape)
         }
       }
     }
-    this.setState({spiral: shapes})
+    const spiral = (
+      <FastLayer ref={(ref)=> this.layer = ref}>
+        {this.backgroundRect}
+        {shapes}
+      </FastLayer>)
+    this.setState({spiral: spiral})
   }
 
   handleSlider(id){
@@ -282,28 +295,19 @@ class PrimeUlam extends Component {
       <div className={classes.title}>
         <Typography align="center" variant="h5"> Ulam Spiral Generator</Typography>
         <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
+          anchorOrigin={{vertical: "bottom", horizontal: "left"}}
+          open={notify}
+          autoHideDuration={2000}
+          onClose={()=> {this.setState({notify: false})}}
+          ContentProps={{
+            'aria-describedby': 'message-id',
           }}
-        open={notify}
-        autoHideDuration={2000}
-        onClose={()=> {this.setState({notify: false})}}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">{msg}</span>}/>
+          message={<span id="message-id">{msg}</span>}/>
         <div className={classes.root}>
           <Stage className={classes.stage}
                  width={stageSize}
                  height={stageSize}>
-            <FastLayer ref={(ref)=> this.layer = ref}>
-              {/* Background */}
-              <Rect x={0} y={0} width={stageSize} height={stageSize}
-                    fill={this.state.bgColor} shadowBlur={5}/>
-              {/* Spiral Shapes */}
-              {spiral}
-            </FastLayer>
+            {spiral}
           </Stage>
         </div>
         {/* Controls */}
@@ -360,6 +364,7 @@ class PrimeUlam extends Component {
         {/* Bottom Text */}
         <div className={classes.endingText}>
           <Typography component="p" >
+            <b>Warning</b>: higher grid sizes may cause some slow down.<br/>
             This project was inspired by{" "}
             <a href="https://www.youtube.com/watch?v=iFuR97YcSLM">this</a>
             {" "} awesome numberphile video.
