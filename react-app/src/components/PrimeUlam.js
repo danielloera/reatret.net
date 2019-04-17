@@ -112,6 +112,7 @@ class PrimeUlam extends Component {
     const size = Math.trunc(Math.min(window.innerWidth, window.innerHeight) * SCREEN_PERCENTAGE)
     const start = 1
     const primeSize = 101
+    this.board = null
     this.prevPrimes = null
     this.maxPrimeSize = primeSize
     this.maxStart = start
@@ -120,7 +121,7 @@ class PrimeUlam extends Component {
       bgColor: "white",
       color: "black",
       shape: CIRCLE,
-      shapeSize: 7,
+      shapeSize: 5,
       start: start,
       stageSize: size,
       primeSize: primeSize,
@@ -142,19 +143,16 @@ class PrimeUlam extends Component {
 
   componentDidMount() {
     const {primeSize, start} = this.state
-    this.notify(CALC_PRIMES)
-    this.updatePrimes(Math.pow(primeSize + start, 2),
-                      this.makeSpiral)
+    this.updatePrimes(Math.pow(primeSize + start, 2))
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {primeSize, start, shapeSize} = this.state
     if (primeSize !== prevState.primeSize) {
       if (this.maxPrimeSize < primeSize) {
-        this.notify(CALC_PRIMES)
         this.maxPrimeSize = primeSize
         const limit = Math.pow(primeSize + start, 2)
-        this.updatePrimes(limit, this.makeSpiral)
+        this.updatePrimes(limit)
       } else {
         this.makeSpiral()
       }
@@ -163,11 +161,10 @@ class PrimeUlam extends Component {
       const newLimit = Math.pow(this.maxPrimeSize + start, 2)
       const oldLimit = Math.pow(this.maxPrimeSize + this.maxStart, 2)
       if (oldLimit < newLimit) {
-        this.notify(CALC_PRIMES)
         this.maxStart = start
-        this.updatePrimes(newLimit, this.makeSpiral)
+        this.updatePrimes(newLimit)
       } else {
-        this.makeSpiral()
+        this.makeSpiral(false, true)
       }
     }
     if (shapeSize !== prevState.shapeSize) {
@@ -175,7 +172,7 @@ class PrimeUlam extends Component {
     }
   }
 
-  updatePrimes(limit, then) {
+  updatePrimes(limit) {
     const primeThread = threads.spawn((input, done) => {
       const ps = function primesSieve(limit, prevData) {
         let a = null
@@ -209,30 +206,35 @@ class PrimeUlam extends Component {
       }
       done({ps: ps(input.limit, input.prevPrimes)})
     })
+    this.notify(CALC_PRIMES)
     primeThread.send({limit: limit, prevPrimes: this.prevPrimes})
     .on('message', (response) => {
       this.prevPrimes = response.ps.data
       this.setState({
         primes: response.ps.primes
-      }, then)
+      }, (ns)=>{ this.makeSpiral(true) })
     })
   }
 
-  makeSpiral() {
+  makeSpiral(newBoard, newStart=false) {
     const {start, primeSize, stageSize, shapeSize,
            shape, color, primes} = this.state
     if (!stageSize || !primeSize || !start ||
         !shapeSize) {
       return null
     }
-    const board = []
     const primeJump = Math.ceil(stageSize / primeSize)
-    for (let i = 0; i < primeSize; i++) {
-      const tempArr = Array(primeSize)
-      tempArr.fill(null, 0, primeSize)
-      board.push(tempArr)
+    if (newBoard) {
+      this.board = []
+      for (let i = 0; i < primeSize; i++) {
+        const tempArr = Array(primeSize)
+        tempArr.fill(null, 0, primeSize)
+        this.board.push(tempArr)
+      }
     }
-    spiralize(board, start)
+    if (newBoard || newStart) {
+      spiralize(this.board, start)
+    }
     const shapes = []
     let ShapeClass = null
     switch (true) {
@@ -247,7 +249,7 @@ class PrimeUlam extends Component {
     }
     for (let x = 0; x < primeSize; x++) {
       for (let y = 0; y < primeSize; y++) {
-        if (primes.has(board[x][y])) {
+        if (primes.has(this.board[x][y])) {
           const jx = x * primeJump
           const jy = y * primeJump
           const key = `${x} ${y}`
