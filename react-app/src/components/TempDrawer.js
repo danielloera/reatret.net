@@ -8,8 +8,29 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import SpiralIcon from '@material-ui/icons/Toys'
+import SpiralIcon from '@material-ui/icons/ScatterPlot'
 import HomeIcon from '@material-ui/icons/Home'
+import VoiceIcon from '@material-ui/icons/RecordVoiceOver'
+
+// List of all Drawer Items
+const DRAWER_LIST = [
+  {
+    text: "Home",
+    icon: (<HomeIcon/>),
+    link: "/",
+    divider: true
+  },
+  {
+    text: "Ulam Spirals",
+    icon: (<SpiralIcon/>),
+    link: "/primeulam"
+  },
+  {
+    text: "UT Tower Bot",
+    icon: <VoiceIcon/>,
+    link: "/uttower",
+  },
+]
 
 const styles = {
   list: {
@@ -18,31 +39,20 @@ const styles = {
   }
 }
 
-// List of all Drawer Items
-const DRAWER_LIST = [
-  {
-    text: "Home",
-    icon: (<HomeIcon/>),
-    link: "/"
-  },
-  {
-    text: "Ulam Spirals",
-    icon: (<SpiralIcon/>),
-    link: "/primeulam"
-  },
-]
-
 function createList(dList) {
   return (
     <List>
-      {DRAWER_LIST.map((dItem) => (
-        <Link to={dItem.link} key={dItem.text}>
-          <ListItem button>
-            <ListItemIcon>{dItem.icon}</ListItemIcon>
-            <ListItemText primary={dItem.text}/>
-          </ListItem>
-        </Link>
-      ))}
+      {DRAWER_LIST.map((dItem) => {
+        const divider = dItem.divider ? <Divider/> : null
+        return (
+          <Link to={dItem.link} key={dItem.text}>
+            <ListItem button>
+              <ListItemIcon>{dItem.icon}</ListItemIcon>
+              <ListItemText primary={dItem.text}/>
+            </ListItem>
+            {divider}
+          </Link>)
+      })}
     </List>
   )
 }
@@ -74,7 +84,6 @@ class TempDrawer extends React.Component {
     const sideList = (
       <div className={classes.list}>
         {createList(DRAWER_LIST)}
-        <Divider/>
       </div>
     )
 
