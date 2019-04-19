@@ -435,7 +435,7 @@ const styles = (theme) => ({
     marginTop: theme.spacing.unit*4
   },
   endingText: {
-    marginTop: '7vh',
+    marginTop: theme.spacing.unit*3,
     marginBottom: '25vh',
     padding: theme.spacing.unit*2
   }
