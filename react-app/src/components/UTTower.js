@@ -33,6 +33,7 @@ class UTTower extends React.Component {
       <div className={classes.root}>
         <Paper className={classes.botHolder} elevation={8}>
           <iframe
+            title="UT Tower"
             allow="microphone;"
             width={BOT_WIDTH}
             height={BOT_HEIGHT}
