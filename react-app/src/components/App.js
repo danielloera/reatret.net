@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import NavBar from './NavBar'
 import Home from './Home'
 import PrimeUlam from './PrimeUlam'
+import UTTower from './UTTower'
 import './App.css'
 
 const styles = (theme) => ({
@@ -44,6 +45,7 @@ class App extends Component {
             <Switch className={classes.root}>
               <Route exact path='/' component={Home}/>
               <Route exact path='/primeulam' component={PrimeUlam}/>
+              <Route exact path='/uttower' component={UTTower}/>
             </Switch>
         </MuiThemeProvider>
       </React.Fragment>
