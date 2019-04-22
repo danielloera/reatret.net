@@ -4,9 +4,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-const BOT_WIDTH = window.innerWidth * 0.85
-const BOT_HEIGHT = window.innerHeight * 0.80
-
 const styles = (theme) => ({
   root: {
     alignItems: 'center',
@@ -15,8 +12,6 @@ const styles = (theme) => ({
   },
   botHolder: {
     display: 'inline-block',
-    width: BOT_WIDTH,
-    height: BOT_HEIGHT,
     marginTop: theme.spacing.unit * 6,
   },
   endingText: {
@@ -27,16 +22,43 @@ const styles = (theme) => ({
 
 class UTTower extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      width: 0,
+      height: 0
+    }
+  }
+
+  updateDimensions() {
+    const ratio = window.innerWidth / window.innerHeight
+    const opRatio = window.innerHeight / window.innerWidth
+    const defaultWidth = window.innerWidth * 0.80
+    const defaultHeight = window.innerHeight * 0.80
+    const height = ratio > 1.5 ? window.innerHeight / ratio : window.innerHeight / opRatio
+    const width = ratio > 1.5 ? window.innerWidth / ratio : window.innerWidth / opRatio
+    this.setState({
+      width: Math.min(width, defaultWidth),
+      height: Math.max(height, defaultHeight)
+    })
+  }
+
+  componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this))
+  }
+
   render() {
     const { classes } = this.props
+    const { width, height } = this.state
     return (
       <div className={classes.root}>
         <Paper className={classes.botHolder} elevation={8}>
           <iframe
             title="UT Tower"
             allow="microphone;"
-            width={BOT_WIDTH}
-            height={BOT_HEIGHT}
+            width={width}
+            height={height}
             src="https://console.dialogflow.com/api-client/demo/embedded/uttower">
           </iframe>
         </Paper>

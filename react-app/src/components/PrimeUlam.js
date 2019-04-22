@@ -110,7 +110,6 @@ class PrimeUlam extends Component {
 
   constructor(props) {
     super(props)
-    const size = Math.trunc(Math.min(window.innerWidth, window.innerHeight) * SCREEN_PERCENTAGE)
     const start = 1
     const primeSize = 101
     this.board = null
@@ -125,15 +124,16 @@ class PrimeUlam extends Component {
       shape: CIRCLE,
       shapeSize: 5,
       start: start,
-      stageSize: size,
+      stageSize: 0,
       primeSize: primeSize,
       primes: null,
       notify: false,
       msg: '',
     }
+    this.layer = null
     this.handleSlider = this.handleSlider.bind(this)
     this.makeSpiral = this.makeSpiral.bind(this)
-    this.layer = null
+    this.updateDimensions = this.updateDimensions.bind(this)
   }
 
   notify(msg, then) {
@@ -143,9 +143,17 @@ class PrimeUlam extends Component {
     }, then)
   }
 
+  updateDimensions() {
+    this.setState({
+      stageSize: Math.trunc(Math.min(window.innerWidth, window.innerHeight) * SCREEN_PERCENTAGE)
+    })
+  }
+
   componentDidMount() {
     const {primeSize, start} = this.state
     this.updatePrimes(Math.pow(primeSize + start, 2))
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions)
   }
 
   componentDidUpdate(prevProps, prevState) {
