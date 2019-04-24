@@ -23,6 +23,11 @@ const RENDER = "Rendering..."
 const CIRCLE = 0
 const SQUARE = 1
 const TRIANGLE = 2
+const SHAPE_CLASSES = [
+  {cls: Circle, idx: CIRCLE},
+  {cls: Rect, idx: SQUARE},
+  {cls: RegularPolygon, idx: TRIANGLE}
+]
 
 function getSpiralIdx(n) {
   const k = Math.ceil((Math.sqrt(n) - 1) / 2)
@@ -146,7 +151,7 @@ class PrimeUlam extends Component {
   updateDimensions() {
     this.setState({
       stageSize: Math.trunc(Math.min(window.innerWidth, window.innerHeight) * SCREEN_PERCENTAGE)
-    })
+    }, this.makeSpiral)
   }
 
   componentDidMount() {
@@ -232,7 +237,7 @@ class PrimeUlam extends Component {
     const {start, primeSize, stageSize, shapeSize,
            shape, color, primes} = this.state
     if (!stageSize || !primeSize || !start ||
-        !shapeSize) {
+        !shapeSize || !primes) {
       return null
     }
     const primeJump = Math.ceil(stageSize / primeSize)
@@ -246,37 +251,47 @@ class PrimeUlam extends Component {
     if (newBoard || newStart) {
       spiralize(this.board, start)
     }
-    const shapes = []
-    let ShapeClass = null
-    switch (true) {
-      case shape === TRIANGLE:
-        ShapeClass = RegularPolygon
-        break
-      case shape === SQUARE:
-        ShapeClass = Rect
-        break
-      default:
-        ShapeClass = Circle
-    }
+    const circles = []
+    const squares = []
+    const triangs = []
     for (let x = 0; x < primeSize; x++) {
       for (let y = 0; y < primeSize; y++) {
         if (primes.has(this.board[x][y])) {
           const jx = x * primeJump
           const jy = y * primeJump
           const key = `${x} ${y}`
-          const shape = (<ShapeClass
-                          key={key}
-                          x={jx} y={jy}
-                          sides={3} radius={shapeSize}
-                          width={shapeSize} height={shapeSize}
-                          fill={color}
-                          listening={false}
-                          perfectDrawEnabled={false}/>)
-          shapes.push(shape)
+          circles.push(<Circle
+                        key={key}
+                        x={jx} y={jy}
+                        radius={shapeSize}
+                        fill={color}
+                        listening={false}
+                        perfectDrawEnabled={false}/>)
+          squares.push(<Rect
+                        key={key}
+                        x={jx} y={jy}
+                        width={shapeSize} height={shapeSize}
+                        fill={color}
+                        listening={false}
+                        perfectDrawEnabled={false}/>)
+          triangs.push(<RegularPolygon
+                        key={key}
+                        x={jx} y={jy}
+                        sides={3} radius={shapeSize}
+                        fill={color}
+                        listening={false}
+                        perfectDrawEnabled={false}/>)
         }
       }
     }
-    this.setState({spiral: shapes})
+    this.setState({
+        spiral: {
+          [CIRCLE]: circles,
+          [SQUARE]: squares,
+          [TRIANGLE]: triangs,
+        }
+      }
+    )
   }
 
   handleSlider(id){
@@ -289,8 +304,9 @@ class PrimeUlam extends Component {
     const {classes} = this.props
     const {stageSize, primeSize, shapeSize,
            start, notify, msg, spiral,
-           color, bgColor} = this.state
+           color, bgColor, shape} = this.state
     const numberVars = [primeSize, shapeSize, start]
+    const shapes = spiral ? spiral[shape] : []
     if (this.layer) this.layer.batchDraw()
     return (
       <div className={classes.title}>
@@ -312,7 +328,7 @@ class PrimeUlam extends Component {
               <Rect x={0} y={0}
                     width={stageSize} height={stageSize}
                     fill={bgColor} shadowBlur={5}/>
-              {spiral}
+              {shapes}
             </FastLayer>
           </Stage>
         </div>
@@ -351,8 +367,7 @@ class PrimeUlam extends Component {
               <Select
                 value={this.state.shape}
                 onChange={(event)=> {
-                    this.setState({[event.target.name]: event.target.value},
-                      this.makeSpiral)
+                    this.setState({[event.target.name]: event.target.value})
                   }}
                 inputProps={{
                   name: 'shape',
