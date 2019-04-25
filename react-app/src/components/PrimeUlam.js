@@ -23,11 +23,6 @@ const RENDER = "Rendering..."
 const CIRCLE = 0
 const SQUARE = 1
 const TRIANGLE = 2
-const SHAPE_CLASSES = [
-  {cls: Circle, idx: CIRCLE},
-  {cls: Rect, idx: SQUARE},
-  {cls: RegularPolygon, idx: TRIANGLE}
-]
 
 function getSpiralIdx(n) {
   const k = Math.ceil((Math.sqrt(n) - 1) / 2)
@@ -235,7 +230,7 @@ class PrimeUlam extends Component {
 
   makeSpiral(newBoard, newStart=false) {
     const {start, primeSize, stageSize, shapeSize,
-           shape, color, primes} = this.state
+           color, primes} = this.state
     if (!stageSize || !primeSize || !start ||
         !shapeSize || !primes) {
       return null
@@ -324,6 +319,11 @@ class PrimeUlam extends Component {
           <Stage className={classes.stage}
                  width={stageSize}
                  height={stageSize}>
+            <FastLayer>
+              <Rect x={0} y={0}
+                    width={stageSize} height={stageSize}
+                    fill={bgColor} shadowBlur={5}/>
+            </FastLayer>
             <FastLayer ref={(ref)=> this.layer = ref}>
               <Rect x={0} y={0}
                     width={stageSize} height={stageSize}
