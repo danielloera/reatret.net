@@ -6,6 +6,7 @@ import NavBar from './NavBar'
 import Home from './Home'
 import PrimeUlam from './PrimeUlam'
 import UTTower from './UTTower'
+import CodeSwitching from './codeswitching/CodeSwitching'
 import './App.css'
 
 const styles = (theme) => ({
@@ -46,6 +47,7 @@ class App extends Component {
               <Route exact path='/' component={Home}/>
               <Route exact path='/primeulam' component={PrimeUlam}/>
               <Route exact path='/uttower' component={UTTower}/>
+              <Route exact path='/codeswitching' component={CodeSwitching}/>
             </Switch>
         </MuiThemeProvider>
       </React.Fragment>

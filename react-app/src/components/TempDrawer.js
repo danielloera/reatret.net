@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import SpiralIcon from '@material-ui/icons/ScatterPlot'
 import HomeIcon from '@material-ui/icons/Home'
 import VoiceIcon from '@material-ui/icons/RecordVoiceOver'
+import CodeSwitchIcon from '@material-ui/icons/Language'
 
 // List of all Drawer Items
 const DRAWER_LIST = [
@@ -19,6 +20,11 @@ const DRAWER_LIST = [
     icon: (<HomeIcon/>),
     link: "/",
     divider: true
+  },
+  {
+    text: "Code-Switching Labeler",
+    icon: (<CodeSwitchIcon/>),
+    link: "/codeswitching"
   },
   {
     text: "Ulam Spirals",
