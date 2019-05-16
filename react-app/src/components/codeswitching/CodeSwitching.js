@@ -1,11 +1,17 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import torch from 'torch-js'
 
 const styles = (theme) => ({
 
 })
+
+// EXAMPLE POST:
+/*
+{
+  "text": "Yo me gusta los carros thats awesome, isnt it?"
+}
+*/
 
 class CodeSwitching extends React.Component {
 
