@@ -13,14 +13,18 @@ import Button from '@material-ui/core/Button'
 import RWIcon from '@material-ui/icons/FastRewind'
 import FFIcon from '@material-ui/icons/FastForward'
 import CodeIcon from '@material-ui/icons/Code'
-import ResumeIcon from '@material-ui/icons/DescriptionTwoTone'
+import ResumeIcon from '@material-ui/icons/Description'
 import Typography from '@material-ui/core/Typography'
 import './Home.css'
 
 const styles = {
   card: {
     minWidth: "30vh",
-    maxWidth: "100vw",
+    maxWidth: "90vw",
+    padding: ".5em"
+  },
+  bottomLinks: {
+    marginTop: '2vh',
   }
 }
 
@@ -122,6 +126,10 @@ class Home extends Component {
     this.swapTimer = setInterval(this.imgTick, this.state.swapSpeed)
   }
 
+  componentWillUnmount() {
+    clearInterval(this.swapTimer)
+  }
+
   imgTick() {
     if (this.state == null) return
     let newIdx = this.state.imgIdx + 1
@@ -130,6 +138,7 @@ class Home extends Component {
     }
     this.setState({imgIdx: newIdx})
   }
+
 
   reset() {
     clearInterval(this.swapTimer)
@@ -217,7 +226,7 @@ class Home extends Component {
           </CardActions>
         </Card>
         {/* Links */}
-        <div>
+        <div className={classes.bottomLinks}>
         {createLinks(LINKS)}
         </div>
       </div>
