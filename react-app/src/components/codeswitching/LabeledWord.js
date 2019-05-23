@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
@@ -21,8 +21,6 @@ const styles = (theme) => ({
   root: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-    display: "inline-block",
     justifyContent: "center",
   },
   labelText: {
@@ -39,10 +37,10 @@ class LabeledWord extends React.Component {
     const { label, word, classes } = this.props
     const labelWidth = label.length + 2
     const labelMarginLeft = getMargin(word.length, labelWidth)
-    const wordMarginLeft = getMargin(labelWidth, word.length)
+    const wordMarginLeft = getMargin(labelWidth + 1, word.length)
     return (
       <div className={classes.root}>
-        <Paper elevation={3}
+        <Paper elevation={4}
                style={{
                 backgroundColor: COLOR[label],
                 marginLeft: `${labelMarginLeft}rem`,
@@ -53,8 +51,7 @@ class LabeledWord extends React.Component {
           </Typography>
         </Paper>
         <Typography variant="h5"
-                    style={{
-                      marginLeft: `${wordMarginLeft}rem`}}>
+                    style={{marginLeft: `${wordMarginLeft}rem`}}>
           {word}
         </Typography>
       </div>
