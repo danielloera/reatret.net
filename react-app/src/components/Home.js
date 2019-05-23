@@ -15,6 +15,7 @@ import FFIcon from '@material-ui/icons/FastForward'
 import CodeIcon from '@material-ui/icons/Code'
 import ResumeIcon from '@material-ui/icons/Description'
 import Typography from '@material-ui/core/Typography'
+import { createLinks } from '../utils'
 import './Home.css'
 
 const styles = {
@@ -84,24 +85,6 @@ function createControl(name, fn) {
         <FFIcon/>
       </IconButton>
   ]
-}
-
-function createLinks(links) {
-  return links.map((item) => (
-    <span key={item.name}
-          style={{display: "inline-block"}}>
-      <a href={item.link}>
-      <IconButton aria-label={item.name}>
-      {item.icon}
-      </IconButton>
-      <div>
-        <Typography>
-        {item.name}
-        </Typography>
-      </div>
-      </a>
-    </span>)
-  )
 }
 
 class Home extends Component {

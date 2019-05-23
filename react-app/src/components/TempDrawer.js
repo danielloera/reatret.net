@@ -22,7 +22,7 @@ const DRAWER_LIST = [
     divider: true
   },
   {
-    text: "Code-Switching Labeler",
+    text: "Code-Switching RNN",
     icon: (<CodeSwitchIcon/>),
     link: "/codeswitching"
   },
