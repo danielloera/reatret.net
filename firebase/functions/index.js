@@ -11,7 +11,7 @@ const app = express();
 const jsonParser = bodyParser.json();
 
 app.use(cors({ origin: true }));
-const API_URL = "http://54.218.147.176/codeswitch";
+const API_URL = "http://34.222.41.120/codeswitch";
 
 app.post('/', jsonParser, (req, res) => {
     console.log("BODY");
