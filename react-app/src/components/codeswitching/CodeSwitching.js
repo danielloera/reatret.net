@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
 import axios from 'axios'
+import https from 'https'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
@@ -9,8 +10,9 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import LabeledWord from './LabeledWord'
 
+
 const DEFAULT_INPUT = "Hola, how are you?"
-const API_URL = "http://54.218.147.176/codeswitch"
+const API_URL = "https://us-central1-reatret-net.cloudfunctions.net/codeswitch"
 
 const styles = (theme) => ({
   root: {
