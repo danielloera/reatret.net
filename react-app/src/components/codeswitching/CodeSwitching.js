@@ -24,7 +24,7 @@ const LINKS = [
   },
   {
     name: "Project PDF",
-    link: "./codeswitching_Jorge_Hernandez_Daniel_Loera.pdf",
+    link: "https://firebasestorage.googleapis.com/v0/b/reatret-net.appspot.com/o/codeswitching_Jorge_Hernandez_Daniel_Loera.pdf?alt=media&token=5505e0b1-e2d6-4f0a-870d-03891ca8f921",
     icon: (<PaperIcon fontSize="large"/>)
   },
 ]
@@ -43,7 +43,6 @@ const styles = (theme) => ({
     alignItems: "center",
     overflowX: "auto",
     overflowY: "hidden",
-    whiteSpace: "nowrap",
     border: "1px solid dimgray",
     borderRadius: "5px",
     padding: theme.spacing.unit * 2,
