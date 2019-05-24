@@ -10,7 +10,7 @@ function createLinks(links) {
             textAlign: "center",
             margin: '5px'
           }}>
-      <a href={item.link} download>
+      <a href={item.link}>
       <IconButton aria-label={item.name}>
       {item.icon}
       </IconButton>
