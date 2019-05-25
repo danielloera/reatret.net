@@ -14,6 +14,7 @@ import RWIcon from '@material-ui/icons/FastRewind'
 import FFIcon from '@material-ui/icons/FastForward'
 import CodeIcon from '@material-ui/icons/Code'
 import ResumeIcon from '@material-ui/icons/Description'
+import ContactIcon from '@material-ui/icons/Email'
 import Typography from '@material-ui/core/Typography'
 import { createLinks } from '../utils'
 import './Home.css'
@@ -39,6 +40,11 @@ const LINKS = [
     name: "Resume",
     link: "https://docs.google.com/document/d/18sWdFkdfeEGWD7KpvNJ7I25CUm_n0n1hrINJsOv3VzA",
     icon: (<ResumeIcon fontSize="large"/>)
+  },
+  {
+    name: "Contact",
+    link: "mailto:daniel@reatret.net",
+    icon: (<ContactIcon fontSize="large"/>)
   },
 ]
 
