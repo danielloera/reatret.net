@@ -10,4 +10,15 @@ echo "Copying build folder to firebase..."
 cp -r build/* ../firebase/public
 cd ../firebase/
 # Deploy
-firebase deploy
+if [ "$1" = "" ]
+then
+  echo "deploying site..."
+  firebase deploy --only hosting
+elif [ "$1" = "all" ]
+then
+  echo "deploying everything..."
+  firebase deploy
+else
+    echo "deploying ${1}..."
+    firebase deploy --only $1
+fi;
