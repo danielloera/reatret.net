@@ -8,6 +8,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
+import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import RWIcon from '@material-ui/icons/FastRewind'
@@ -19,16 +20,28 @@ import Typography from '@material-ui/core/Typography'
 import { createLinks } from '../utils'
 import './Home.css'
 
-const styles = {
-  card: {
-    minWidth: "30vh",
-    maxWidth: "90vw",
-    padding: ".5em"
+const styles = (theme) => ({
+  root: {
+    textAlign: "center",
+    minHeight: "100vh",
+    fontSize: "calc(12px + 2vmin)",
+    marginTop: theme.spacing.unit*14
   },
-  bottomLinks: {
-    marginTop: '2vh',
+  spinningImage: {
+    animation: "App-logo-spin infinite 3s linear",
+    marginBottom: theme.spacing.unit*12,
+    height: "25vh",
+    maxWidth: "90vw",
+    objectFit: "cover",
+  },
+  card: {
+    padding: ".5rem"
+  },
+  cardHolder: {
+    justifyContent: "center",
+    display: "flex"
   }
-}
+})
 
 const LINKS = [
   {
@@ -186,38 +199,41 @@ class Home extends Component {
     const logo = imgs[imgIdx]
     const spinStyle = spinImgAt(spinSpeed)
     return (
-      <div className="Home">
+      <div className={classes.root}>
         {/* Snackbars */}
         {createSnackBar('bottom', 'left', spinMsg, spinSnack,
                         () => {this.setState({spinSnack: false})})}
         {createSnackBar('bottom', 'right', swapMsg, swapSnack,
                         () => {this.setState({swapSnack: false})})}
-        {/* Spinning Image */}
-        <img src={logo}
-        className="Spinning-Image"
-        alt="logo"
-        style={spinStyle}/>
-        {/* Control Card */}
-        <Card className={classes.card} elevation={5}>
-          <CardContent>
-            <Typography component="p">
-              Hi, I'm Daniel. I love making things.
-              <br/>
-              You can see some of them on this site or linked below.
-              <br/>
-              Have fun <i>spinning</i>.
-            </Typography>
-          </CardContent>
-          <CardActions style={{justifyContent: 'center'}}>
-             {createControl("Spin", this.spin)}
-             <Button size="small" variant="contained" color="secondary" onClick={this.reset}>Reset</Button>
-             {createControl("Swap", this.swap)}
-          </CardActions>
-        </Card>
-        {/* Links */}
-        <div className={classes.bottomLinks}>
-        {createLinks(LINKS)}
-        </div>
+        <Grid container spacing={24} justify="center" alignItems="center">
+          <Grid item xs={12}>
+          {/* Spinning Image */}
+          <img src={logo} className={classes.spinningImage} alt="logo" style={spinStyle}/>
+          </Grid>
+          <Grid item xs={12} className={classes.cardHolder}>
+            {/* Control Card */}
+            <Card className={classes.card} elevation={5}>
+              <CardContent>
+                <Typography component="p">
+                  Hi, I'm Daniel. I love making things.
+                  <br/>
+                  You can see some of them on this site or linked below.
+                  <br/>
+                  Have fun <i>spinning</i>.
+                </Typography>
+              </CardContent>
+              <CardActions style={{justifyContent: 'center'}}>
+                 {createControl("Spin", this.spin)}
+                 <Button size="small" variant="contained" color="secondary" onClick={this.reset}>Reset</Button>
+                 {createControl("Swap", this.swap)}
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            {/* Links */}
+            {createLinks(LINKS)}
+          </Grid>
+        </Grid>
       </div>
     )
   }
