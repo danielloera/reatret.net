@@ -14,7 +14,7 @@ import CodeIcon from '@material-ui/icons/Code'
 import PaperIcon from '@material-ui/icons/Assignment'
 import { createLinks } from '../../utils'
 
-const PROGRESS_BAR = <LinearProgress />
+const PROGRESS_BAR = <LinearProgress/>
 
 const LINKS = [
   {
@@ -46,6 +46,10 @@ const styles = (theme) => ({
     border: "1px solid dimgray",
     borderRadius: "5px",
     padding: theme.spacing.unit * 2,
+  },
+  buttonHolder: {
+    display: "flex",
+    justifyContent: "center",
   },
   summary: {
     textAlign: "center",
@@ -139,7 +143,7 @@ class CodeSwitching extends React.Component {
               </a> & Daniel Loera
             </Typography>
           </Grid>
-          <Grid item xs={12} md={10}>
+          <Grid item xs={10} md={11}>
             <TextField
               label="Input Text"
               defaultValue={DEFAULT_INPUT}
@@ -155,17 +159,18 @@ class CodeSwitching extends React.Component {
               }}
               />
           </Grid>
-          <Grid item xs={4} sm={3} md={1} lg={1}>
+          <Grid item xs={2} md={1}
+                className={classes.buttonHolder}>
             <Button variant="contained"
                     color="secondary"
                     onClick={this.labelText}>
               Label
             </Button>
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12}>
             {labeledWords}
           </Grid>
-          <Grid item xs={12} sm={12} md={10} lg={6}>
+          <Grid item xs={12} md={10} lg={6}>
             <Paper className={classes.summary} elevation={2}>
               <Typography component="p"variant="body1">
                 This research project was developed for{" "}
@@ -179,8 +184,7 @@ class CodeSwitching extends React.Component {
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={3} sm={4} md={3} lg={12}
-                className={classes.links}>
+          <Grid item xs={12} className={classes.links}>
             {createLinks(LINKS)}
           </Grid>
         </Grid>

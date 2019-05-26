@@ -5,3 +5,7 @@ a:link {
 a:visited {
     color: #ff80ab;
 }
+
+a:link {
+  text-decoration: none;
+}
