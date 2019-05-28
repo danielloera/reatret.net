@@ -22,20 +22,20 @@ import './Home.css'
 
 const styles = (theme) => ({
   root: {
+    flexGrow: 1,
     textAlign: "center",
-    minHeight: "100vh",
-    fontSize: "calc(12px + 2vmin)",
-    marginTop: theme.spacing.unit*14
+    padding: theme.spacing.unit*4,
+    marginTop: theme.spacing.unit*14,
   },
   spinningImage: {
     animation: "App-logo-spin infinite 3s linear",
-    marginBottom: theme.spacing.unit*12,
     height: "25vh",
     maxWidth: "90vw",
     objectFit: "cover",
+    marginBottom: theme.spacing.unit*12,
   },
   card: {
-    padding: ".5rem"
+    padding: theme.spacing.unit
   },
   cardHolder: {
     justifyContent: "center",
@@ -214,7 +214,7 @@ class Home extends Component {
             {/* Control Card */}
             <Card className={classes.card} elevation={5}>
               <CardContent>
-                <Typography component="p">
+                <Typography component="p" variant="body1">
                   Hi, I'm Daniel. I love making things.
                   <br/>
                   You can see some of them on this site or linked below.

@@ -16,19 +16,21 @@ const styles = (theme) => ({
   }
 )
 
+const primaryColor = '#43a047'
+const secondaryColor = '#ab47bc'
 const theme = createMuiTheme(
   {
-  typography: {
-    useNextVariants: true,
-    fontSize: 16,
-  },
-  palette: {
-    type: 'dark',
-    primary: {
-        main: '#43a047',
+    typography: {
+      useNextVariants: true,
+      fontSize: 16,
+    },
+    palette: {
+      type: 'dark',
+      primary: {
+        main: primaryColor,
       },
-    secondary: {
-        main: '#ff80ab',
+      secondary: {
+        main: secondaryColor,
       }
     }
   }
@@ -55,4 +57,5 @@ class App extends Component {
   }
 }
 
+export { secondaryColor, primaryColor }
 export default withStyles(styles)(App)

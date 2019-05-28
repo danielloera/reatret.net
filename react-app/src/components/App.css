@@ -1,11 +1,8 @@
 a:link {
-  color: #ff80ab;
+  color: #ba68c8;
+  text-decoration: none;
 }
 
 a:visited {
-    color: #ff80ab;
-}
-
-a:link {
-  text-decoration: none;
+    color: #ba68c8;
 }
