@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
+import Container from '@material-ui/core/Container'
 import kiwi from '../images/kiwi.png'
 import trex from '../images/komodo.png'
 import komodo from '../images/trex.png'
@@ -18,28 +19,34 @@ import ResumeIcon from '@material-ui/icons/Description'
 import ContactIcon from '@material-ui/icons/Email'
 import Typography from '@material-ui/core/Typography'
 import { createLinks } from '../utils'
-import './Home.css'
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
-    textAlign: "center",
-    padding: theme.spacing.unit*4,
-    marginTop: theme.spacing.unit*14,
+    marginTop: theme.spacing(18),
+    textAlign: "center"
   },
   spinningImage: {
-    animation: "App-logo-spin infinite 3s linear",
+    animation: "$logo-spin infinite 3s linear",
     height: "25vh",
     maxWidth: "90vw",
-    objectFit: "cover",
-    marginBottom: theme.spacing.unit*12,
+    display: "flex",
+    marginBottom: theme.spacing(12),
   },
   card: {
-    padding: theme.spacing.unit
+    padding: theme.spacing(1),
+    marginTop: theme.spacing(4)
   },
-  cardHolder: {
+  centerHolder: {
     justifyContent: "center",
     display: "flex"
+  },
+  '@keyframes logo-spin': {
+    from: {
+      transform: 'rotate(0deg)'
+    },
+    to: {
+      transform: 'rotate(360deg)'
+    }
   }
 })
 
@@ -68,7 +75,7 @@ const SLOWER = 1
 
 function spinImgAt(secs) {
   return {
-    animation: `App-logo-spin infinite ${secs}s linear`,
+    animation: `$logo-spin infinite ${secs}s linear`,
     cursor: "pointer"
   }
 }
@@ -199,18 +206,18 @@ class Home extends Component {
     const logo = imgs[imgIdx]
     const spinStyle = spinImgAt(spinSpeed)
     return (
-      <div className={classes.root}>
+      <Container className={classes.root}>
         {/* Snackbars */}
         {createSnackBar('bottom', 'left', spinMsg, spinSnack,
                         () => {this.setState({spinSnack: false})})}
         {createSnackBar('bottom', 'right', swapMsg, swapSnack,
                         () => {this.setState({swapSnack: false})})}
-        <Grid container spacing={24} justify="center" alignItems="center">
-          <Grid item xs={12}>
+        <Grid container spacing={4} justify="center" alignItems="center">
+          <Grid item xs={12} className={classes.centerHolder}>
           {/* Spinning Image */}
           <img src={logo} className={classes.spinningImage} alt="logo" style={spinStyle}/>
           </Grid>
-          <Grid item xs={12} className={classes.cardHolder}>
+          <Grid item xs={12} sm={10} md={6} className={classes.cardHolder}>
             {/* Control Card */}
             <Card className={classes.card} elevation={5}>
               <CardContent>
@@ -234,7 +241,7 @@ class Home extends Component {
             {createLinks(LINKS)}
           </Grid>
         </Grid>
-      </div>
+      </Container>
     )
   }
 }
