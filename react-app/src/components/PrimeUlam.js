@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { secondaryColor } from './App'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import { Stage, FastLayer, Rect, Circle, RegularPolygon } from 'react-konva'
@@ -92,8 +93,8 @@ function createSliders(fields, values, classes, fn) {
         id={field.name}>
           <Typography align="left" className={classes.slideLabel} color="textSecondary">{`${field.name}:\xa0${value}`}</Typography>
           <TSlider
-            handleStyle={{backgroundColor: '#ff80ab', borderColor: '#ff80ab'}}
-            trackStyle={{backgroundColor: '#ff80ab', borderColor: '#ff80ab'}}
+            handleStyle={{backgroundColor: secondaryColor, borderColor: secondaryColor}}
+            trackStyle={{backgroundColor: secondaryColor, borderColor: secondaryColor}}
             className={classes.slider}
             min={field.min}
             max={field.max}
