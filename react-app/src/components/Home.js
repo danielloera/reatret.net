@@ -22,7 +22,7 @@ import { createLinks } from '../utils'
 
 const styles = (theme) => ({
   root: {
-    marginTop: theme.spacing(18),
+    marginTop: theme.spacing(16),
     textAlign: "center"
   },
   spinningImage: {
@@ -34,7 +34,6 @@ const styles = (theme) => ({
   },
   card: {
     padding: theme.spacing(1),
-    marginTop: theme.spacing(4)
   },
   centerHolder: {
     justifyContent: "center",
@@ -212,7 +211,7 @@ class Home extends Component {
                         () => {this.setState({spinSnack: false})})}
         {createSnackBar('bottom', 'right', swapMsg, swapSnack,
                         () => {this.setState({swapSnack: false})})}
-        <Grid container spacing={4} justify="center" alignItems="center">
+        <Grid container spacing={2} justify="center" alignItems="center">
           <Grid item xs={12} className={classes.centerHolder}>
           {/* Spinning Image */}
           <img src={logo} className={classes.spinningImage} alt="logo" style={spinStyle}/>
