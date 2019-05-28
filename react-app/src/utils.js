@@ -8,14 +8,15 @@ function createLinks(links) {
           style={{
             display: "inline-block",
             textAlign: "center",
-            margin: '5px'
+            margin: '1vw'
           }}>
       <a href={item.link}>
       <IconButton aria-label={item.name}>
       {item.icon}
       </IconButton>
       <div>
-        <Typography>
+        <Typography variant="body2"
+          style={{textDecoration: 'none', color: 'white'}}>
         {item.name}
         </Typography>
       </div>

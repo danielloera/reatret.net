@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
 import axios from 'axios'
+import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
@@ -34,9 +35,7 @@ const API_URL = "https://us-central1-reatret-net.cloudfunctions.net/codeswitch"
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
-    marginTop: theme.spacing.unit * 2,
-    padding: theme.spacing.unit * 4
+    marginTop: theme.spacing(4),
   },
   labeledWords: {
     display: "flex",
@@ -45,7 +44,7 @@ const styles = (theme) => ({
     overflowY: "hidden",
     border: "1px solid dimgray",
     borderRadius: "5px",
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
   buttonHolder: {
     display: "flex",
@@ -53,7 +52,7 @@ const styles = (theme) => ({
   },
   summary: {
     textAlign: "center",
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(3)
   },
   links: {
     display: "flex",
@@ -128,13 +127,13 @@ class CodeSwitching extends React.Component {
         {this.getLabeledWords()}
      </div>)
     return (
-      <div className={classes.root}>
+      <Container className={classes.root}>
        <Snackbar
         anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}
         open={loading}
         ContentProps={{'aria-describedby': 'message-id'}}
         message="Generating labels..."/>
-        <Grid container spacing={24} justify="center" alignItems="center">
+        <Grid container spacing={4} justify="center" alignItems="center">
           <Grid item xs={12}>
             <Typography align="center" variant="h5">Spanish-English Code-Switching Labeler</Typography>
             <Typography align="center" variant="subtitle1">by{" "}
@@ -188,7 +187,7 @@ class CodeSwitching extends React.Component {
             {createLinks(LINKS)}
           </Grid>
         </Grid>
-      </div>
+      </Container>
     )
   }
 }

@@ -51,7 +51,8 @@ function createList(dList) {
       {DRAWER_LIST.map((dItem) => {
         const divider = dItem.divider ? <Divider/> : null
         return (
-          <Link to={dItem.link} key={dItem.text}>
+          <Link to={dItem.link} key={dItem.text}
+                style={{textDecoration: 'none', color: 'white'}}>
             <ListItem button>
               <ListItemIcon>{dItem.icon}</ListItemIcon>
               <ListItemText primary={dItem.text}/>
@@ -74,6 +75,8 @@ class TempDrawer extends React.Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (this.state.open !== nextProps.opened) {
+      console.log("will")
+      console.log(nextProps.opened)
       this.setState({open: nextProps.opened})
     }
   }

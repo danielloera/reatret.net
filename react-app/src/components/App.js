@@ -17,11 +17,10 @@ const styles = (theme) => ({
 )
 
 const primaryColor = '#43a047'
-const secondaryColor = '#ab47bc'
+const secondaryColor = '#ff4081'
 const theme = createMuiTheme(
   {
     typography: {
-      useNextVariants: true,
       fontSize: 16,
     },
     palette: {
@@ -45,12 +44,12 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <CssBaseline/>
           <NavBar/>
-            <Switch className={classes.root}>
-              <Route exact path='/' component={Home}/>
-              <Route exact path='/primeulam' component={PrimeUlam}/>
-              <Route exact path='/uttower' component={UTTower}/>
-              <Route exact path='/codeswitching' component={CodeSwitching}/>
-            </Switch>
+          <Switch className={classes.root}>
+            <Route exact path='/' component={Home}/>
+            <Route exact path='/primeulam' component={PrimeUlam}/>
+            <Route exact path='/uttower' component={UTTower}/>
+            <Route exact path='/codeswitching' component={CodeSwitching}/>
+          </Switch>
         </MuiThemeProvider>
       </React.Fragment>
     )
