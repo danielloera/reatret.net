@@ -74,33 +74,28 @@ function spinImgAt(secs) {
 function createSnackBar(v, h, message, open, handleClose) {
   return (
     <Snackbar
-      anchorOrigin={{
-        vertical: v,
-        horizontal: h,
-      }}
+      anchorOrigin={{vertical: v, horizontal: h}}
       open={open}
       autoHideDuration={3000}
       onClose={handleClose}
-      ContentProps={{
-        'aria-describedby': 'message-id',
-      }}
+      ContentProps={{'aria-describedby': 'message-id'}}
       message={<span id="message-id">{message}</span>}/>
   )
 }
 
 function createControl(name, fn) {
   return [
-      <IconButton key={`${name}1`}
-        aria-label={`${name} Slower`}
-        onClick={fn(SLOWER)}>
-        <RWIcon/>
-      </IconButton>,
-      <Typography key={`${name}2`}>{name}</Typography>,
-      <IconButton key={`${name}3`}
-        aria-label={`${name} Faster`}
-        onClick={fn(FASTER)}>
-        <FFIcon/>
-      </IconButton>
+    <IconButton key={`${name}1`}
+      aria-label={`${name} Slower`}
+      onClick={fn(SLOWER)}>
+      <RWIcon/>
+    </IconButton>,
+    <Typography key={`${name}2`}>{name}</Typography>,
+    <IconButton key={`${name}3`}
+      aria-label={`${name} Faster`}
+      onClick={fn(FASTER)}>
+      <FFIcon/>
+    </IconButton>
   ]
 }
 
@@ -118,7 +113,7 @@ function Home(props) {
   const [spinMsg, setSpinMsg] = useState('')
   const [swapMsg, setSwapMsg] = useState('')
 
-  const imgTick = () => {
+  function imgTick() {
     let newIdx = imgIdx + 1
     if (newIdx === imgs.length) {
       newIdx = 0
@@ -126,14 +121,14 @@ function Home(props) {
     setImgIdx(newIdx)
   }
 
-  const reset = () => {
+  function reset() {
     setSpinSpeed(defaultSpin)
     setSwapSpeed(defaultSwap)
     setSpinMsg(`Spinning and swapping every ${defaultSpin}s`)
     setSpinSnack(true)
   }
 
-  const spin = (type) => {
+  function spin(type) {
     return () => {
       let newSpeed = null
       if (type === FASTER) {
@@ -147,7 +142,7 @@ function Home(props) {
     }
   }
 
-  const swap = (type) => {
+  function swap(type) {
     return () => {
       let newSpeed = null
       if (type === FASTER) {
