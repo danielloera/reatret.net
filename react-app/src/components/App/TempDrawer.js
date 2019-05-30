@@ -64,50 +64,23 @@ function createList(dList) {
   )
 }
 
-class TempDrawer extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      open: false,
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.open !== nextProps.opened) {
-      this.setState({open: nextProps.opened})
-    }
-  }
-
-  toggle(state) {
-    this.props.onChange(state)
-    return () => this.setState({
-      open: state
-    })
-  }
-
-  render() {
-    const { classes } = this.props
-
-    const sideList = (
-      <div className={classes.list}>
-        {createList(DRAWER_LIST)}
-      </div>
-    )
-    return (
-      <div>
-        <Drawer open={this.state.open} onClose={this.toggle(false)}>
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggle(false)}
-            onKeyDown={this.toggle(false)}>
-            {sideList}
+function TempDrawer(props) {
+  const { classes } = props
+  return (
+    <div>
+      <Drawer open={props.opened} onClose={props.toggle(false)}>
+        <div
+          tabIndex={0}
+          role="button"
+          onClick={props.toggle(false)}
+          onKeyDown={props.toggle(false)}>
+          <div className={classes.list}>
+            {createList(DRAWER_LIST)}
           </div>
-        </Drawer>
-      </div>
-    )
-  }
+        </div>
+      </Drawer>
+    </div>
+  )
 }
 
 TempDrawer.propTypes = {
