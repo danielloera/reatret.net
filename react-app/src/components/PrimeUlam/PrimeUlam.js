@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { secondaryColor } from './App'
+import { secondaryColor } from '../App/App'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import { Stage, FastLayer, Rect, Circle, RegularPolygon } from 'react-konva'

@@ -4,10 +4,10 @@ import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/
 import CssBaseline from '@material-ui/core/CssBaseline'
 import NotFound from './404'
 import NavBar from './NavBar'
-import Home from './Home'
-import PrimeUlam from './PrimeUlam'
-import UTTower from './UTTower'
-import CodeSwitching from './codeswitching/CodeSwitching'
+import Home from '../Home/Home'
+import PrimeUlam from '../PrimeUlam/PrimeUlam'
+import UTTower from '../UTTower/UTTower'
+import CodeSwitching from '../CodeSwitching/CodeSwitching'
 import './App.css'
 
 const styles = (theme) => ({
