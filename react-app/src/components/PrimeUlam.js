@@ -406,7 +406,7 @@ const styles = (theme) => ({
   title: {
     marginTop: '3vh',
     textAlign: 'center',
-    padding: theme.spacing.unit*2,
+    padding: theme.spacing(2),
   },
   root: {
     display: 'flex',
@@ -434,34 +434,34 @@ const styles = (theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginLeft: theme.spacing.unit*3,
-    marginRight: theme.spacing.unit*3,
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
   },
   sliderField: {
     width: '15ch',
-    marginTop: theme.spacing.unit*3,
-    marginLeft: theme.spacing.unit*3,
-    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(1),
   },
   colorPicker: {
-    marginLeft: theme.spacing.unit*2,
-    marginRight: theme.spacing.unit*2,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
     maxWidth: '15rem',
   },
   cPickers: {
     display: 'flex',
-    marginTop: theme.spacing.unit*3,
+    marginTop: theme.spacing(3),
   },
   slideLabel: {
-    marginBottom: theme.spacing.unit*3
+    marginBottom: theme.spacing(3)
   },
   shapePicker: {
-    marginTop: theme.spacing.unit*4
+    marginTop: theme.spacing(4)
   },
   endingText: {
-    marginTop: theme.spacing.unit*3,
+    marginTop: theme.spacing(3),
     marginBottom: '25vh',
-    padding: theme.spacing.unit*2
+    padding: theme.spacing(2)
   }
 })
 

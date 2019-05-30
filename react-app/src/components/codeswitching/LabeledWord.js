@@ -19,13 +19,13 @@ function getMargin(w1, w2) {
 
 const styles = (theme) => ({
   root: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     justifyContent: "center",
   },
   labelText: {
-    padding: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     textAlign: "center",
   }
 })

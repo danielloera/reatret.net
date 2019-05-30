@@ -13,7 +13,7 @@ import TempDrawer from './TempDrawer'
 
 const styles = (theme) => ({
   menuButton: {
-    marginRight: theme.spacing.unit*2,
+    marginRight: theme.spacing(2),
   }
 })
 
