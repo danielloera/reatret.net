@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -35,26 +35,23 @@ const theme = createMuiTheme(
   }
 )
 
-class App extends Component {
-
-  render() {
-    const {classes} = this.props
-    return (
-      <React.Fragment>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline/>
-          <NavBar/>
-          <Switch className={classes.root}>
-            <Route exact path='/' component={Home}/>
-            <Route exact path='/primeulam' component={PrimeUlam}/>
-            <Route exact path='/uttower' component={UTTower}/>
-            <Route exact path='/codeswitching' component={CodeSwitching}/>
-            <Route component={NotFound}/>
-          </Switch>
-        </MuiThemeProvider>
-      </React.Fragment>
-    )
-  }
+function App(props) {
+  const { classes } = props
+  return (
+    <React.Fragment>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline/>
+        <NavBar/>
+        <Switch className={classes.root}>
+          <Route exact path='/' component={Home}/>
+          <Route exact path='/primeulam' component={PrimeUlam}/>
+          <Route exact path='/uttower' component={UTTower}/>
+          <Route exact path='/codeswitching' component={CodeSwitching}/>
+          <Route component={NotFound}/>
+        </Switch>
+      </MuiThemeProvider>
+    </React.Fragment>
+  )
 }
 
 export { secondaryColor, primaryColor }
