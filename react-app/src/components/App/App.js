@@ -8,7 +8,6 @@ import Home from '../Home/Home'
 import PrimeUlam from '../PrimeUlam/PrimeUlam'
 import UTTower from '../UTTower/UTTower'
 import CodeSwitching from '../CodeSwitching/CodeSwitching'
-import './App.css'
 
 const styles = (theme) => ({
     root: {
