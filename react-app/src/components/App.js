@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import NotFound from './404'
 import NavBar from './NavBar'
 import Home from './Home'
 import PrimeUlam from './PrimeUlam'
@@ -49,6 +50,7 @@ class App extends Component {
             <Route exact path='/primeulam' component={PrimeUlam}/>
             <Route exact path='/uttower' component={UTTower}/>
             <Route exact path='/codeswitching' component={CodeSwitching}/>
+            <Route component={NotFound}/>
           </Switch>
         </MuiThemeProvider>
       </React.Fragment>
