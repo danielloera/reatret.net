@@ -12,11 +12,11 @@ const styles = (theme) => ({
   },
   botHolder: {
     display: 'inline-block',
-    marginTop: theme.spacing.unit * 6,
+    marginTop: theme.spacing(6),
   },
   endingText: {
-    marginTop: theme.spacing.unit * 5,
-    marginBottom: theme.spacing.unit * 10,
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(10),
   },
 })
 
