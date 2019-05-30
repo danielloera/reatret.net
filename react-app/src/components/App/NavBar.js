@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
@@ -31,44 +31,31 @@ HideOnScroll.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-
-class NavBar extends Component {
-
-  constructor(props) {
-    super(props)
-    this.openDrawer = this.openDrawer.bind(this)
-    this.state = {
-      drawerOpen: false,
-    }
+function NavBar(props) {
+  const { classes } = props
+  const [openDrawer, setOpenDrawer] = useState(false)
+  function onDrawerChange(openState) {
+    setOpenDrawer(openState)
   }
-
-  openDrawer() {
-    this.setState({drawerOpen: true})
-  }
-
-  render() {
-    const {classes} = this.props
-    return (
-      <HideOnScroll {...this.props}>
-        <AppBar position="sticky">
-           <Toolbar>
-              <IconButton
-                className={classes.menuButton}
-                aria-label="Open drawer"
-                onClick={this.openDrawer}>
-                <MenuIcon/>
-              </IconButton>
-              <Link to='/' style={{textDecoration: 'none', color: 'white'}}>
-                 <Typography variant="h5">
-                 reatret.net
-                 </Typography>
-              </Link>
-           </Toolbar>
-           <TempDrawer opened={this.state.drawerOpen}/>
-        </AppBar>
-      </HideOnScroll>
-    )
-  }
+  return (
+    <HideOnScroll {...props}>
+      <AppBar position="sticky">
+         <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              aria-label="Open drawer"
+              onClick={() => setOpenDrawer(true)}>
+              <MenuIcon/>
+            </IconButton>
+            <Link to='/' style={{textDecoration: 'none', color: 'white'}}>
+              <Typography variant="h5">
+              reatret.net
+              </Typography>
+            </Link>
+         </Toolbar>
+         <TempDrawer opened={openDrawer} onChange={onDrawerChange}/>
+      </AppBar>
+    </HideOnScroll>)
 }
 
 NavBar.propTypes = {
@@ -76,6 +63,3 @@ NavBar.propTypes = {
 }
 
 export default withStyles(styles)(NavBar)
-
-
-

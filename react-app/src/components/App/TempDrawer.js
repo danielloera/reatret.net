@@ -75,13 +75,12 @@ class TempDrawer extends React.Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (this.state.open !== nextProps.opened) {
-      console.log("will")
-      console.log(nextProps.opened)
       this.setState({open: nextProps.opened})
     }
   }
 
   toggle(state) {
+    this.props.onChange(state)
     return () => this.setState({
       open: state
     })
@@ -95,7 +94,6 @@ class TempDrawer extends React.Component {
         {createList(DRAWER_LIST)}
       </div>
     )
-
     return (
       <div>
         <Drawer open={this.state.open} onClose={this.toggle(false)}>
