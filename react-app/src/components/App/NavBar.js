@@ -34,9 +34,11 @@ HideOnScroll.propTypes = {
 function NavBar(props) {
   const { classes } = props
   const [openDrawer, setOpenDrawer] = useState(false)
-  function onDrawerChange(openState) {
-    setOpenDrawer(openState)
+
+  function toggle(state) {
+    return () => setOpenDrawer(state)
   }
+
   return (
     <HideOnScroll {...props}>
       <AppBar position="sticky">
@@ -53,7 +55,7 @@ function NavBar(props) {
               </Typography>
             </Link>
          </Toolbar>
-         <TempDrawer opened={openDrawer} onChange={onDrawerChange}/>
+         <TempDrawer opened={openDrawer} toggle={toggle}/>
       </AppBar>
     </HideOnScroll>)
 }
