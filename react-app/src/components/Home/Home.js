@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Container from '@material-ui/core/Container'
@@ -68,7 +68,7 @@ const imgs = [kiwi, trex, komodo]
 
 const FASTER = 0
 const SLOWER = 1
-const PROGRESS_BAR = <CircularProgress/>
+const Links = createLinks(LINKS)
 
 function spinImgAt(secs) {
   return {
@@ -78,7 +78,7 @@ function spinImgAt(secs) {
 
 function createSnackBar(v, h, message, open, handleClose) {
   return (
-    <Snackbar
+    <Snackbar key={h}
       anchorOrigin={{vertical: v, horizontal: h}}
       open={open}
       autoHideDuration={3000}
@@ -191,16 +191,25 @@ function Home(props) {
   }, [props.db])
 
   const logo = imgs[imgIdx]
-  const spinStyle = spinImgAt(spinSpeed)
-  let visitorCount = loading ? PROGRESS_BAR :
-    (<Typography variant="subtitle1">{countMsg}</Typography>)
+  const spinStyle = useMemo(() => spinImgAt(spinSpeed), [spinSpeed])
+  const visitorCount = useMemo(() => {
+    if (loading) return <CircularProgress/>
+    return <Typography variant="subtitle1">{countMsg}</Typography>
+  }, [loading])
+  const spinSnackBar = useMemo(() => (
+    createSnackBar('bottom', 'left', spinMsg, spinSnack,
+                   (e, r) => {if(r === 'timeout') setSpinSnack(false)})),
+    [spinMsg, spinSnack])
+  const swapSnackBar = useMemo(() => (
+    createSnackBar('bottom', 'right', swapMsg, swapSnack,
+                   (e, r) => {if(r === 'timeout') setSwapSnack(false)})),
+    [swapMsg, swapSnack])
+  const spinControl = useMemo(() => createControl("Spin", spin), [spinSpeed])
+  const swapControl = useMemo(() => createControl("Swap", swap), [swapSpeed])
   return (
     <Container className={classes.root}>
       {/* Snackbars */}
-      {createSnackBar('bottom', 'left', spinMsg, spinSnack,
-                      () => {setSpinSnack(false)})}
-      {createSnackBar('bottom', 'right', swapMsg, swapSnack,
-                      () => {setSwapSnack(false)})}
+      {[spinSnackBar, swapSnackBar]}
       <Grid container spacing={2} justify="center" alignItems="center">
         <Grid item xs={12} className={classes.centerHolder}>
         {/* Spinning Image */}
@@ -219,17 +228,14 @@ function Home(props) {
               </Typography>
             </CardContent>
             <CardActions style={{justifyContent: 'center'}}>
-               {createControl("Spin", spin)}
+               {spinControl}
                <Button size="small" variant="contained" color="secondary"
                        onClick={reset}>Reset</Button>
-               {createControl("Swap", swap)}
+               {swapControl}
             </CardActions>
           </Card>
         </Grid>
-        <Grid item xs={12}>
-          {/* Links */}
-          {createLinks(LINKS)}
-        </Grid>
+        <Grid item xs={12}>{Links}</Grid>
         <Grid item xs={12} className={classes.count}>
           {visitorCount}
         </Grid>
