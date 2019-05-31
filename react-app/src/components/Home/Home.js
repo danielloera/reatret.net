@@ -188,7 +188,7 @@ function Home(props) {
       }
       setLoading(false)
     })
-  }, [])
+  }, [props.db])
 
   const logo = imgs[imgIdx]
   const spinStyle = spinImgAt(spinSpeed)
