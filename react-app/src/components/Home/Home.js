@@ -18,6 +18,7 @@ import CodeIcon from '@material-ui/icons/Code'
 import ResumeIcon from '@material-ui/icons/Description'
 import ContactIcon from '@material-ui/icons/Email'
 import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { createLinks } from '../../utils'
 import './Home.css'
 
@@ -39,6 +40,10 @@ const styles = (theme) => ({
   centerHolder: {
     justifyContent: "center",
     display: "flex"
+  },
+  count: {
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(2)
   }
 })
 
@@ -64,6 +69,7 @@ const imgs = [kiwi, trex, komodo]
 
 const FASTER = 0
 const SLOWER = 1
+const PROGRESS_BAR = <CircularProgress/>
 
 function spinImgAt(secs) {
   return {
@@ -99,6 +105,17 @@ function createControl(name, fn) {
   ]
 }
 
+function getUniqueCount(collection) {
+  return new Promise((resolve, reject) => {
+    return collection.get().then((snap) => {
+      resolve(snap.size)
+    }).catch((err) => {
+      console.log('could not read collection')
+      console.log(err)
+      resolve(null)
+    })
+  })
+}
 
 const defaultSpin = 3
 const defaultSwap = 3000
@@ -112,6 +129,8 @@ function Home(props) {
   const [swapSnack, setSwapSnack] = useState(false)
   const [spinMsg, setSpinMsg] = useState('')
   const [swapMsg, setSwapMsg] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [countMsg, setCountMsg] = useState('')
 
   function imgTick() {
     let newIdx = imgIdx + 1
@@ -162,8 +181,20 @@ function Home(props) {
     return () => clearInterval(id)
   }, [swapSpeed, imgIdx])
 
+  // Get visitor count
+  useEffect(() => {
+    getUniqueCount(props.db.collection('uuids')).then((count) => {
+      if (count) {
+        setCountMsg(`${count} Unique Visitors`)
+      }
+      setLoading(false)
+    })
+  }, [])
+
   const logo = imgs[imgIdx]
   const spinStyle = spinImgAt(spinSpeed)
+  let visitorCount = loading ? PROGRESS_BAR :
+    (<Typography variant="subtitle1">{countMsg}</Typography>)
   return (
     <Container className={classes.root}>
       {/* Snackbars */}
@@ -199,6 +230,9 @@ function Home(props) {
         <Grid item xs={12}>
           {/* Links */}
           {createLinks(LINKS)}
+        </Grid>
+        <Grid item xs={12} className={classes.count}>
+          {visitorCount}
         </Grid>
       </Grid>
     </Container>
