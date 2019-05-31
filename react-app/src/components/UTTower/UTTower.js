@@ -21,8 +21,8 @@ const styles = (theme) => ({
 })
 
 function UTTower(props) {
-  const [ width, setWidth ] = useState(0)
-  const [ height, setHeight ] = useState(0)
+  const [width, setWidth] = useState(0)
+  const [height, setHeight] = useState(0)
 
   function updateDimensions() {
     const ratio = window.innerWidth / window.innerHeight
