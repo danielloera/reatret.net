@@ -111,11 +111,8 @@ function CodeSwitching(props) {
         </Grid>
         <Grid item xs={10} md={11}>
           <TextField
-            label="Input Text"
-            defaultValue={DEFAULT_INPUT}
-            variant="outlined"
-            margin="normal"
-            fullWidth
+            label="Input Text" defaultValue={DEFAULT_INPUT} variant="outlined"
+            margin="normal" fullWidth
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={(ev) => {
               if (ev.key === 'Enter') {
@@ -125,11 +122,8 @@ function CodeSwitching(props) {
             }}
             />
         </Grid>
-        <Grid item xs={2} md={1}
-              className={classes.buttonHolder}>
-          <Button variant="contained"
-                  color="secondary"
-                  onClick={labelText}>
+        <Grid item xs={2} md={1} className={classes.buttonHolder}>
+          <Button variant="contained" color="secondary" onClick={labelText}>
             Label
           </Button>
         </Grid>
