@@ -42,7 +42,6 @@ const styles = (theme) => ({
     display: "flex"
   },
   count: {
-    marginTop: '2rem',
     marginBottom: theme.spacing(2)
   }
 })
