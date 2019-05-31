@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
 import axios from 'axios'
@@ -60,56 +60,24 @@ const styles = (theme) => ({
   },
 })
 
-class CodeSwitching extends React.Component {
+function CodeSwitching(props) {
+  const [inputText, setInputText] = useState(DEFAULT_INPUT)
+  const [labeledData, setLabeledData] = useState(null)
+  const [lastLabeled, setLastLabeled] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      inputText: null,
-      labeledData: null,
-      lastLabeled: null,
-      loading: true,
-    }
-    this.inputTextChange = this.inputTextChange.bind(this)
-    this.labelText = this.labelText.bind(this)
-  }
-
-  componentDidMount() {
-    this.setState({
-      inputText: DEFAULT_INPUT
-    }, () => this.labelText())
-  }
-
-  setLoading(loading, then) {
-    this.setState({loading: loading}, then)
-  }
-
-  inputTextChange(event) {
-    this.setState({
-      inputText: event.target.value
-    })
-  }
-
-  labelText() {
-    const { inputText, lastLabeled } = this.state
+  function labelText() {
     if (!inputText || lastLabeled === inputText) return
-    this.setState({lastLabeled: inputText}, (ns) => {
-      this.setLoading(true, (ns) => {
-        axios.post(API_URL, {text: inputText}).then((response) => {
-          this.setState({
-            labeledData: response.data,
-            loading: false
-          })
-        })
-      })
+    setLastLabeled(inputText)
+    setLoading(true)
+    axios.post(API_URL, {text: inputText}).then((response) => {
+      setLabeledData(response.data)
+      setLoading(false)
     })
   }
 
-  getLabeledWords() {
-    const { labeledData } = this.state
-    if (!labeledData || labeledData.length < 1) {
-      return null
-    }
+  function getLabeledWords() {
+    if (!labeledData || labeledData.length < 1) return null
     const labeledWords = []
     for (let i = 0; i < labeledData.words.length; i++) {
       labeledWords.push(<LabeledWord key={i}
@@ -119,77 +87,76 @@ class CodeSwitching extends React.Component {
     return labeledWords
   }
 
-  render() {
-    const { classes } = this.props
-    const { loading } = this.state
-    const labeledWords = loading ? PROGRESS_BAR :
-    (<div className={classes.labeledWords}>
-        {this.getLabeledWords()}
-     </div>)
-    return (
-      <Container className={classes.root}>
-       <Snackbar
-        anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}
-        open={loading}
-        ContentProps={{'aria-describedby': 'message-id'}}
-        message="Generating labels..."/>
-        <Grid container spacing={4} justify="center" alignItems="center">
-          <Grid item xs={12}>
-            <Typography align="center" variant="h5">Spanish-English Code-Switching Labeler</Typography>
-            <Typography align="center" variant="subtitle1">by{" "}
-              <a href="https://gitlab.com/jmhern">
-                Jorge Hernandez
-              </a> & Daniel Loera
-            </Typography>
-          </Grid>
-          <Grid item xs={10} md={11}>
-            <TextField
-              label="Input Text"
-              defaultValue={DEFAULT_INPUT}
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              onChange={this.inputTextChange}
-              onKeyPress={(ev) => {
-                if (ev.key === 'Enter') {
-                  ev.preventDefault()
-                  this.labelText()
-                }
-              }}
-              />
-          </Grid>
-          <Grid item xs={2} md={1}
-                className={classes.buttonHolder}>
-            <Button variant="contained"
-                    color="secondary"
-                    onClick={this.labelText}>
-              Label
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            {labeledWords}
-          </Grid>
-          <Grid item xs={12} md={10} lg={6}>
-            <Paper className={classes.summary} elevation={2}>
-              <Typography component="p"variant="body1">
-                This research project was developed for{" "}
-                <a href="https://www.cs.utexas.edu/~gdurrett/">
-                  Greg Durrett's
-                </a> Natural Language Processing class. It uses a bidirectional RNN,
-                trained embeddings, and much more to identify language in english-spanish code-switching
-                text. It certainly isn't perfect, but it does a great job with a vast
-                amount of sentence types. You can look at the source code or read more about the details
-                in the research project linked below. Have fun!
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} className={classes.links}>
-            {createLinks(LINKS)}
-          </Grid>
+  useEffect(() => labelText(), [])
+
+  const { classes } = props
+  const labeledWords = loading ? PROGRESS_BAR :
+  (<div className={classes.labeledWords}>
+      {getLabeledWords()}
+   </div>)
+  return (
+    <Container className={classes.root}>
+     <Snackbar
+      anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}
+      open={loading}
+      ContentProps={{'aria-describedby': 'message-id'}}
+      message="Generating labels..."/>
+      <Grid container spacing={4} justify="center" alignItems="center">
+        <Grid item xs={12}>
+          <Typography align="center" variant="h5">Spanish-English Code-Switching Labeler</Typography>
+          <Typography align="center" variant="subtitle1">by{" "}
+            <a href="https://gitlab.com/jmhern">
+              Jorge Hernandez
+            </a> & Daniel Loera
+          </Typography>
         </Grid>
-      </Container>
-    )
-  }
+        <Grid item xs={10} md={11}>
+          <TextField
+            label="Input Text"
+            defaultValue={DEFAULT_INPUT}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyPress={(ev) => {
+              if (ev.key === 'Enter') {
+                ev.preventDefault()
+                labelText()
+              }
+            }}
+            />
+        </Grid>
+        <Grid item xs={2} md={1}
+              className={classes.buttonHolder}>
+          <Button variant="contained"
+                  color="secondary"
+                  onClick={labelText}>
+            Label
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          {labeledWords}
+        </Grid>
+        <Grid item xs={12} md={10} lg={6}>
+          <Paper className={classes.summary} elevation={2}>
+            <Typography component="p"variant="body1">
+              This research project was developed for{" "}
+              <a href="https://www.cs.utexas.edu/~gdurrett/">
+                Greg Durrett's
+              </a> Natural Language Processing class. It uses a bidirectional RNN,
+              trained embeddings, and much more to identify language in english-spanish code-switching
+              text. It certainly isn't perfect, but it does a great job with a vast
+              amount of sentence types. You can look at the source code or read more about the details
+              in the research project linked below. Have fun!
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} className={classes.links}>
+          {createLinks(LINKS)}
+        </Grid>
+      </Grid>
+    </Container>
+  )
 }
 
 CodeSwitching.propTypes = {
