@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
 import axios from 'axios'
@@ -15,8 +15,6 @@ import CodeIcon from '@material-ui/icons/Code'
 import PaperIcon from '@material-ui/icons/Assignment'
 import { createLinks } from '../../utils'
 
-const PROGRESS_BAR = <LinearProgress/>
-
 const LINKS = [
   {
     name: "Source Code",
@@ -29,6 +27,7 @@ const LINKS = [
     icon: (<PaperIcon fontSize="large"/>)
   },
 ]
+const Links = createLinks(LINKS)
 
 const DEFAULT_INPUT = "Hola! Me llamo Daniel. What is your name?"
 const API_URL = "https://us-central1-reatret-net.cloudfunctions.net/codeswitch"
@@ -90,10 +89,10 @@ function CodeSwitching(props) {
   useEffect(() => labelText(), [])
 
   const { classes } = props
-  const labeledWords = loading ? PROGRESS_BAR :
-  (<div className={classes.labeledWords}>
-      {getLabeledWords()}
-   </div>)
+  const labeledWords = useMemo(() => {
+    if (loading) return <LinearProgress/>
+    return <div className={classes.labeledWords}>{getLabeledWords()}</div>
+  }, [loading])
   return (
     <Container className={classes.root}>
      <Snackbar
@@ -152,7 +151,7 @@ function CodeSwitching(props) {
           </Paper>
         </Grid>
         <Grid item xs={12} className={classes.links}>
-          {createLinks(LINKS)}
+          {Links}
         </Grid>
       </Grid>
     </Container>
