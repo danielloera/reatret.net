@@ -3,6 +3,7 @@ import { secondaryColor } from '../App/App'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import { Stage, FastLayer, Rect, Circle, RegularPolygon } from 'react-konva'
+import { HuePicker } from 'react-color'
 import Snackbar from '@material-ui/core/Snackbar'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -13,7 +14,6 @@ import FormControl from '@material-ui/core/FormControl'
 import Typography from '@material-ui/core/Typography'
 import threads from 'threads'
 import Slider from 'rc-slider'
-import ColorPicker from 'material-ui-color-picker'
 import 'rc-slider/assets/index.css'
 const TSlider = Slider.createSliderWithTooltip(Slider)
 
@@ -343,26 +343,25 @@ class PrimeUlam extends Component {
               <div className={classes.cPickers}>
                 <span className={classes.colorPicker}>
                   <Typography align="left" color="textSecondary">Background Color</Typography>
-                  <ColorPicker
+                  <HuePicker
                     className={classes.colorPicker}
-                    name='bgColor'
-                    defaultValue={bgColor}
-                    onChange={(c) => {
+                    color={bgColor}
+                    onChangeComplete={(c) => {
                       if (!c) return
-                      this.setState({bgColor: c})}
+                      this.setState({bgColor: c.hex})}
                   }/>
                 </span>
                 <span className={classes.colorPicker}>
                  <Typography align="left" color="textSecondary">Shape Color</Typography>
-                 <ColorPicker
-                    name='color'
-                    defaultValue={color}
-                    onChange={(c) => {
-                        if(!c) return
-                        this.setState({color: c}, this.makeSpiral)
+                 <HuePicker
+                    className={classes.colorPicker}
+                    color={color}
+                    onChangeComplete={(c) => {
+                      if(!c) return
+                      this.setState({color: c.hex}, this.makeSpiral)
                   }}/>
                 </span>
-            </div>
+              </div>
             <FormControl className={classes.shapePicker}>
               <InputLabel htmlFor="select">Shape</InputLabel>
               <Select
@@ -442,8 +441,9 @@ const styles = (theme) => ({
     margin: theme.spacing(4),
   },
   colorPicker: {
+    marginTop: theme.spacing(1),
     marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(4),
     maxWidth: '15rem',
   },
   cPickers: {
