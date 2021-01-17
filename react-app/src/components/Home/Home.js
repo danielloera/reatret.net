@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import RWIcon from '@material-ui/icons/FastRewind'
 import FFIcon from '@material-ui/icons/FastForward'
-import CodeIcon from '@material-ui/icons/Code'
+import GitHubIcon from '@material-ui/icons/GitHub'
 import ResumeIcon from '@material-ui/icons/Description'
 import ContactIcon from '@material-ui/icons/Email'
 import Typography from '@material-ui/core/Typography'
@@ -44,9 +44,9 @@ const styles = (theme) => ({
 
 const LINKS = [
   {
-    name: "Github",
+    name: "GitHub",
     link: "https://github.com/danielloera",
-    icon: (<CodeIcon fontSize="large"/>)
+    icon: (<GitHubIcon fontSize="large"/>)
   },
   {
     name: "Resume",
