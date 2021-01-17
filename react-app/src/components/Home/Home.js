@@ -120,34 +120,6 @@ function Home(props) {
     setSpinSnack(true)
   }
 
-  function spin(type) {
-    return () => {
-      let newSpeed = null
-      if (type === FASTER) {
-        newSpeed = spinSpeed / 2
-      } else {
-        newSpeed = spinSpeed * 2
-      }
-      setSpinSpeed(newSpeed)
-      setSpinMsg(`Spinning every ${newSpeed}s`)
-      setSpinSnack(true)
-    }
-  }
-
-  function swap(type) {
-    return () => {
-      let newSpeed = null
-      if (type === FASTER) {
-        newSpeed = swapSpeed / 2
-      } else {
-        newSpeed = swapSpeed * 2
-      }
-      setSwapSpeed(newSpeed)
-      setSwapMsg(`Swapping every ${newSpeed / 1000}s`)
-      setSwapSnack(true)
-    }
-  }
-
   // Update swap interval on imageChange/speedChange
   useEffect(() => {
     function imgTick() {
@@ -171,8 +143,38 @@ function Home(props) {
     createSnackBar('bottom', 'right', swapMsg, swapSnack,
                    (e, r) => {if(r === 'timeout') setSwapSnack(false)})),
     [swapMsg, swapSnack])
-  const spinControl = useMemo(() => createControl("Spin", spin), [spinSpeed])
-  const swapControl = useMemo(() => createControl("Swap", swap), [swapSpeed])
+  const spinControl = useMemo(() => {
+    function spin(type) {
+      return () => {
+        let newSpeed = null
+        if (type === FASTER) {
+          newSpeed = spinSpeed / 2
+        } else {
+          newSpeed = spinSpeed * 2
+        }
+        setSpinSpeed(newSpeed)
+        setSpinMsg(`Spinning every ${newSpeed}s`)
+        setSpinSnack(true)
+      }
+    }
+    createControl("Spin", spin)
+  }, [spinSpeed])
+  const swapControl = useMemo(() => {
+    function swap(type) {
+      return () => {
+        let newSpeed = null
+        if (type === FASTER) {
+          newSpeed = swapSpeed / 2
+        } else {
+          newSpeed = swapSpeed * 2
+        }
+        setSwapSpeed(newSpeed)
+        setSwapMsg(`Swapping every ${newSpeed / 1000}s`)
+        setSwapSnack(true)
+      }
+    }
+    createControl("Swap", swap)
+  }, [swapSpeed])
   return (
     <Container className={classes.root}>
       {/* Snackbars */}
