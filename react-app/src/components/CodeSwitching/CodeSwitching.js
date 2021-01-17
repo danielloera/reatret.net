@@ -23,7 +23,7 @@ const LINKS = [
   },
   {
     name: "Project PDF",
-    link: "https://firebasestorage.googleapis.com/v0/b/reatret-net.appspot.com/o/codeswitching_Jorge_Hernandez_Daniel_Loera.pdf?alt=media&token=5505e0b1-e2d6-4f0a-870d-03891ca8f921",
+    link: "https://drive.google.com/file/d/1PzI02kCVVIAnBfy1202F-1mGGD79N8et/view?usp=sharing",
     icon: (<PaperIcon fontSize="large"/>)
   },
 ]
