@@ -10,7 +10,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import SpiralIcon from '@material-ui/icons/ScatterPlot'
 import HomeIcon from '@material-ui/icons/Home'
-import VoiceIcon from '@material-ui/icons/RecordVoiceOver'
 import CodeSwitchIcon from '@material-ui/icons/Language'
 
 // List of all Drawer Items
