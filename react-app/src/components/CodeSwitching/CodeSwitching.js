@@ -64,6 +64,7 @@ function CodeSwitching(props) {
   const [labeledData, setLabeledData] = useState(null)
   const [lastLabeled, setLastLabeled] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isFirstRender, setIsFirstRender] = useState(true)
 
   const labelText = useCallback(() => {
     if (!inputText || lastLabeled === inputText) return
@@ -75,7 +76,13 @@ function CodeSwitching(props) {
     })
   }, [inputText, lastLabeled]);
 
-  useEffect(() => labelText(), [labelText])
+  // Label text when the page first loads.
+  useEffect(() => {
+    if (isFirstRender) {
+      labelText()
+      setIsFirstRender(false)
+    }
+  }, [labelText, isFirstRender])
 
   const { classes } = props
   const labeledWords = useMemo(() => {
