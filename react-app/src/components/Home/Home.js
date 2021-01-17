@@ -44,8 +44,8 @@ const styles = (theme) => ({
 
 const LINKS = [
   {
-    name: "Gitlab",
-    link: "https://gitlab.com/danielloera",
+    name: "Github",
+    link: "https://github.com/danielloera",
     icon: (<CodeIcon fontSize="large"/>)
   },
   {
@@ -55,7 +55,7 @@ const LINKS = [
   },
   {
     name: "Contact",
-    link: "mailto:daniel@reatret.net",
+    link: "mailto:danny.reatret@gmail.com",
     icon: (<ContactIcon fontSize="large"/>)
   },
 ]
