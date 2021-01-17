@@ -31,11 +31,6 @@ const DRAWER_LIST = [
     icon: (<SpiralIcon/>),
     link: "/primeulam"
   },
-  {
-    text: "UT Tower Bot",
-    icon: <VoiceIcon/>,
-    link: "/uttower",
-  },
 ]
 
 const styles = {
