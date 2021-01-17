@@ -30,7 +30,7 @@ const LINKS = [
 const Links = createLinks(LINKS)
 
 const DEFAULT_INPUT = "Hola! Me llamo Daniel. What is your name?"
-const API_URL = "https://us-central1-reatret-net.cloudfunctions.net/codeswitch"
+const API_URL = "https://reatret.net/api/codeswitch/"
 
 const styles = (theme) => ({
   root: {
