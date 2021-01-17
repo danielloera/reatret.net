@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
 import axios from 'axios'
@@ -65,7 +65,7 @@ function CodeSwitching(props) {
   const [lastLabeled, setLastLabeled] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  function labelText() {
+  const labelText = useCallback(() => {
     if (!inputText || lastLabeled === inputText) return
     setLastLabeled(inputText)
     setLoading(true)
@@ -73,26 +73,26 @@ function CodeSwitching(props) {
       setLabeledData(response.data)
       setLoading(false)
     })
-  }
+  }, [inputText, lastLabeled]);
 
-  function getLabeledWords() {
-    if (!labeledData || labeledData.length < 1) return null
-    const labeledWords = []
-    for (let i = 0; i < labeledData.words.length; i++) {
-      labeledWords.push(<LabeledWord key={i}
-                          word={labeledData.words[i]}
-                          label={labeledData.labels[i]}/>)
-    }
-    return labeledWords
-  }
-
-  useEffect(() => labelText(), [])
+  useEffect(() => labelText(), [labelText])
 
   const { classes } = props
   const labeledWords = useMemo(() => {
+    function getLabeledWords() {
+    if (!labeledData || labeledData.length < 1) return null
+      const labeledWords = []
+      for (let i = 0; i < labeledData.words.length; i++) {
+        labeledWords.push(
+          <LabeledWord key={i}
+                       word={labeledData.words[i]}
+                       label={labeledData.labels[i]}/>)
+      }
+      return labeledWords
+    }
     if (loading) return <LinearProgress/>
     return <div className={classes.labeledWords}>{getLabeledWords()}</div>
-  }, [loading])
+  }, [loading, labeledData, classes.labeledWords])
   return (
     <Container className={classes.root}>
      <Snackbar
