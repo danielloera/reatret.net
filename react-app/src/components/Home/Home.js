@@ -113,14 +113,6 @@ function Home(props) {
   const [spinMsg, setSpinMsg] = useState('')
   const [swapMsg, setSwapMsg] = useState('')
 
-  function imgTick() {
-    let newIdx = imgIdx + 1
-    if (newIdx === imgs.length) {
-      newIdx = 0
-    }
-    setImgIdx(newIdx)
-  }
-
   function reset() {
     setSpinSpeed(defaultSpin)
     setSwapSpeed(defaultSwap)
@@ -158,6 +150,13 @@ function Home(props) {
 
   // Update swap interval on imageChange/speedChange
   useEffect(() => {
+    function imgTick() {
+      let newIdx = imgIdx + 1
+      if (newIdx === imgs.length) {
+        newIdx = 0
+      }
+      setImgIdx(newIdx)
+    }
     const id = setInterval(imgTick, swapSpeed)
     return () => clearInterval(id)
   }, [swapSpeed, imgIdx])
