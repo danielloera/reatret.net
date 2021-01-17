@@ -439,9 +439,7 @@ const styles = (theme) => ({
   },
   sliderField: {
     width: '15ch',
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(1),
+    margin: theme.spacing(4),
   },
   colorPicker: {
     marginLeft: theme.spacing(2),
