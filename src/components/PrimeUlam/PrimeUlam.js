@@ -344,7 +344,6 @@ class PrimeUlam extends Component {
                 <span className={classes.colorPicker}>
                   <Typography align="left" color="textSecondary">Background Color</Typography>
                   <HuePicker
-                    className={classes.colorPicker}
                     color={bgColor}
                     onChangeComplete={(c) => {
                       if (!c) return
@@ -354,7 +353,6 @@ class PrimeUlam extends Component {
                 <span className={classes.colorPicker}>
                  <Typography align="left" color="textSecondary">Shape Color</Typography>
                  <HuePicker
-                    className={classes.colorPicker}
                     color={color}
                     onChangeComplete={(c) => {
                       if(!c) return
@@ -362,22 +360,24 @@ class PrimeUlam extends Component {
                   }}/>
                 </span>
               </div>
-            <FormControl className={classes.shapePicker}>
-              <InputLabel htmlFor="select">Shape</InputLabel>
-              <Select
-                value={this.state.shape}
-                onChange={(event)=> {
-                    this.setState({[event.target.name]: event.target.value})
-                  }}
-                inputProps={{
-                  name: 'shape',
-                  id: 'select',
-                }}>
-                <MenuItem value={0}>Circle</MenuItem>
-                <MenuItem value={1}>Square</MenuItem>
-                <MenuItem value={2}>Triangle</MenuItem>
-              </Select>
-            </FormControl>
+              <div>
+                <FormControl className={classes.shapePicker}>
+                  <InputLabel htmlFor="select">Shape</InputLabel>
+                  <Select
+                    value={this.state.shape}
+                    onChange={(event)=> {
+                        this.setState({[event.target.name]: event.target.value})
+                      }}
+                    inputProps={{
+                      name: 'shape',
+                      id: 'select',
+                    }}>
+                    <MenuItem value={0}>Circle</MenuItem>
+                    <MenuItem value={1}>Square</MenuItem>
+                    <MenuItem value={2}>Triangle</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
             </form>
           </CardContent>
         </Card>
@@ -434,27 +434,26 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
   },
   sliderField: {
     width: '15ch',
     margin: theme.spacing(4),
   },
   colorPicker: {
-    marginTop: theme.spacing(1),
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(4),
+    margin: theme.spacing(4),
+    padding: theme.spacing(4),
     maxWidth: '15rem',
   },
   cPickers: {
-    display: 'flex',
+    display: 'block',
     marginTop: theme.spacing(3),
   },
   slideLabel: {
     marginBottom: theme.spacing(3)
   },
   shapePicker: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
+    marginLeft: theme.spacing(4)
   },
   endingText: {
     marginTop: theme.spacing(3),
