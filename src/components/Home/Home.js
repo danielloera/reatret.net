@@ -205,7 +205,7 @@ function Home(props) {
       <Grid container spacing={2} justify="center" alignItems="center">
         <Grid item xs={12} className={classes.centerHolder}>
         {/* Spinning Image */}
-        <img src={logo} className={classes.spinningImage} alt="logo" style={spinStyle}/>
+        <img src={logo} className={classes.spinningImage} alt="spinning" style={spinStyle}/>
         </Grid>
         <Grid item xs={12} sm={10} md={6} className={classes.cardHolder}>
           {/* Control Card */}
@@ -232,7 +232,7 @@ function Home(props) {
           <span><strong>Donate</strong></span>
         </Grid>
         <Grid item xs={12} className={classes.moneroDonate}>
-          <img className={classes.moneroIcon}src={monero}></img>
+          <img className={classes.moneroIcon} src={monero} alt="monero"></img>
           <span className={classes.qr}>
             (<a href="/xmr_qr.png">QR</a>)
           </span>
