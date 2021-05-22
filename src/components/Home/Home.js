@@ -37,17 +37,21 @@ const styles = (theme) => ({
   card: {
     padding: theme.spacing(1),
   },
+  cardActions: {
+    justifyContent: "center",
+  },
   centerHolder: {
     justifyContent: "center",
     display: "flex"
   },
   donateTitle: {
-    marginTop: "1rem",
+    marginTop: theme.spacing(1),
   },
-  moneroDonate: {
+  moneroDonateContainer: {
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
+    marginBottom: theme.spacing(4)
   },
   moneroIcon: {
     width: "3rem",
@@ -55,8 +59,8 @@ const styles = (theme) => ({
   },
   qr: {
     fontSize: "12pt",
-    marginLeft: "5px",
-    marginRight: "5px",
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(0.5),
   },
   xmrId: {
     textAlign: "center",
@@ -111,15 +115,19 @@ function createSnackBar(v, h, message, open, handleClose) {
 
 function createControl(name, fn) {
   return [
-    <IconButton key={`${name}1`}
+    <IconButton
+      key={`${name}1`}
       aria-label={`${name} Slower`}
-      onClick={fn(SLOWER)}>
+      onClick={fn(SLOWER)}
+      size="small">
       <RWIcon/>
     </IconButton>,
     <Typography key={`${name}2`}>{name}</Typography>,
-    <IconButton key={`${name}3`}
+    <IconButton
+      key={`${name}3`}
       aria-label={`${name} Faster`}
-      onClick={fn(FASTER)}>
+      onClick={fn(FASTER)}
+      size="small">
       <FFIcon/>
     </IconButton>
   ]
@@ -219,7 +227,7 @@ function Home(props) {
                 Have fun <i>spinning</i>.
               </Typography>
             </CardContent>
-            <CardActions style={{justifyContent: 'center'}}>
+            <CardActions className={classes.cardActions}>
                {spinControl}
                <Button size="small" variant="contained" color="secondary"
                        onClick={reset}>Reset</Button>
@@ -231,7 +239,7 @@ function Home(props) {
         <Grid item xs={12} className={classes.donateTitle}>
           <span><strong>Donate</strong></span>
         </Grid>
-        <Grid item xs={12} className={classes.moneroDonate}>
+        <Grid item xs={12} className={classes.moneroDonateContainer}>
           <img className={classes.moneroIcon} src={monero} alt="monero"></img>
           <span className={classes.qr}>
             (<a href="/xmr_qr.png">QR</a>)
