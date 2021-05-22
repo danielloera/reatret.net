@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { secondaryColor } from '../App/App'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import { Stage, FastLayer, Rect, Circle, RegularPolygon } from 'react-konva'
+import { Stage, Layer, Rect, Circle, RegularPolygon } from 'react-konva'
 import { HuePicker } from 'react-color'
 import Snackbar from '@material-ui/core/Snackbar'
 import Select from '@material-ui/core/Select'
@@ -320,17 +320,17 @@ class PrimeUlam extends Component {
           <Stage className={classes.stage}
                  width={stageSize}
                  height={stageSize}>
-            <FastLayer>
+            <Layer>
               <Rect x={0} y={0}
                     width={stageSize} height={stageSize}
                     fill={bgColor} shadowBlur={5}/>
-            </FastLayer>
-            <FastLayer ref={(ref)=> this.layer = ref}>
+            </Layer>
+            <Layer ref={(ref)=> this.layer = ref}>
               <Rect x={0} y={0}
                     width={stageSize} height={stageSize}
                     fill={bgColor} shadowBlur={5}/>
               {shapes}
-            </FastLayer>
+            </Layer>
           </Stage>
         </div>
         {/* Controls */}
