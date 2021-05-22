@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container'
 import kiwi from '../../images/kiwi.png'
 import trex from '../../images/komodo.png'
 import komodo from '../../images/trex.png'
+import monero from '../../images/monero-xmr-logo.png'
 import Snackbar from '@material-ui/core/Snackbar'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -40,6 +41,28 @@ const styles = (theme) => ({
     justifyContent: "center",
     display: "flex"
   },
+  donateTitle: {
+    marginTop: "1rem",
+  },
+  moneroDonate: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+  },
+  moneroIcon: {
+    width: "3rem",
+    height: "3rem",
+  },
+  qr: {
+    fontSize: "12pt",
+    marginLeft: "5px",
+    marginRight: "5px",
+  },
+  xmrId: {
+    textAlign: "center",
+    fontSize: "10pt",
+    overflowWrap: "anywhere"
+  },
 })
 
 const LINKS = [
@@ -65,6 +88,8 @@ const imgs = [kiwi, trex, komodo]
 const FASTER = 0
 const SLOWER = 1
 const Links = createLinks(LINKS)
+
+const XMR_ID = '42zSheDZ7g1TybEcn5NXPLZv89eXMXbu1GdKLgusk3t91yxsNEcnuK9fgZJTYwwdTkhzaNWw2nCWbZEMQi1xwdPqNVe9tZ9';
 
 function spinImgAt(secs) {
   return {
@@ -203,6 +228,16 @@ function Home(props) {
           </Card>
         </Grid>
         <Grid item xs={12}>{Links}</Grid>
+        <Grid item xs={12} className={classes.donateTitle}>
+          <span><strong>Donate</strong></span>
+        </Grid>
+        <Grid item xs={12} className={classes.moneroDonate}>
+          <img className={classes.moneroIcon}src={monero}></img>
+          <span className={classes.qr}>
+            (<a href="/xmr_qr.png">QR</a>)
+          </span>
+          <span className={classes.xmrId}>{XMR_ID}</span>
+        </Grid>
       </Grid>
     </Container>
   )
