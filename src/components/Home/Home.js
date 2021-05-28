@@ -149,8 +149,20 @@ function Home(props) {
   function reset() {
     setSpinSpeed(defaultSpin)
     setSwapSpeed(defaultSwap)
-    setSpinMsg(`Spinning and swapping every ${defaultSpin}s`)
+    setSpinMsg(`Spinning and swapping once every ${defaultSpin}s`)
     setSpinSnack(true)
+  }
+
+  function getSnackMsg(verb, speed) {
+    const speedEstimate = speed.toFixed(1)
+    if (speed > 1) {
+      return `${verb}ing once every ${speedEstimate}s`
+    }
+    if (speed < 1) {
+      const spinsPerSec = 1 / speed
+      return `${verb}ing ${spinsPerSec.toFixed(1)} times a second`
+    }
+    return `${verb}ing once a second`
   }
 
   const spin = useCallback((type) => {
@@ -162,7 +174,7 @@ function Home(props) {
         newSpeed = spinSpeed * 2
       }
       setSpinSpeed(newSpeed)
-      setSpinMsg(`Spinning every ${newSpeed}s`)
+      setSpinMsg(getSnackMsg('Spin', newSpeed))
       setSpinSnack(true)
     }
   }, [spinSpeed])
@@ -176,7 +188,7 @@ function Home(props) {
         newSpeed = swapSpeed * 2
       }
       setSwapSpeed(newSpeed)
-      setSwapMsg(`Swapping every ${newSpeed / 1000}s`)
+      setSwapMsg(getSnackMsg('Swap', newSpeed / 1000))
       setSwapSnack(true)
     }
   }, [swapSpeed])

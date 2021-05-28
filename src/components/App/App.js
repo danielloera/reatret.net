@@ -16,8 +16,13 @@ const styles = (theme) => ({
   }
 )
 
-const primaryColor = '#43a047'
-const secondaryColor = '#ff4081'
+const primaryColor = '#2e7d32'
+const primaryColorLight = '#60ac5d'
+const primaryColorDark = '#004f04'
+const secondaryColor = '#9b27af'
+const secondaryColorLight = '#cf5ce2'
+const secondaryColorDark = '#69007f'
+
 const theme = createMuiTheme(
   {
     typography: {
@@ -27,9 +32,13 @@ const theme = createMuiTheme(
       type: 'dark',
       primary: {
         main: primaryColor,
+        light: primaryColorLight,
+        dark: primaryColorDark
       },
       secondary: {
         main: secondaryColor,
+        light: secondaryColorLight,
+        dark: secondaryColorDark
       }
     }
   }
@@ -54,5 +63,12 @@ function App(props) {
   )
 }
 
-export { secondaryColor, primaryColor }
+export {
+  primaryColor,
+  primaryColorLight,
+  primaryColorDark,
+  secondaryColor,
+  secondaryColorLight,
+  secondaryColorDark
+}
 export default withStyles(styles)(App)
