@@ -5,12 +5,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 
-const COLOR = {
-  es: primaryColor,
-  en: secondaryColor,
-  other: 'gray'
-}
-
 const styles = (theme) => ({
   root: {
     marginLeft: theme.spacing(1),
@@ -31,6 +25,14 @@ function getMargin(w1, w2) {
   return 0
 }
 
+function getColor(label) {
+  switch(label) {
+    case "es": return primaryColor
+    case "en": return secondaryColor
+    default: return "gray"
+  }
+}
+
 function LabeledWord(props) {
   const { label, word, classes } = props
   const labelWidth = label.length + 2
@@ -40,7 +42,7 @@ function LabeledWord(props) {
     <div className={classes.root}>
       <Paper elevation={4}
              style={{
-              backgroundColor: COLOR[label],
+              backgroundColor: getColor(label),
               marginLeft: `${labelMarginLeft}rem`,
               width: `${labelWidth}rem`
             }}>
