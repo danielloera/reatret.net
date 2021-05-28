@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { primaryColor, secondaryColor } from '../App/App'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 
 const COLOR = {
-  es: "#7986cb",
-  en: "#f06292",
-  other: "#43a047"
+  es: primaryColor,
+  en: secondaryColor,
+  other: 'gray'
 }
 
 const styles = (theme) => ({
