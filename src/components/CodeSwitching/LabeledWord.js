@@ -18,12 +18,11 @@ const styles = (theme) => ({
   }
 })
 
-function getMargin(w1, w2) {
-  if (w1 >= w2) {
-      return Math.floor((w1 - w2) / 2)
-  }
-  return 0
-}
+const getWordMargin = (labelWidth, wordLength) =>
+  labelWidth >= wordLength ? Math.floor((labelWidth - wordLength) / 2) : 0
+
+const getLabelMargin = (wordLength, labelWidth) =>
+  wordLength >= labelWidth ? wordLength / 4 : 0
 
 function getColor(label) {
   switch(label) {
@@ -36,8 +35,8 @@ function getColor(label) {
 function LabeledWord(props) {
   const { label, word, classes } = props
   const labelWidth = label.length + 2
-  const labelMarginLeft = getMargin(word.length, labelWidth)
-  const wordMarginLeft = getMargin(labelWidth + 1, word.length)
+  const labelMarginLeft = getLabelMargin(word.length, labelWidth + 2)
+  const wordMarginLeft = getWordMargin(labelWidth + 1, word.length)
   return (
     <div className={classes.root}>
       <Paper elevation={4}
