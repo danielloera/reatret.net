@@ -8,6 +8,7 @@ import Home from '../Home/Home'
 import PrimeUlam from '../PrimeUlam/PrimeUlam'
 import UTTower from '../UTTower/UTTower'
 import CodeSwitching from '../CodeSwitching/CodeSwitching'
+import GtaVTunables from '../GtaVTunables/GtaVTunables'
 
 const styles = (theme) => ({
     root: {
@@ -56,6 +57,7 @@ function App(props) {
           <Route exact path='/primeulam' component={PrimeUlam}/>
           <Route exact path='/uttower' component={UTTower}/>
           <Route exact path='/codeswitching' component={CodeSwitching}/>
+          <Route exact path='/gtav' component={GtaVTunables}/>
           <Route component={NotFound}/>
         </Switch>
       </MuiThemeProvider>
