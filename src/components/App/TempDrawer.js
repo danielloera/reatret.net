@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import SpiralIcon from '@material-ui/icons/ScatterPlot'
 import HomeIcon from '@material-ui/icons/Home'
 import CodeSwitchIcon from '@material-ui/icons/Language'
+import GtaIcon from '@material-ui/icons/SportsEsports'
 
 // List of all Drawer Items
 const DRAWER_LIST = [
@@ -29,6 +30,11 @@ const DRAWER_LIST = [
     text: "Ulam Spirals",
     icon: (<SpiralIcon/>),
     link: "/primeulam"
+  },
+  {
+    text: "GTA V Tunables",
+    icon: (<GtaIcon/>),
+    link: "/gtav"
   },
 ]
 

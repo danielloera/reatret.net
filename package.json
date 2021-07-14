@@ -5,8 +5,10 @@
   "dependencies": {
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.11.2",
+    "aes-js": "^3.1.2",
     "axios": "^0.21.1",
     "create-react-app": "^2.1.8",
+    "json-beautify": "^1.1.1",
     "konva": "^7.2.2",
     "rc-slider": "^8.7.1",
     "react": "^17.0.1",
