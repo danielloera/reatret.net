@@ -3,7 +3,8 @@
 
 import aesjs from 'aes-js'
 
-const key = aesjs.utils.hex.toBytes('F06F12F49B843DADE4A7BE053505B19C9E415C95D93753450A269144D59A0115')
+const key = aesjs.utils.hex.toBytes(
+    'F06F12F49B843DADE4A7BE053505B19C9E415C95D93753450A269144D59A0115')
 
 function getTunables(file) {
     return new Promise((resolve, reject) => {
@@ -15,7 +16,8 @@ function getTunables(file) {
             const decryptedBytes = aesEcb.decrypt(
                 encrypted.slice(0, encryptedLength))
             resolve(aesjs.utils.utf8.fromBytes(decryptedBytes) +
-                aesjs.utils.utf8.fromBytes(encrypted.slice(encryptedLength, encrypted.length)))
+                aesjs.utils.utf8.fromBytes(
+                    encrypted.slice(encryptedLength, encrypted.length)))
         }
         reader.readAsArrayBuffer(file)
     });
