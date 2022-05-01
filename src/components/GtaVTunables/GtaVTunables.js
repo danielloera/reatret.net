@@ -25,7 +25,7 @@ function CodeSwitching(props) {
 
   const onFileChange = (event) => {
     getTunables(event.target.files[0]).then((tunables) => {
-      setDecryptedTunables(beautify(JSON.parse(tunables),null, 2, 100))
+      setDecryptedTunables(beautify(JSON.parse(tunables), null, 2, 100))
     })
   }
 
