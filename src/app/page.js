@@ -6,23 +6,34 @@ import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const router = useRouter();
+  
+  const chunkedPhotos = [];
+  const chunkSize = 3;
+  for (let i = 0; i < photos.length; i += chunkSize) {
+    chunkedPhotos.push(photos.slice(i, i + chunkSize));
+  }
 
-  let photoElements = photos.map((entry) =>
-    <img
-      className="hover:outline outline-4 outline-emerald-500
-                 rounded-md w-full md:w-1/3"
-      onClick={() => router.push(`/photo/${entry.id}`)}
-      key={entry.id}
-      src={entry.thumbnailPath}
-      alt={entry.description}
-      width={600}
-      height={400} />);
+  let photoColumns = chunkedPhotos.map((chunk) => 
+      <div className="flex flex-col gap-5">{
+          chunk.map((photo) => 
+	      <div>
+                  <img
+                    onClick={() => router.push(`/photo/${photo.id}`)}
+                    className="w-full h-full rounded-md object-cover
+		               hover:outline outline-4 outline-emerald-500"
+                    key={photo.id}
+                    src={photo.thumbnailPath}
+                    alt={photo.description}
+                    width={600}
+                    height={400} />
+	      </div>)}
+      </div>);
 
   return (
-    <main className="flex min-h-screen flex-row flex-wrap items-center
-                     gap-y-4
-                     gap-x-2 md:max-2xl:gap-x-8 justify-center p-4">
-      {photoElements}
+    <main className="max-w-7xl w-[90%] m-auto pt-10">
+     <div className="flex flex-col md:flex-row gap-5">
+      {photoColumns}
+     </div>
     </main>
   );
 }
