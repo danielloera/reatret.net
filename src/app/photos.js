@@ -38,7 +38,7 @@ const photos = [
   new PhotoEntry(
     'sf_forest',
     'SF Forest',
-    'Miday forest in San Francisco\'s botanical garden.',
+    'Mid-day forest in San Francisco\'s botanical garden.',
     '/sf_forest_sm.jpg',
     '/sf_forest_full.jpg'),
   new PhotoEntry(
