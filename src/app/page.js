@@ -13,15 +13,14 @@ export default function Home() {
     chunkedPhotos.push(photos.slice(i, i + chunkSize));
   }
 
-  let photoColumns = chunkedPhotos.map((chunk) => 
-      <div className="flex flex-col gap-5">{
-          chunk.map((photo) => 
-	      <div>
+  let photoColumns = chunkedPhotos.map((chunk, cIdx) => 
+      <div key={cIdx} className="flex flex-col gap-5">{
+          chunk.map((photo, pIdx) => 
+	      <div key={pIdx}>
                   <img
                     onClick={() => router.push(`/photo/${photo.id}`)}
                     className="w-full h-full rounded-md object-cover
 		               hover:outline outline-4 outline-emerald-500"
-                    key={photo.id}
                     src={photo.thumbnailPath}
                     alt={photo.description}
                     width={600}
