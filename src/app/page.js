@@ -2,16 +2,32 @@
 
 import photos from './photos';
 import { useRouter } from 'next/navigation'
-
+import {
+  useWindowWidth,
+} from '@react-hook/window-size'
 
 export default function Home() {
   const router = useRouter();
+  const windowWidth = useWindowWidth();
+  const numCols = Math.ceil(windowWidth / 400);
+  const totalHeightRatio = photos.reduce((acc, curr) => acc + 1 / curr.ratio, 0);
+  const heightPerCol = Math.ceil(totalHeightRatio / numCols);	
 
   const chunkedPhotos = [];
-  const chunkSize = 3;
-  for (let i = 0; i < photos.length; i += chunkSize) {
-    chunkedPhotos.push(photos.slice(i, i + chunkSize));
+  let chunkList = [];
+  let accHeight = 0;
+  for (let i = 0; i < photos.length; i += 1) {
+    const photo = photos[i];
+    const currHeight = 1 / photo.ratio;
+    if (currHeight + accHeight > heightPerCol) {
+      chunkedPhotos.push(chunkList);
+      chunkList = [];
+      accHeight = 0;
+    }
+    accHeight += currHeight;
+    chunkList.push(photo);
   }
+  chunkedPhotos.push(chunkList);
 
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-5">{
@@ -29,8 +45,8 @@ export default function Home() {
       </div>);
 
   return (
-    <main className="max-w-7xl w-[90%] m-auto pt-10">
-     <div className="flex flex-col md:flex-row gap-5">
+    <main className="max-w-90  w-[90%] m-auto pt-10">
+     <div className="flex flex-row gap-5">
       {photoColumns}
      </div>
     </main>
