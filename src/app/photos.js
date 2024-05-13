@@ -42,11 +42,35 @@ const photos = [
     '/sf_forest_sm.jpg',
     '/sf_forest_full.jpg'),
   new PhotoEntry(
+    'parrot',
+    'Coastal Parrot',
+    'Parrot at the Corpus Christi state aquarium.',
+    '/parrot_sm.JPG',
+    '/parrot_full.JPG'),
+  new PhotoEntry(
     'zilker_tree',
     'Trail of Lights Tree',
     'The Zilker Trail of Lights tree from below.',
     '/zilker_tree_sm.png',
     '/zilker_tree_full.png'),
+  new PhotoEntry(
+    'american_bank',
+    'Seaside American Bank',
+    'American Bank building in Corpus Christi, TX.',
+    '/american_bank_sm.JPG',
+    '/american_bank_full.JPG'),
+  new PhotoEntry(
+    'dunes',
+    '"The Dunes"',
+    'Seaside park in Portland, TX.',
+    '/dunes_sm.JPG',
+    '/dunes_full.JPG'),
+  new PhotoEntry(
+    'distant_pier',
+    'Distant Pier.',
+    'Distant pier off the shore of Portland, TX.',
+    '/distant_pier_sm.JPG',
+    '/distant_pier_full.JPG'),
 ];
 
 export default photos;
