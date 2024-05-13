@@ -25,8 +25,8 @@ export default function RootLayout({ children }) {
       {children}
       <div className="
         pt-mono-regular
-        text-sm      ps-4    pt-4    pb-4
-        sm:text-base sm:ps-12 sm:pt-4 sm:pb-4">
+        text-sm ps-4 pt-8 pb-4
+        sm:text-base sm:ps-12">
         © {today.getFullYear()} Daniel Loera, All rights reserved.
       </div>
       </body>
