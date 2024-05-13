@@ -20,20 +20,20 @@ export default function Page(props) {
         width={600}
         height={400} />
     </div>
-      <h1 
+      <h1
         className="
-         text-emerald-500  
-          b612-mono-bold
+         text-lime-500
+          pt-mono-bold
           pt-4 sm:pt-8 lg:pt-12 ps-4 sm:ps-8 lg:ps-12
-          text-xl sm:text-4xl lg:text-6xl">
+          text-xl sm:text-4xl md:text-6xl">
         {photo.title}
       </h1>
       <p
         className="
-
-          b612-mono-regular
+          text-fuchsia-200
+          pt-mono-regular
           p-4 sm:p-8 lg:p-12
-          text-base sm:text-xl lg:text-2xl">
+          text-base sm:text-xl md:text-3xl">
         {photo.description}
       </p>
     </main>

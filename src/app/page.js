@@ -6,21 +6,21 @@ import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const router = useRouter();
-  
+
   const chunkedPhotos = [];
   const chunkSize = 3;
   for (let i = 0; i < photos.length; i += chunkSize) {
     chunkedPhotos.push(photos.slice(i, i + chunkSize));
   }
 
-  let photoColumns = chunkedPhotos.map((chunk, cIdx) => 
+  let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-5">{
-          chunk.map((photo, pIdx) => 
+          chunk.map((photo, pIdx) =>
 	      <div key={pIdx}>
                   <img
                     onClick={() => router.push(`/photo/${photo.id}`)}
                     className="w-full h-full rounded-md object-cover
-		               hover:outline outline-4 outline-emerald-500"
+		               hover:outline outline-4 outline-lime-500"
                     src={photo.thumbnailPath}
                     alt={photo.description}
                     width={600}
