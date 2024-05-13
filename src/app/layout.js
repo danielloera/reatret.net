@@ -9,6 +9,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  let today = new Date();
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -22,6 +23,12 @@ export default function RootLayout({ children }) {
         </div>
       </a>
       {children}
+      <div className="
+        pt-mono-regular
+        text-sm      ps-4    pt-4    pb-4
+        sm:text-base sm:ps-12 sm:pt-4 sm:pb-4">
+        © {today.getFullYear()} Daniel Loera, All rights reserved.
+      </div>
       </body>
     </html>
   );
