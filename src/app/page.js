@@ -20,7 +20,7 @@ export default function Home() {
                   <img
                     onClick={() => router.push(`/photo/${photo.id}`)}
                     className="w-full h-full rounded-md object-cover
-		               hover:outline outline-4 outline-lime-500"
+		               hover:outline outline-4 outline-teal-500"
                     src={photo.thumbnailPath}
                     alt={photo.description}
                     width={600}

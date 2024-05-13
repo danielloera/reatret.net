@@ -22,7 +22,7 @@ export default function Page(props) {
     </div>
       <h1
         className="
-         text-lime-500
+         text-teal-500
           pt-mono-bold
           pt-4 sm:pt-8 lg:pt-12 ps-4 sm:ps-8 lg:ps-12
           text-xl sm:text-4xl md:text-6xl">
