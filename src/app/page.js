@@ -7,7 +7,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 export default function Home() {
   const router = useRouter();
   const size = useWindowSize();
-  const numCols = Math.ceil(size.width / 400);
+  const numCols = Math.min(Math.ceil(size.width / 400), 4);
   const totalHeightRatio = photos.reduce((acc, curr) => acc + 1 / curr.ratio, 0);
   const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
@@ -31,14 +31,14 @@ export default function Home() {
       <div key={cIdx} className="flex flex-col gap-5">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}>
-                  <img
-                    onClick={() => router.push(`/photo/${photo.id}`)}
-                    className="w-full h-full rounded-md object-cover
-		               hover:outline outline-4 outline-teal-500"
-                    src={photo.thumbnailPath}
-                    alt={photo.description}
-                    width={600}
-                    height={400} />
+          <img
+            onClick={() => router.push(`/photo/${photo.id}`)}
+            className="w-full h-full rounded-md object-cover
+                       hover:outline outline-4 outline-teal-500"
+            src={photo.thumbnailPath}
+            alt={photo.description}
+            width={600}
+            height={400} />
 	      </div>)}
       </div>);
 
