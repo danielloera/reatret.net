@@ -36,9 +36,7 @@ export default function Home() {
             className="w-full h-full rounded-md object-cover
                        hover:outline outline-4 outline-teal-500"
             src={photo.thumbnailPath}
-            alt={photo.description}
-            width={600}
-            height={400} />
+            alt={photo.description}/>
 	      </div>)}
       </div>);
 
