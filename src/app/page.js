@@ -7,7 +7,8 @@ import { useWindowSize } from "@uidotdev/usehooks";
 export default function Home() {
   const router = useRouter();
   const size = useWindowSize();
-  const numCols = Math.min(Math.ceil(size.width / 400), 4);
+  const minColWidth = 350;
+  const numCols = Math.min(Math.ceil(size.width / minColWidth), 4);
   const totalHeightRatio = photos.reduce((acc, curr) => acc + 1 / curr.ratio, 0);
   const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
@@ -41,8 +42,8 @@ export default function Home() {
       </div>);
 
   return (
-    <main className="max-w-90  w-[90%] m-auto pt-10">
-     <div className="flex flex-row gap-3">
+    <main className="w-[95%] m-auto pt-10">
+     <div className="flex flex-row justify-center gap-3">
       {photoColumns}
      </div>
     </main>
