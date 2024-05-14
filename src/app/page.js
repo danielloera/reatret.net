@@ -28,7 +28,7 @@ export default function Home() {
   chunkedPhotos.push(chunkList);
 
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
-      <div key={cIdx} className="flex flex-col gap-5">{
+      <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}>
           <img
@@ -42,7 +42,7 @@ export default function Home() {
 
   return (
     <main className="max-w-90  w-[90%] m-auto pt-10">
-     <div className="flex flex-row gap-5">
+     <div className="flex flex-row gap-3">
       {photoColumns}
      </div>
     </main>
