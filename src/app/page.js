@@ -1,14 +1,13 @@
 "use client";
 
 import photos from './photos';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Home() {
-  const router = useRouter();
   const size = useWindowSize();
-  const minColWidth = 350;
-  const numCols = Math.min(Math.ceil(size.width / minColWidth), 4);
+  const colSizeScale = 4;
+  const numCols = Math.round(size.width / (colSizeScale * 100));
   const totalHeightRatio = photos.reduce((acc, curr) => acc + 1 / curr.ratio, 0);
   const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
@@ -32,12 +31,14 @@ export default function Home() {
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}>
+
+          <Link href={`/photo/${photo.id}`}>
           <img
-            onClick={() => router.push(`/photo/${photo.id}`)}
             className="w-full h-full rounded-md object-cover
-                       hover:outline outline-4 outline-teal-500"
+                       hover:outline outline-3 outline-teal-500"
             src={photo.thumbnailPath}
             alt={photo.description}/>
+	  </Link>
 	      </div>)}
       </div>);
 
