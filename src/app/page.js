@@ -1,17 +1,15 @@
 "use client";
 
 import photos from './photos';
-import { useRouter } from 'next/navigation'
-import {
-  useWindowWidth,
-} from '@react-hook/window-size'
+import { useRouter } from 'next/navigation';
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Home() {
   const router = useRouter();
-  const windowWidth = useWindowWidth();
-  const numCols = Math.ceil(windowWidth / 400);
+  const size = useWindowSize();
+  const numCols = Math.ceil(size.width / 400);
   const totalHeightRatio = photos.reduce((acc, curr) => acc + 1 / curr.ratio, 0);
-  const heightPerCol = Math.ceil(totalHeightRatio / numCols);	
+  const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
   const chunkedPhotos = [];
   let chunkList = [];
