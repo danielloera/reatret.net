@@ -12,7 +12,6 @@ export default function Photo(props) {
       const result = await client.getPhoto(props.id);
       setPhoto(result.documents[0]);
     };
-
     fetchData();
   }, []);
 
