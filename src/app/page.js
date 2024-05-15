@@ -3,19 +3,16 @@
 import Link from 'next/link';
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppWriteContext } from './appwrite_provider';
-import { Databases } from "appwrite";
 import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
   const client = useAppWriteContext();
-  const databases = new Databases(client);
     useEffect(() => {
     const fetchData = async () => {
       const result = await client.getAllPhotos();
       setPhotos(result.documents);
     };
-
     fetchData();
   }, []);
 
