@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import AppWriteProvider from './appwrite_provider';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +23,9 @@ export default function RootLayout({ children }) {
                 reatret.net
         </div>
       </a>
+      <AppWriteProvider>
       {children}
+      </AppWriteProvider>
       <div className="
         pt-mono-regular
         text-sm ps-4 pt-8 pb-4

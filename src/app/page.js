@@ -3,8 +3,11 @@
 import photos from './photos';
 import Link from 'next/link';
 import { useWindowSize } from "@uidotdev/usehooks";
+import { Client } from 'appwrite';
+import { useAppWriteContext } from './appwrite_provider';
 
 export default function Home() {
+  const client = useAppWriteContext();
   const size = useWindowSize();
   const colSizeScale = 4;
   const numCols = Math.round(size.width / (colSizeScale * 100));
