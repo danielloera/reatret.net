@@ -16,7 +16,7 @@ export default function Photo(props) {
     fetchData();
   }, []);
 
-  if (photo == null) return null;
+  if (photo == null) return (<div class="loader"></div>);
 
   return (
     <main>

@@ -41,6 +41,8 @@ export default function Home() {
   }
   chunkedPhotos.push(chunkList);
 
+  if (photos.length == 0) return (<div class="loader"></div>);
+
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
