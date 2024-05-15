@@ -43,7 +43,7 @@ export default function Home() {
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
-	      <div key={pIdx}>
+	      <div key={pIdx} className="bg-stone-900 rounded-md w-[600] h-[400]">
           <Link href={`/photo/${photo.id}`}>
             <img
               className="w-full h-full rounded-md object-cover
