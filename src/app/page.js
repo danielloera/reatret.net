@@ -1,17 +1,28 @@
 "use client";
 
-import photos from './photos';
 import Link from 'next/link';
 import { useWindowSize } from "@uidotdev/usehooks";
-import { Client } from 'appwrite';
 import { useAppWriteContext } from './appwrite_provider';
+import { Databases } from "appwrite";
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const [photos, setPhotos] = useState([]);
   const client = useAppWriteContext();
+  const databases = new Databases(client);
+    useEffect(() => {
+    const fetchData = async () => {
+      const result = await client.getAllPhotos();
+      setPhotos(result.documents);
+    };
+
+    fetchData();
+  }, []);
+
   const size = useWindowSize();
   const colSizeScale = 4;
   const numCols = Math.round(size.width / (colSizeScale * 100));
-  const totalHeightRatio = photos.reduce((acc, curr) => acc + 1 / curr.ratio, 0);
+  const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
   const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
   const chunkedPhotos = [];
@@ -19,7 +30,7 @@ export default function Home() {
   let accHeight = 0;
   for (let i = 0; i < photos.length; i += 1) {
     const photo = photos[i];
-    const currHeight = 1 / photo.ratio;
+    const currHeight = photo.height / photo.width;
     if (currHeight + accHeight > heightPerCol) {
       chunkedPhotos.push(chunkList);
       chunkList = [];
@@ -34,14 +45,13 @@ export default function Home() {
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}>
-
           <Link href={`/photo/${photo.id}`}>
-          <img
-            className="w-full h-full rounded-md object-cover
-                       hover:outline outline-3 outline-teal-500"
-            src={photo.thumbnailPath}
-            alt={photo.description}/>
-	  </Link>
+            <img
+              className="w-full h-full rounded-md object-cover
+                         hover:outline outline-3 outline-teal-500"
+              src={photo.photo_full_res_url}
+              alt={photo.description}/>
+	        </Link>
 	      </div>)}
       </div>);
 
