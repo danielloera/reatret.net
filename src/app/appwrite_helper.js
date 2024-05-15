@@ -5,18 +5,15 @@ export default class AppWriteHelper {
   constructor() {
     const client = new Client();
     client
-        .setEndpoint('http://192.168.50.77:60/v1')
-        .setProject('6643f12100122b48edf9');
-
+      .setEndpoint('https://reatret.net/v1')
+      .setProject('6643f12100122b48edf9');
     this.databases = new Databases(client);
   }
 
-  async getAllPhotos() {
-    return await this.databases.listDocuments('photos', 'metadata');
-  }
+  #getPhotosHelper = async (queries) =>
+    await this.databases.listDocuments('photos', 'metadata', queries);
 
-  async getPhoto(id) {
-    return await this.databases.listDocuments('photos', 'metadata',
-        [Query.equal("id", id)]);
-  }
+  getAllPhotos = async () => this.#getPhotosHelper();
+
+  getPhoto = async (id) => this.#getPhotosHelper([Query.equal("id", id)]);
 }
