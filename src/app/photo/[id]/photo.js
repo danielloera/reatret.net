@@ -70,9 +70,9 @@ export default function Photo(props) {
       </p>
       <table className="
                 rounded-md
-                m-auto sm:ms-8 lg:ms-12
+                m-auto md:ms-12
                 text-base md:text-lg
-                max-w-[95%]">
+                min-w-[95%] md:min-w-fit">
         <tr>
           <th>Shutter Speed</th>
           <td>{shutterSpeed}</td>
