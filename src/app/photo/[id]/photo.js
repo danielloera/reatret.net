@@ -40,26 +40,37 @@ export default function Photo(props) {
   const cameraModel = photo.camera_model ?? DEFAULT_EXIF;
   const lensMake = photo.lens_make ?? DEFAULT_EXIF;
   const lensModel = photo.lens_model ?? DEFAULT_EXIF;
+  let dateElement = null;
+  if (photo.date != null) {
+    dateElement = (
+      <div className="courier-prime-regular
+                      ps-5 sm:ps-10 lg:ps-14
+                      text-sm md:text-base lg:text-lg">
+        {new Date(photo.date).toLocaleString()}
+      </div>);
+  }
 
   return (
     <main>
-    <div className="gradient-bg">
-      <img
-        className="m-auto w-auto max-h-[80vh]"
-        key={photo.id}
-        src={photo.full_res_url}
-        alt={photo.description}
-        width={600}
-        height={400} />
-    </div>
+      <div className="gradient-bg">
+        <img
+          className="m-auto w-auto max-h-[80vh]"
+          key={photo.id}
+          src={photo.full_res_url}
+          alt={photo.description}
+          width={600}
+          height={400} />
+      </div>
       <h1
         className="
          text-teal-500
           pt-mono-bold
-          pt-4 sm:pt-8 ps-4 sm:ps-8 lg:ps-12
-          text-xl sm:text-4xl md:text-5xl">
+          ps-4 sm:ps-8 lg:ps-12
+          pt-4 sm:pt-8
+          text-2xl sm:text-3xl lg:text-4xl">
         {photo.title}
       </h1>
+      {dateElement}
       <p
         className="
           text-fuchsia-200
@@ -71,7 +82,7 @@ export default function Photo(props) {
       <table className="
                 rounded-md
                 m-auto md:ms-12
-                text-base md:text-lg
+                text-sm md:text-base
                 min-w-[95%] md:min-w-fit">
         <tr>
           <th>Shutter Speed</th>
