@@ -44,7 +44,7 @@ export default function Photo(props) {
   if (photo.date != null) {
     dateElement = (
       <div className="courier-prime-regular
-                      ps-5 sm:ps-10 lg:ps-14
+                      ps-4 sm:ps-8 lg:ps-12
                       text-sm md:text-base lg:text-lg">
         {new Date(photo.date).toLocaleString()}
       </div>);
