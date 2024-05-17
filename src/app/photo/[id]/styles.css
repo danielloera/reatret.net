@@ -1,4 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 .gradient-bg {
 	background: rgb(0,0,0);
 	background: linear-gradient(0deg, rgba(0,0,0,1) 30%, rgba(50,50,50,1) 100%);
+}
+
+th, td {
+	@apply p-2 md:p-4;
+}
+
+table, th, td {
+	border: 1px solid white;
+	border-collapse: collapse;
+}
+
+th {
+ 	border-right: 0;
+}
+
+td {
+	border-left: 0;
+	padding-left: 0;
 }
