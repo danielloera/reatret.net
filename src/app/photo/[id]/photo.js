@@ -77,14 +77,16 @@ export default function Photo(props) {
         className="
           text-fuchsia-300
           pt-mono-regular
-          p-4 sm:p-8 lg:p-12
-          text-base sm:text-xl md:text-2xl">
+          pl-4 sm:pl-8 lg:pl-12
+          pt-2 lg:pt-8
+          pb-6 lg:pb-12
+          text-base md:text-xl">
         {photo.description}
       </p>
       <table className="
                 m-auto md:ms-12
                 text-sm md:text-base
-                min-w-[90%] md:min-w-fit">
+                min-w-[95%] md:min-w-fit">
         <tr>
           <th>Shutter Speed</th>
           <td>{shutterSpeed}</td>
