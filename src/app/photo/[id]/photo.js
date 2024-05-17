@@ -15,7 +15,7 @@ export default function Photo(props) {
     fetchData();
   }, []);
 
-  if (photo == null) return (<div class="loader"></div>);
+  if (photo == null) return (<div className="loader"></div>);
 
   return (
     <main>
@@ -23,7 +23,7 @@ export default function Photo(props) {
       <img
         className="m-auto w-auto max-h-[80vh]"
         key={photo.id}
-        src={photo.photo_full_res_url}
+        src={photo.full_res_url}
         alt={photo.description}
         width={600}
         height={400} />
