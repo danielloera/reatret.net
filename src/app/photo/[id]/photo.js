@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppWriteContext } from '../../appwrite_provider';
+import Loader from '../../common/loader';
 import { useState, useEffect } from 'react';
 import './styles.css'
 
@@ -17,7 +18,7 @@ export default function Photo(props) {
     fetchData();
   }, []);
 
-  if (photo == null) return (<div className="loader"></div>);
+  if (photo == null) return (<Loader></Loader>);
 
   const shutterSpeed =
           photo.shutter_speed  == null ?
