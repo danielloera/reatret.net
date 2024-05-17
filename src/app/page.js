@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppWriteContext } from './appwrite_provider';
+import Loader from './common/loader';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
@@ -38,7 +39,7 @@ export default function Home() {
   }
   chunkedPhotos.push(chunkList);
 
-  if (photos.length == 0) return (<div className="loader"></div>);
+  if (photos.length == 0) return (<Loader></Loader>);
 
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
