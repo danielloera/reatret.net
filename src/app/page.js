@@ -38,7 +38,7 @@ export default function Home() {
   }
   chunkedPhotos.push(chunkList);
 
-  if (photos.length == 0) return (<div class="loader"></div>);
+  if (photos.length == 0) return (<div className="loader"></div>);
 
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
@@ -48,7 +48,7 @@ export default function Home() {
             <img
               className="w-full h-full rounded-md object-cover
                          hover:outline outline-3 outline-teal-500"
-              src={photo.photo_full_res_url}
+              src={photo.thumbnail_url}
               alt={photo.description}/>
 	        </Link>
 	      </div>)}
