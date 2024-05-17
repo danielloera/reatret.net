@@ -9,6 +9,7 @@
 }
 
 th, td {
+	text-align: left;
 	@apply p-2 md:p-4;
 }
 
@@ -23,6 +24,7 @@ th {
 }
 
 td {
+	@apply text-teal-300;
 	border-left: 0;
 	padding-left: 0;
 	padding-right: 1rem;

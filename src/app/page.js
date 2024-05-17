@@ -48,7 +48,7 @@ export default function Home() {
           <Link href={`/photo/${photo.id}`}>
             <img
               className="w-full h-full rounded-md object-cover
-                         hover:outline outline-3 outline-teal-500"
+                         hover:outline hover:animate-pulse outline-3 outline-teal-500"
               src={photo.thumbnail_url}
               alt={photo.description}/>
 	        </Link>

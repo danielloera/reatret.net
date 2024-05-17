@@ -74,14 +74,13 @@ export default function Photo(props) {
       {dateElement}
       <p
         className="
-          text-fuchsia-200
+          text-fuchsia-300
           pt-mono-regular
           p-4 sm:p-8 lg:p-12
           text-base sm:text-xl md:text-2xl">
         {photo.description}
       </p>
       <table className="
-                rounded-md
                 m-auto md:ms-12
                 text-sm md:text-base
                 min-w-[90%] md:min-w-fit">
