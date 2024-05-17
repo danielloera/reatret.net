@@ -32,8 +32,8 @@ export default function Photo(props) {
         className="
          text-teal-500
           pt-mono-bold
-          pt-4 sm:pt-8 lg:pt-12 ps-4 sm:ps-8 lg:ps-12
-          text-xl sm:text-4xl md:text-6xl">
+          pt-4 sm:pt-8 ps-4 sm:ps-8 lg:ps-12
+          text-xl sm:text-4xl md:text-5xl">
         {photo.title}
       </h1>
       <p
@@ -41,7 +41,7 @@ export default function Photo(props) {
           text-fuchsia-200
           pt-mono-regular
           p-4 sm:p-8 lg:p-12
-          text-base sm:text-xl md:text-3xl">
+          text-base sm:text-xl md:text-2xl">
         {photo.description}
       </p>
     </main>
