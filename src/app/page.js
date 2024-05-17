@@ -6,8 +6,11 @@ import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import { useState, useEffect } from 'react';
 
+const PULSE_ANIMATION = "animate-pulse"
+
 export default function Home() {
   const [photos, setPhotos] = useState([]);
+  const [clickedPhoto, setClickedPhoto] = useState(null);
   const client = useAppWriteContext();
     useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +46,11 @@ export default function Home() {
 
   let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
-          chunk.map((photo, pIdx) =>
-	      <div key={pIdx} className="bg-stone-900 rounded-md w-[600] h-[400]">
+          chunk.map((photo, pIdx) => {
+        const animation = photo.id == clickedPhoto ? PULSE_ANIMATION : "";
+	      return <div key={pIdx}
+             className={`bg-stone-900 rounded-md w-[600] h-[400] ${animation}`}
+             onclick={() => setClickedPhoto(photo.id)}>
           <Link href={`/photo/${photo.id}`}>
             <img
               className="w-full h-full rounded-md object-cover
@@ -52,7 +58,7 @@ export default function Home() {
               src={photo.thumbnail_url}
               alt={photo.description}/>
 	        </Link>
-	      </div>)}
+	      </div>})}
       </div>);
 
   return (
