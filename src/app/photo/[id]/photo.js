@@ -83,7 +83,7 @@ export default function Photo(props) {
                 rounded-md
                 m-auto md:ms-12
                 text-sm md:text-base
-                min-w-[95%] md:min-w-fit">
+                min-w-[90%] md:min-w-fit">
         <tr>
           <th>Shutter Speed</th>
           <td>{shutterSpeed}</td>
