@@ -27,13 +27,13 @@ body {
   }
 }
 
-.courier-prime-regular, th {
+.courier-prime-regular, td {
   font-family: "Courier Prime", monospace;
   font-weight: 400;
   font-style: normal;
 }
 
-.courier-prime-bold, td {
+.courier-prime-bold, th {
   font-family: "Courier Prime", monospace;
   font-weight: 700;
   font-style: normal;

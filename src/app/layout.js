@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
       <a href="/">
         <div className="
           pt-mono-regular bg-stone-900/95 h-fit fixed-top
-          text-fuchsia-200
+          text-fuchsia-300
           text-xl     ps-4    pt-4    pb-4
           md:text-2xl lg:text-3xl sm:ps-6 sm:pt-4 sm:pb-4">
             reatret.net
@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       {children}
       </AppWriteProvider>
       <div className="
-        pt-mono-regular
+        pt-mono-regular mb-4 lg:mb-10
         text-sm ps-4 pt-8 pb-4
         sm:text-base sm:ps-12">
         © {today.getFullYear()} Daniel Loera, All rights reserved.
