@@ -6,8 +6,6 @@ import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import { useState, useEffect } from 'react';
 
-const PULSE_ANIMATION = "animate-pulse"
-
 export default function Home() {
   const [photos, setPhotos] = useState([]);
   const client = useAppWriteContext();
