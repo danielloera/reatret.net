@@ -4,6 +4,7 @@ import { useAppWriteContext } from '../../appwrite_provider';
 import Loader from '../../common/loader';
 import { useState, useEffect } from 'react';
 import './styles.css'
+import Image from 'next/image'
 
 const DEFAULT_EXIF = "N/A";
 
@@ -57,13 +58,13 @@ export default function Photo(props) {
   return (
     <main>
       <div className="gradient-bg">
-        <img
+        <Image
           className="m-auto w-auto max-h-[80vh]"
           key={photo.id}
           src={photo.full_res_url}
           alt={photo.description}
-          width={600}
-          height={400} />
+          width={photo.width}
+          height={photo.height} />
       </div>
       <h1
         className="
