@@ -44,7 +44,7 @@ export default function Home() {
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}
-             className="bg-stone-900 rounded-md w-[600] h-[400]">
+             className={`bg-stone-800 rounded-lg w-[${photo.width}px] h-[${photo.height}px]`}>
           <Link href={`/photo/${photo.id}`}>
             <img
               className="w-full h-full rounded-md object-cover
