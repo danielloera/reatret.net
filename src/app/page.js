@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image'
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
@@ -46,9 +47,11 @@ export default function Home() {
 	      <div key={pIdx}
              className={`bg-stone-800 rounded-lg w-[${photo.width}px] h-[${photo.height}px]`}>
           <Link href={`/photo/${photo.id}`}>
-            <img
+            <Image
               className="w-full h-full rounded-md object-cover
                          hover:outline hover:animate-pulse outline-3 outline-teal-500"
+              width={photo.width}
+              height={photo.height}
               src={photo.thumbnail_url}
               alt={photo.description}/>
 	        </Link>
