@@ -22,7 +22,7 @@ export default function Home() {
 
   const size = useWindowSize();
   const colSizeScale = 4;
-  const numCols = Math.round(size.width / (colSizeScale * 100));
+  const numCols = Math.floor(size.width / (colSizeScale * 100));
   const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
   const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
