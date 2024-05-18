@@ -29,8 +29,7 @@ export default function Home() {
   const chunkedPhotos = [];
   let chunkList = [];
   let accHeight = 0;
-  for (let i = 0; i < photos.length; i += 1) {
-    const photo = photos[i];
+  photos.forEach((photo) => {
     const currHeight = photo.height / photo.width;
     if (chunkedPhotos.length + 1 < numCols && currHeight + accHeight > heightPerCol) {
       chunkedPhotos.push(chunkList);
@@ -39,7 +38,7 @@ export default function Home() {
     }
     accHeight += currHeight;
     chunkList.push(photo);
-  }
+  });
   chunkedPhotos.push(chunkList);
 
   if (photos.length == 0) return (<Loader></Loader>);
