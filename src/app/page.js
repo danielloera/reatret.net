@@ -22,7 +22,7 @@ export default function Home() {
 
   const size = useWindowSize();
   const colSizeScale = 4;
-  const numCols = Math.floor(size.width / (colSizeScale * 100));
+  const numCols = Math.round(size.width / (colSizeScale * 100));
   const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
   const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
@@ -32,7 +32,7 @@ export default function Home() {
   for (let i = 0; i < photos.length; i += 1) {
     const photo = photos[i];
     const currHeight = photo.height / photo.width;
-    if (currHeight + accHeight > heightPerCol) {
+    if (chunkedPhotos.length + 1 < numCols && currHeight + accHeight > heightPerCol) {
       chunkedPhotos.push(chunkList);
       chunkList = [];
       accHeight = 0;
