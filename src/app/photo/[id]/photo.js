@@ -48,7 +48,9 @@ export default function Photo(props) {
                       pt-1 lg:pt-2
                       ps-4 sm:ps-8 lg:ps-12
                       text-sm md:text-base lg:text-lg">
-        {new Date(photo.date).toLocaleString()}
+        {new Date(photo.date).toLocaleDateString(
+          "en-US",
+          {year: 'numeric', month: 'short', day: 'numeric' })}
       </div>);
   }
 
