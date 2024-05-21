@@ -7,7 +7,7 @@ import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import { useState, useEffect } from 'react';
 
-const COL_SIZE_SCALE = 4;
+const COL_SIZE_SCALE = 5.5;
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
@@ -36,7 +36,7 @@ export default function Home() {
     let accHeight = 0;
     photos.forEach((photo) => {
       const currHeight = photo.height / photo.width;
-      if (chunkedPhotos.length + 1 < numCols && currHeight + accHeight > heightPerCol) {
+      if (currHeight + accHeight > heightPerCol) {
         chunkedPhotos.push(chunkList);
         chunkList = [];
         accHeight = 0;
