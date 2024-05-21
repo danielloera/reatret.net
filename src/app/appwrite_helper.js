@@ -1,5 +1,8 @@
 import { Client, Databases, Query } from 'appwrite';
 
+const MAX_LIMIT_QUERY = Query.limit(9999)
+const DATE_DESC_QUERY = Query.orderDesc("date")
+
 export default class AppWriteHelper {
 
   constructor() {
@@ -13,7 +16,8 @@ export default class AppWriteHelper {
   #getPhotosHelper = async (queries) =>
     await this.databases.listDocuments('photos', 'metadata', queries);
 
-  getAllPhotos = async () => this.#getPhotosHelper([Query.limit(9999)]);
+  getAllPhotos = async () => this.#getPhotosHelper([
+                              DATE_DESC_QUERY, MAX_LIMIT_QUERY]);
 
   getPhoto = async (id) => this.#getPhotosHelper([Query.equal("id", id)]);
 }
