@@ -12,8 +12,7 @@ const COL_SIZE_SCALE = 4;
 export default function Home() {
   const [photos, setPhotos] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [isConstructing, setIsConstructing] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
   const size = useWindowSize();
   const client = useAppWriteContext();
 
@@ -28,7 +27,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setIsConstructing(true);
     const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
     const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
     const heightPerCol = Math.ceil(totalHeightRatio / numCols);
@@ -48,11 +46,10 @@ export default function Home() {
     });
     chunkedPhotos.push(chunkList);
     setColumns(chunkedPhotos);
-    setIsConstructing(false);
   }, [isFetching, size]);
 
 
-  if (isFetching || isConstructing) return (<Loader></Loader>);
+  if (isFetching) return (<Loader></Loader>);
 
   let photoColumns = columns.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
