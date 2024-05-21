@@ -7,41 +7,54 @@ import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import { useState, useEffect } from 'react';
 
+const COL_SIZE_SCALE = 4;
+
 export default function Home() {
   const [photos, setPhotos] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isConstructing, setIsConstructing] = useState(true);
+  const size = useWindowSize();
   const client = useAppWriteContext();
-    useEffect(() => {
+
+  useEffect(() => {
+    setIsFetching(true);
     const fetchData = async () => {
       const result = await client.getAllPhotos();
       setPhotos(result.documents);
+      setIsFetching(false);
     };
     fetchData();
   }, []);
 
-  const size = useWindowSize();
-  const colSizeScale = 4;
-  const numCols = Math.round(size.width / (colSizeScale * 100));
-  const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
-  const heightPerCol = Math.ceil(totalHeightRatio / numCols);
+  useEffect(() => {
+    setIsConstructing(true);
+    const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
+    const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
+    const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
-  const chunkedPhotos = [];
-  let chunkList = [];
-  let accHeight = 0;
-  photos.forEach((photo) => {
-    const currHeight = photo.height / photo.width;
-    if (chunkedPhotos.length + 1 < numCols && currHeight + accHeight > heightPerCol) {
-      chunkedPhotos.push(chunkList);
-      chunkList = [];
-      accHeight = 0;
-    }
-    accHeight += currHeight;
-    chunkList.push(photo);
-  });
-  chunkedPhotos.push(chunkList);
+    const chunkedPhotos = [];
+    let chunkList = [];
+    let accHeight = 0;
+    photos.forEach((photo) => {
+      const currHeight = photo.height / photo.width;
+      if (chunkedPhotos.length + 1 < numCols && currHeight + accHeight > heightPerCol) {
+        chunkedPhotos.push(chunkList);
+        chunkList = [];
+        accHeight = 0;
+      }
+      accHeight += currHeight;
+      chunkList.push(photo);
+    });
+    chunkedPhotos.push(chunkList);
+    setColumns(chunkedPhotos);
+    setIsConstructing(false);
+  }, [isFetching, size]);
 
-  if (photos.length == 0) return (<Loader></Loader>);
 
-  let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
+  if (isFetching || isConstructing) return (<Loader></Loader>);
+
+  let photoColumns = columns.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}
