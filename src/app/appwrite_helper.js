@@ -13,7 +13,7 @@ export default class AppWriteHelper {
   #getPhotosHelper = async (queries) =>
     await this.databases.listDocuments('photos', 'metadata', queries);
 
-  getAllPhotos = async () => this.#getPhotosHelper();
+  getAllPhotos = async () => this.#getPhotosHelper([Query.limit(9999)]);
 
   getPhoto = async (id) => this.#getPhotosHelper([Query.equal("id", id)]);
 }
