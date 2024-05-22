@@ -19,7 +19,7 @@ export default function Photo(props) {
     fetchData();
   }, []);
 
-  if (photo == null) return (<Loader></Loader>);
+  if (photo == null) return <Loader/>;
 
   const shutterSpeed =
           photo.shutter_speed  == null ?
