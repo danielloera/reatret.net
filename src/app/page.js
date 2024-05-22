@@ -17,7 +17,6 @@ export default function Home() {
   const client = useAppWriteContext();
 
   useEffect(() => {
-    setIsFetching(true);
     const fetchData = async () => {
       const result = await client.getAllPhotos();
       setPhotos(result.documents);
@@ -69,7 +68,7 @@ export default function Home() {
       </div>);
 
   return (
-    <main className="w-[95%] m-auto pt-10">
+    <main className="w-[95%] m-auto pt-3">
      <div className="flex flex-row justify-center gap-3">
       {photoColumns}
      </div>
