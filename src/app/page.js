@@ -7,7 +7,7 @@ import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import { useState, useEffect } from 'react';
 
-const COL_SIZE_SCALE = 5.5;
+const COL_SIZE_SCALE = 6;
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
@@ -49,7 +49,7 @@ export default function Home() {
   }, [isFetching, size]);
 
 
-  if (isFetching) return (<Loader></Loader>);
+  if (isFetching) return <Loader/>;
 
   let photoColumns = columns.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
