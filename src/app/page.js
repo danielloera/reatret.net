@@ -44,14 +44,8 @@ export default function Home() {
       chunkList.push(photo);
     });
     chunkedPhotos.push(chunkList);
-    setColumns(chunkedPhotos);
-    setIsFetching(false);
-  }, [isFetching, size, photos]);
 
-
-  if (isFetching) return <Loader/>;
-
-  let photoColumns = columns.map((chunk, cIdx) =>
+    let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>
 	      <div key={pIdx}
@@ -69,10 +63,17 @@ export default function Home() {
 	      </div>)}
       </div>);
 
+    setColumns(photoColumns);
+    setIsFetching(false);
+  }, [isFetching, size, photos]);
+
+
+  if (isFetching) return <Loader/>;
+
   return (
     <main className="w-[95%] m-auto pt-3">
      <div className="flex flex-row justify-center gap-3">
-      {photoColumns}
+      {columns}
      </div>
     </main>
   );
