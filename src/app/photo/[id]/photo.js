@@ -17,7 +17,7 @@ export default function Photo(props) {
       setPhoto(result.documents[0]);
     };
     fetchData();
-  }, []);
+  }, [client, props.id]);
 
   if (photo == null) return <Loader/>;
 

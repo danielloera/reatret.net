@@ -23,7 +23,7 @@ export default function Home() {
       setIsFetching(false);
     };
     fetchData();
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
@@ -45,7 +45,7 @@ export default function Home() {
     });
     chunkedPhotos.push(chunkList);
     setColumns(chunkedPhotos);
-  }, [isFetching, size]);
+  }, [isFetching, size, photos]);
 
 
   if (isFetching) return <Loader/>;
