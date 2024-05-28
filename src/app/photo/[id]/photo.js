@@ -69,6 +69,7 @@ export default function Photo(props) {
           key={photo.id}
           src={photo.full_res_url}
           alt={photo.description}
+          unoptimized
           width={photo.width}
           height={photo.height} />
       </div>
@@ -96,42 +97,44 @@ export default function Photo(props) {
                 m-auto md:ms-12
                 text-sm md:text-base
                 min-w-[95%] md:min-w-fit">
-        <tr>
-          <th>Shutter Speed</th>
-          <td>{shutterSpeed}</td>
-        </tr>
-        <tr>
-          <th>Focal Length</th>
-          <td>{focalLength}</td>
-        </tr>
-        <tr>
-          <th>Exposure Time</th>
-          <td>{exposureTime}</td>
-        </tr>
-        <tr>
-          <th>F Number</th>
-          <td>{fNumber}</td>
-        </tr>
-        <tr>
-          <th>ISO</th>
-          <td>{iso}</td>
-        </tr>
-        <tr>
-          <th>Camera Make</th>
-          <td>{filterStr(cameraMake)}</td>
-        </tr>
-        <tr>
-          <th>Camera Model</th>
-          <td>{filterStr(cameraModel)}</td>
-        </tr>
-        <tr>
-          <th>Lens Make</th>
-          <td>{filterStr(lensMake)}</td>
-        </tr>
-        <tr>
-          <th>Lens Model</th>
-          <td>{filterStr(lensModel)}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Shutter Speed</th>
+            <td>{shutterSpeed}</td>
+          </tr>
+          <tr>
+            <th>Focal Length</th>
+            <td>{focalLength}</td>
+          </tr>
+          <tr>
+            <th>Exposure Time</th>
+            <td>{exposureTime}</td>
+          </tr>
+          <tr>
+            <th>F Number</th>
+            <td>{fNumber}</td>
+          </tr>
+          <tr>
+            <th>ISO</th>
+            <td>{iso}</td>
+          </tr>
+          <tr>
+            <th>Camera Make</th>
+            <td>{filterStr(cameraMake)}</td>
+          </tr>
+          <tr>
+            <th>Camera Model</th>
+            <td>{filterStr(cameraModel)}</td>
+          </tr>
+          <tr>
+            <th>Lens Make</th>
+            <td>{filterStr(lensMake)}</td>
+          </tr>
+          <tr>
+            <th>Lens Model</th>
+            <td>{filterStr(lensModel)}</td>
+          </tr>
+        </tbody>
       </table>
     </main>
   );

@@ -20,12 +20,12 @@ export default function Home() {
     const fetchData = async () => {
       const result = await client.getAllPhotos();
       setPhotos(result.documents);
-      setIsFetching(false);
     };
     fetchData();
   }, [client]);
 
   useEffect(() => {
+    if (photos.length == 0) return;
     const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
     const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
     const heightPerCol = Math.ceil(totalHeightRatio / numCols);
@@ -45,6 +45,7 @@ export default function Home() {
     });
     chunkedPhotos.push(chunkList);
     setColumns(chunkedPhotos);
+    setIsFetching(false);
   }, [isFetching, size, photos]);
 
 
@@ -59,6 +60,7 @@ export default function Home() {
             <Image
               className="w-full h-full rounded-md object-cover
                          hover:outline outline-3 outline-teal-500"
+              unoptimized
               width={photo.width}
               height={photo.height}
               src={photo.thumbnail_url}
