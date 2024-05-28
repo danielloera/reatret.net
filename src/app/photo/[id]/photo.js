@@ -7,6 +7,12 @@ import './styles.css'
 import Image from 'next/image'
 
 const DEFAULT_EXIF = "N/A";
+const ALLOWED_EXIF_REGEX = /[^0-9a-zA-Z\ -_\.]/g;
+const EMPTY_STR = '';
+
+function filterStr(str) {
+  return str.replace(ALLOWED_EXIF_REGEX, EMPTY_STR);
+}
 
 export default function Photo(props) {
   const [photo, setPhoto] = useState(null);
@@ -112,19 +118,19 @@ export default function Photo(props) {
         </tr>
         <tr>
           <th>Camera Make</th>
-          <td>{cameraMake}</td>
+          <td>{filterStr(cameraMake)}</td>
         </tr>
         <tr>
           <th>Camera Model</th>
-          <td>{cameraModel}</td>
+          <td>{filterStr(cameraModel)}</td>
         </tr>
         <tr>
           <th>Lens Make</th>
-          <td>{lensMake}</td>
+          <td>{filterStr(lensMake)}</td>
         </tr>
         <tr>
           <th>Lens Model</th>
-          <td>{lensModel}</td>
+          <td>{filterStr(lensModel)}</td>
         </tr>
       </table>
     </main>
