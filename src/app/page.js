@@ -71,7 +71,7 @@ export default function Home() {
   if (isFetching) return <Loader/>;
 
   return (
-    <main className="w-[95%] m-auto pt-3">
+    <main className="w-[95%] min-h-[200vh] m-auto pt-3">
      <div className="flex flex-row justify-center gap-3">
       {columns}
      </div>
