@@ -65,7 +65,7 @@ export default function Home() {
 
     setColumns(photoColumns);
     setIsFetching(false);
-  }, [isFetching, size, photos]);
+  }, [size, photos]);
 
 
   if (isFetching) return <Loader/>;
