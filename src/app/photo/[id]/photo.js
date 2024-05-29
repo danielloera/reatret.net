@@ -67,7 +67,7 @@ export default function Photo(props) {
       <AppBar/>
       <div className="gradient-bg">
         <Image
-          className="m-auto w-auto min-h-[80vh] max-h-[80vh]"
+          className="m-auto w-auto h-fit max-h-[80vh]"
           key={photo.id}
           src={photo.full_res_url}
           alt={photo.description}
