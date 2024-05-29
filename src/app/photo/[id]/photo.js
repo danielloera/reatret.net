@@ -2,6 +2,7 @@
 
 import { useAppWriteContext } from '../../appwrite_provider';
 import Loader from '../../common/loader';
+import AppBar from '../../common/app_bar';
 import { useState, useEffect } from 'react';
 import './styles.css'
 import Image from 'next/image'
@@ -63,6 +64,7 @@ export default function Photo(props) {
 
   return (
     <main>
+      <AppBar/>
       <div className="gradient-bg">
         <Image
           className="m-auto w-auto min-h-[80vh] max-h-[80vh]"

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
+import AppBar from './common/app_bar';
 import { useState, useEffect } from 'react';
 
 const COL_SIZE_SCALE = 6;
@@ -72,6 +73,7 @@ export default function Home() {
 
   return (
     <main className="">
+      <AppBar/>
       <div className="w-full min-h-[200vh] p-3 m-auto">
        <div className="flex flex-row justify-center gap-3">
         {columns}
