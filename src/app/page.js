@@ -10,6 +10,14 @@ import { useState, useEffect } from 'react';
 
 const COL_SIZE_SCALE = 6;
 
+function setShuffledList(setter, list) {
+  let shuffled = list
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+  setter(shuffled);
+}
+
 export default function Home() {
   const [photos, setPhotos] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -73,7 +81,12 @@ export default function Home() {
 
   return (
     <main className="">
-      <AppBar/>
+      <AppBar buttons={
+        <span
+          className="cursor-pointer"
+          onClick={() => setShuffledList(setPhotos, photos)}>
+            🔀
+          </span>}/>
       <div className="w-full min-h-[200vh] p-3 m-auto">
        <div className="flex flex-row justify-center gap-3">
         {columns}
