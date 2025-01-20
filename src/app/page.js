@@ -8,7 +8,7 @@ import Loader from './common/loader';
 import AppBar from './common/app_bar';
 import { useState, useEffect } from 'react';
 
-const COL_SIZE_SCALE = 6;
+const COL_SIZE_SCALE = 7;
 
 function setShuffledList(setter, list) {
   let shuffled = list

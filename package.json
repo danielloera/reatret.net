@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "@uidotdev/usehooks": "^2.4.1",
-    "appwrite": "^14.0.1",
-    "next": "14.2.3",
-    "react": "^18",
-    "react-dom": "^18",
+    "appwrite": "^16.1.0",
+    "next": "^15.1.5",
+    "react": "^19",
+    "react-dom": "^19",
     "window-size": "^1.1.1"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^15.1.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }
