@@ -6,6 +6,7 @@ import AppBar from '../../common/app_bar';
 import { useState, useEffect } from 'react';
 import './styles.css'
 import Image from 'next/image'
+import Link from 'next/link';
 
 const DEFAULT_EXIF = "N/A";
 const ALLOWED_EXIF_REGEX = /[^0-9a-zA-Z\ -_\.]/g;
@@ -66,6 +67,7 @@ export default function Photo(props) {
     <main>
       <AppBar/>
       <div className="gradient-bg">
+        <a href={photo.full_res_url} target="_blank">
         <Image
           className="m-auto w-auto h-fit max-h-[80vh]"
           key={photo.id}
@@ -74,6 +76,7 @@ export default function Photo(props) {
           unoptimized
           width={photo.width}
           height={photo.height} />
+        </a>
       </div>
       <h1
         className="
