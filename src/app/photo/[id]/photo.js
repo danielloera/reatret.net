@@ -76,7 +76,7 @@ export default function Photo(props) {
           key={photo.id}
           src={photo.full_res_url}
           alt={photo.description}
-          onLoadingComplete={() => setIsLoading(false)}
+          onLoad={() => setIsLoading(false)}
           unoptimized
           width={photo.width}
           height={photo.height} />
