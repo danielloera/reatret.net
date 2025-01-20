@@ -38,7 +38,7 @@ export default function Home() {
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -46,7 +46,7 @@ export default function Home() {
     };
   }, [isFetching]);
 
-      
+
   useEffect(() => {
     if (isFetching) return;
     // Save scroll position to local storage on state change
@@ -67,6 +67,7 @@ export default function Home() {
     const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
     const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
     const heightPerCol = Math.ceil(totalHeightRatio / numCols);
+    const colWidth = Math.round(window.innerWidth / numCols);
 
     var chunkedPhotos = [];
     let chunkList = [];
@@ -85,19 +86,21 @@ export default function Home() {
 
     let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
       <div key={cIdx} className="flex flex-col gap-3">{
-          chunk.map((photo, pIdx) =>
-	      <div key={pIdx}
-             className={`bg-stone-800 rounded-lg w-[${photo.width}px] h-[${photo.height}px]`}>
+          chunk.map((photo, pIdx) =>{
+        const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
+	      return <div key={pIdx}
+             className={`bg-stone-800 rounded-lg w-[${colWidth}px] h-[${adjustedPhotoHeight}px]`}>
           <Link href={`/photo/${photo.id}`}>
             <Image
               className="w-full h-full rounded-md object-cover
-                         hover:outline outline-3 outline-teal-500"            
-              width={photo.width}
-              height={photo.height}
+                         hover:outline outline-3 outline-teal-500"
+              width={colWidth}
+              height={adjustedPhotoHeight}
+              quality={40}
               src={photo.thumbnail_url}
               alt={photo.description}/>
 	        </Link>
-	      </div>)}
+	      </div>})}
       </div>);
 
     setColumns(photoColumns);
