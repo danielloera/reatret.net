@@ -18,6 +18,8 @@ function filterStr(str) {
 
 export default function Photo(props) {
   const [photo, setPhoto] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const client = useAppWriteContext();
   useEffect(() => {
     const fetchData = async () => {
@@ -62,17 +64,19 @@ export default function Photo(props) {
           {year: 'numeric', month: 'short', day: 'numeric' })}
       </div>);
   }
+  const photoAnimation = isLoading ? "animate-[pulse_5s_linear_infinite]" : '';
 
   return (
     <main>
       <AppBar/>
-      <div className="gradient-bg">
+      <div className={`gradient-bg ${photoAnimation}`}>
         <a href={photo.full_res_url} target="_blank">
         <Image
           className="m-auto w-auto h-fit max-h-[80vh]"
           key={photo.id}
           src={photo.full_res_url}
           alt={photo.description}
+          onLoadingComplete={() => setIsLoading(false)}
           unoptimized
           width={photo.width}
           height={photo.height} />
