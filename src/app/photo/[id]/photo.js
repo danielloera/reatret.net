@@ -19,7 +19,7 @@ function filterStr(str) {
 export default function Photo(props) {
   const [photo, setPhoto] = useState(null);
   const client = useAppWriteContext();
-    useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       const result = await client.getPhoto(props.id);
       setPhoto(result.documents[0]);
