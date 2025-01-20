@@ -9,6 +9,7 @@ import AppBar from './common/app_bar';
 import { useState, useEffect } from 'react';
 
 const COL_SIZE_SCALE = 6;
+const SCROLL_POSITION_NAME = 'reatretnet_scrollPosition';
 
 function setShuffledList(setter, list) {
   let shuffled = list
@@ -29,7 +30,7 @@ export default function Home() {
   useEffect(() => {
     if (isFetching) return;
     // Set scroll position if saved.
-    const storedScrollPosition = window.sessionStorage.getItem('scrollPosition');
+    const storedScrollPosition = window.localStorage.getItem(SCROLL_POSITION_NAME);
     if (storedScrollPosition) {
       window.scrollTo(0, parseInt(storedScrollPosition));
     }
@@ -50,7 +51,7 @@ export default function Home() {
   useEffect(() => {
     if (isFetching) return;
     // Save scroll position to local storage on state change
-    window.sessionStorage.setItem('scrollPosition', scrollPosition);
+    window.localStorage.setItem(SCROLL_POSITION_NAME, scrollPosition);
   }, [scrollPosition, isFetching]);
 
 
