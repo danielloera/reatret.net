@@ -9,10 +9,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Page(props) {
+export default async function Page({ params }) {
+  const { id } = await params;
   return (
     <main>
-      <Photo id={props.params.id}/>
+      <Photo id={id}/>
     </main>
   );
 }
