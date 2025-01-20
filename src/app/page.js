@@ -8,7 +8,7 @@ import Loader from './common/loader';
 import AppBar from './common/app_bar';
 import { useState, useEffect } from 'react';
 
-const COL_SIZE_SCALE = 7;
+const COL_SIZE_SCALE = 6;
 
 function setShuffledList(setter, list) {
   let shuffled = list
@@ -65,15 +65,16 @@ export default function Home() {
   useEffect(() => {
     if (photos.length == 0) return;
     const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
+    console.log(numCols);
     const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
     const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
-    const chunkedPhotos = [];
+    var chunkedPhotos = [];
     let chunkList = [];
     let accHeight = 0;
     photos.forEach((photo) => {
       const currHeight = photo.height / photo.width;
-      if (currHeight + accHeight > heightPerCol) {
+      if (currHeight + accHeight > heightPerCol && chunkedPhotos.length + 1 < numCols) {
         chunkedPhotos.push(chunkList);
         chunkList = [];
         accHeight = 0;
