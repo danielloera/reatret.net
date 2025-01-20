@@ -3,5 +3,6 @@ export default function loader({
   width,
   quality,
 }) {
-  return src;
+  return `${src.replace('/view?', '/preview?')}&width=${width}&quality=${quality}`;
 }
+
