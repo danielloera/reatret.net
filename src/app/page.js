@@ -65,7 +65,6 @@ export default function Home() {
   useEffect(() => {
     if (photos.length == 0) return;
     const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
-    console.log(numCols);
     const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
     const heightPerCol = Math.ceil(totalHeightRatio / numCols);
 
