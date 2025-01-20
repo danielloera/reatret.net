@@ -24,6 +24,35 @@ export default function Home() {
   const [isFetching, setIsFetching] = useState(true);
   const size = useWindowSize();
   const client = useAppWriteContext();
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    if (isFetching) return;
+    // Set scroll position if saved.
+    const storedScrollPosition = window.sessionStorage.getItem('scrollPosition');
+    if (storedScrollPosition) {
+      window.scrollTo(0, parseInt(storedScrollPosition));
+    }
+
+    // Save current scroll position.
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isFetching]);
+
+      
+  useEffect(() => {
+    if (isFetching) return;
+    // Save scroll position to local storage on state change
+    window.sessionStorage.setItem('scrollPosition', scrollPosition);
+  }, [scrollPosition, isFetching]);
+
 
   useEffect(() => {
     const fetchData = async () => {
