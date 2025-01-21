@@ -94,7 +94,8 @@ export default function Home() {
           <Link href={`/photo/${photo.id}`}>
             <Image
               className="w-full h-full rounded-md object-cover
-                         hover:outline outline-3 outline-teal-500"
+                         hover:outline outline-3 outline-teal-500
+                         hover:animate-[pulse_2s_linear_infinite]"
               width={colWidth}
               height={adjustedPhotoHeight}
               quality={40}
