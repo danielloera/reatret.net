@@ -7,6 +7,7 @@ import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import AppBar from './common/app_bar';
 import { useState, useEffect } from 'react';
+import { InView } from "react-intersection-observer";
 
 const COL_SIZE_SCALE = 6;
 const SCROLL_POSITION_NAME = 'reatretnet_scrollPosition';
@@ -89,20 +90,36 @@ export default function Home() {
       <div key={cIdx} className="flex flex-col gap-3">{
           chunk.map((photo, pIdx) =>{
         const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
-	      return <div key={pIdx}
-             className={`bg-stone-800 rounded-lg w-[${colWidth}px] h-[${adjustedPhotoHeight}px]`}>
-          <Link href={`/photo/${photo.id}`}>
-            <Image
-              className="w-full h-full rounded-md object-cover
-                         hover:outline outline-3 outline-teal-500
-                         hover:animate-[pulse_2s_linear_infinite]"
-              width={colWidth}
-              height={adjustedPhotoHeight}
-              quality={40}
-              src={photo.thumbnail_url}
-              alt={photo.description}/>
-	        </Link>
-	      </div>})}
+	      return (
+        <InView key={pIdx} triggerOnce={true} rootMargin="300px 0px">
+          {({ inView, ref, entry }) => (
+          <div ref={ref}
+               className={`bg-stone-800 rounded-lg w-[${colWidth}px] h-[${adjustedPhotoHeight}px]`}>
+            <Link href={`/photo/${photo.id}`}>{
+              inView ?
+              <Image
+                className="w-full h-full rounded-md object-cover
+                           hover:outline outline-3 outline-teal-500
+                           hover:animate-[pulse_2s_linear_infinite]"
+                width={colWidth}
+                loading="lazy"
+                height={adjustedPhotoHeight}
+                quality={40}
+                src={photo.thumbnail_url}
+                alt={photo.description}/>
+             :
+              <Image
+                  className="w-full h-full rounded-md object-cover
+                             hover:outline outline-3 outline-teal-500
+                             hover:animate-[pulse_2s_linear_infinite]"
+                  width={colWidth}
+                  height={adjustedPhotoHeight}
+                  src="null"
+                  alt={photo.description}/>}
+  	        </Link>
+  	      </div>)}
+        </InView>)
+      })}
       </div>);
 
     setColumns(photoColumns);
