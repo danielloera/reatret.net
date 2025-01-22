@@ -63,11 +63,11 @@ export default function Home() {
         <InView key={pIdx} triggerOnce={true} rootMargin="300px 300px">
           {({ inView, ref, entry }) => (
           <div ref={ref}
-               className={`bg-stone-800 rounded-lg w-[${colWidth}px] h-[${adjustedPhotoHeight}px]`}>
+               className={`bg-stone-800 rounded-lg w-full h-full]`}>
             <a href={`/photo/${photo.id}`} target="_blank">{
               inView ?
               <Image
-                className="w-full h-full rounded-md object-cover
+                className="w-fit h-fit rounded-md object-cover
                            hover:outline outline-3 outline-teal-500
                            hover:animate-[pulse_2s_linear_infinite]"
                 width={colWidth}
