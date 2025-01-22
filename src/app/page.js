@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react';
 import { InView } from "react-intersection-observer";
 
 const COL_SIZE_SCALE = 6;
-const SCROLL_POSITION_NAME = 'reatretnet_scrollPosition';
 
 function setShuffledList(setter, list) {
   let shuffled = list
@@ -26,35 +25,6 @@ export default function Home() {
   const [isFetching, setIsFetching] = useState(true);
   const size = useWindowSize();
   const client = useAppWriteContext();
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  useEffect(() => {
-    if (isFetching) return;
-    // Set scroll position if saved.
-    const storedScrollPosition = window.localStorage.getItem(SCROLL_POSITION_NAME);
-    if (storedScrollPosition) {
-      window.scrollTo(0, parseInt(storedScrollPosition));
-    }
-
-    // Save current scroll position.
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-        window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isFetching]);
-
-
-  useEffect(() => {
-    if (isFetching) return;
-    // Save scroll position to local storage on state change
-    window.localStorage.setItem(SCROLL_POSITION_NAME, scrollPosition);
-  }, [scrollPosition, isFetching]);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,7 +61,7 @@ export default function Home() {
           chunk.map((photo, pIdx) =>{
         const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
 	      return (
-        <InView key={pIdx} triggerOnce={true} rootMargin="300px 0px">
+        <InView key={pIdx} triggerOnce={true} rootMargin="300px 300px">
           {({ inView, ref, entry }) => (
           <div ref={ref}
                className={`bg-stone-800 rounded-lg w-[${colWidth}px] h-[${adjustedPhotoHeight}px]`}>
@@ -111,10 +81,11 @@ export default function Home() {
               <Image
                   className="w-full h-full rounded-md object-cover
                              hover:outline outline-3 outline-teal-500
-                             hover:animate-[pulse_2s_linear_infinite]"
+                             hover:animate-[pulse_1s_linear_infinite]"
                   width={colWidth}
                   height={adjustedPhotoHeight}
-                  src="null"
+                  unoptimized
+                  src="gray.svg"
                   alt={photo.description}/>}
   	        </Link>
   	      </div>)}
