@@ -80,7 +80,7 @@ export default function Home() {
               <Image
                   className="w-full h-full rounded-md object-cover
                              hover:outline outline-3 outline-teal-500
-                             hover:animate-[pulse_1s_linear_infinite]"
+                             animate-[pulse_1s_linear_infinite]"
                   width={colWidth}
                   height={adjustedPhotoHeight}
                   unoptimized
