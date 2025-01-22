@@ -1,6 +1,5 @@
 "use client";
 
-import Link from 'next/link';
 import Image from 'next/image'
 import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppWriteContext } from './appwrite_provider';
@@ -65,7 +64,7 @@ export default function Home() {
           {({ inView, ref, entry }) => (
           <div ref={ref}
                className={`bg-stone-800 rounded-lg w-[${colWidth}px] h-[${adjustedPhotoHeight}px]`}>
-            <Link href={`/photo/${photo.id}`}>{
+            <a href={`/photo/${photo.id}`} target="_blank">{
               inView ?
               <Image
                 className="w-full h-full rounded-md object-cover
@@ -87,7 +86,7 @@ export default function Home() {
                   unoptimized
                   src="gray.svg"
                   alt={photo.description}/>}
-  	        </Link>
+  	        </a>
   	      </div>)}
         </InView>)
       })}
