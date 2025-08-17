@@ -5,7 +5,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import { useAppWriteContext } from './appwrite_provider';
 import Loader from './common/loader';
 import AppBar from './common/app_bar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { InView } from "react-intersection-observer";
 
 const COL_SIZE_SCALE = 6;
@@ -20,81 +20,41 @@ function setShuffledList(setter, list) {
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
-  const [columns, setColumns] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const size = useWindowSize();
   const client = useAppWriteContext();
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsFetching(true);
       const result = await client.getAllPhotos();
       setPhotos(result.documents);
+      setIsFetching(false);
     };
     fetchData();
   }, [client]);
 
-  useEffect(() => {
-    if (photos.length == 0) return;
-    const numCols = Math.round(size.width / (COL_SIZE_SCALE * 100));
-    const totalHeightRatio = photos.reduce((acc, curr) => acc + curr.height / curr.width, 0);
-    const heightPerCol = Math.ceil(totalHeightRatio / numCols);
-    const colWidth = Math.round(window.innerWidth / numCols);
+  // This memoized value will only be recalculated when `photos` or `size.width` changes.
+  const photoColumns = useMemo(() => {
+    if (photos.length === 0 || !size.width) return [];
 
-    var chunkedPhotos = [];
-    let chunkList = [];
-    let accHeight = 0;
+    const numCols = Math.max(1, Math.round(size.width / (COL_SIZE_SCALE * 100)));
+    const columns = Array.from({ length: numCols }, () => ({ photos: [], heightRatio: 0 }));
+
     photos.forEach((photo) => {
-      const currHeight = photo.height / photo.width;
-      if (currHeight + accHeight > heightPerCol && chunkedPhotos.length + 1 < numCols) {
-        chunkedPhotos.push(chunkList);
-        chunkList = [];
-        accHeight = 0;
-      }
-      accHeight += currHeight;
-      chunkList.push(photo);
+        // Find the column with the minimum current height to add the next photo
+        let shortestColIndex = 0;
+        for (let i = 1; i < columns.length; i++) {
+            if (columns[i].heightRatio < columns[shortestColIndex].heightRatio) {
+                shortestColIndex = i;
+            }
+        }
+        columns[shortestColIndex].photos.push(photo);
+        columns[shortestColIndex].heightRatio += photo.height / photo.width;
     });
-    chunkedPhotos.push(chunkList);
 
-    let photoColumns = chunkedPhotos.map((chunk, cIdx) =>
-      <div key={cIdx} className="flex flex-col gap-3">{
-          chunk.map((photo, pIdx) =>{
-        const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
-	      return (
-        <InView key={pIdx} triggerOnce={true} rootMargin="300px 300px">
-          {({ inView, ref, entry }) => (
-          <div ref={ref}
-               className={`bg-stone-800 rounded-lg w-full h-full]`}>
-            <a href={`/photo/${photo.id}`} target="_blank">{
-              inView ?
-              <Image
-                className="w-fit h-fit rounded-md object-cover
-                           hover:outline outline-3 outline-teal-500
-                           hover:animate-[pulse_2s_linear_infinite]"
-                width={colWidth}
-                loading="lazy"
-                height={adjustedPhotoHeight}
-                quality={40}
-                src={photo.thumbnail_url}
-                alt={photo.description}/>
-             :
-              <Image
-                  className="w-full h-full rounded-md object-cover
-                             hover:outline outline-3 outline-teal-500
-                             animate-[pulse_1s_linear_infinite]"
-                  width={colWidth}
-                  height={adjustedPhotoHeight}
-                  unoptimized
-                  src="gray.svg"
-                  alt={photo.description}/>}
-  	        </a>
-  	      </div>)}
-        </InView>)
-      })}
-      </div>);
-
-    setColumns(photoColumns);
-    setIsFetching(false);
-  }, [size, photos]);
+    return columns;
+  }, [photos, size.width]);
 
 
   if (isFetching) return <Loader/>;
@@ -105,11 +65,48 @@ export default function Home() {
         <span
           className="cursor-pointer"
           onClick={() => setShuffledList(setPhotos, photos)}>
-            🔀
-          </span>}/>
+          🔀
+        </span>}/>
       <div className="w-full min-h-[200vh] p-3 m-auto">
        <div className="flex flex-row justify-center gap-3">
-        {columns}
+        {photoColumns.map((col, cIdx) => (
+          <div key={cIdx} className="flex flex-col gap-3 w-full">
+            {col.photos.map((photo, pIdx) => {
+              const colWidth = Math.round(size.width / photoColumns.length);
+              const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
+              return (
+              <InView key={photo.id} triggerOnce={true} rootMargin="300px">
+                {({ inView, ref }) => (
+                  <div ref={ref} className="bg-stone-800 rounded-lg">
+                    <a href={`/photo/${photo.id}`} target="_blank">
+                      {inView ? (
+                        <Image
+                          className="w-full h-auto rounded-md object-cover hover:outline outline-3 outline-teal-500"
+                          width={colWidth}
+                          height={adjustedPhotoHeight}
+                          quality={50} // Quality can be slightly higher for better visuals
+                          src={photo.thumbnail_url}
+                          alt={photo.description}
+                          priority={pIdx === 0}
+                        />
+                      ) : (
+                        // This div acts as a placeholder, preventing layout shift
+                        <Image
+                          className="w-full h-full rounded-md object-cover
+                                     hover:outline outline-3 outline-teal-500
+                                     animate-[pulse_1s_linear_infinite]"
+                          width={colWidth}
+                          height={adjustedPhotoHeight}
+                          unoptimized
+                          src="gray.svg"
+                          alt={photo.description}/>)}
+                    </a>
+                  </div>
+                )}
+              </InView>
+            )})}
+          </div>
+        ))}
        </div>
       </div>
     </main>
