@@ -155,8 +155,8 @@ export default function Home() {
         {!hasMore && (
           <div
               className="pt-mono-regular mb-4 lg:mb-10
-                         text-sm ps-4 pt-8 pb-4
-                         sm:text-base sm:ps-12"
+                         text-sm
+                         sm:text-base text-center"
           >
               no more.
           </div>
