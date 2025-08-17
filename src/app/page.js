@@ -146,8 +146,20 @@ export default function Home() {
               disabled={isPageLoading}
               className="bg-transparent pt-mono-regular text-white py-2 px-6 rounded-lg hover:outline outline-3 outline-teal-500 disabled:bg-stone-600 transition-colors"
           >
-              Load More
+              load more
           </button>
+            )}
+        </div>
+
+       <div className="flex justify-center mt-8">
+        {!hasMore && (
+          <div
+              className="pt-mono-regular mb-4 lg:mb-10
+                         text-sm ps-4 pt-8 pb-4
+                         sm:text-base sm:ps-12"
+          >
+              no more.
+          </div>
             )}
         </div>
       </div>
