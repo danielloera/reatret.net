@@ -20,29 +20,58 @@ function setShuffledList(setter, list) {
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(true); // For initial page load
+  
+  const [pageIndex, setPageIndex] = useState(0); // Start at page 0
+  const [isPageLoading, setIsPageLoading] = useState(false); // For "Load More" button
+  const [hasMore, setHasMore] = useState(true); // To hide the button when done
+
   const size = useWindowSize();
   const client = useAppWriteContext();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsFetching(true);
-      const result = await client.getAllPhotos();
-      setPhotos(result.documents);
-      setIsFetching(false);
-    };
-    fetchData();
-  }, [client]);
+      // This flag will be used to ignore the result of the first, outdated fetch
+      let ignore = false;
 
-  // This memoized value will only be recalculated when `photos` or `size.width` changes.
+      const fetchData = async () => {
+          if (pageIndex === 0) {
+              setIsFetching(true);
+          } else {
+              setIsPageLoading(true);
+          }
+          
+          const result = await client.getPhotoPage(pageIndex);
+          
+          // Only update state if the effect has not been cleaned up
+          if (!ignore) {
+              if (result.documents && result.documents.length > 0) {
+                  setPhotos(prevPhotos => [...prevPhotos, ...result.documents]);
+              } else {
+                  setHasMore(false);
+              }
+
+              setIsFetching(false);
+              setIsPageLoading(false);
+          }
+      };
+
+      if (hasMore) {
+          fetchData();
+      }
+
+      // This is the cleanup function. It runs when the component unmounts.
+      return () => {
+          ignore = true;
+      };
+  }, [client, pageIndex, hasMore]); // Added hasMore to dependency array for correctness
+
   const photoColumns = useMemo(() => {
     if (photos.length === 0 || !size.width) return [];
-
+    
     const numCols = Math.max(1, Math.round(size.width / (COL_SIZE_SCALE * 100)));
     const columns = Array.from({ length: numCols }, () => ({ photos: [], heightRatio: 0 }));
 
     photos.forEach((photo) => {
-        // Find the column with the minimum current height to add the next photo
         let shortestColIndex = 0;
         for (let i = 1; i < columns.length; i++) {
             if (columns[i].heightRatio < columns[shortestColIndex].heightRatio) {
@@ -57,7 +86,7 @@ export default function Home() {
   }, [photos, size.width]);
 
 
-  if (isFetching) return <Loader/>;
+  if (isFetching && pageIndex === 0) return <Loader/>;
 
   return (
     <main className="">
@@ -87,7 +116,7 @@ export default function Home() {
                           quality={50} // Quality can be slightly higher for better visuals
                           src={photo.thumbnail_url}
                           alt={photo.description}
-                          priority={pIdx === 0}
+                          priority={true}
                         />
                       ) : (
                         // This div acts as a placeholder, preventing layout shift
@@ -97,6 +126,7 @@ export default function Home() {
                                      animate-[pulse_1s_linear_infinite]"
                           width={colWidth}
                           height={adjustedPhotoHeight}
+                          priority={true}
                           unoptimized
                           src="gray.svg"
                           alt={photo.description}/>)}
@@ -108,6 +138,18 @@ export default function Home() {
           </div>
         ))}
        </div>
+
+       <div className="flex justify-center mt-8">
+        {hasMore && (
+          <button
+              onClick={() => setPageIndex(prev => prev + 1)}
+              disabled={isPageLoading}
+              className="bg-transparent pt-mono-regular text-white py-2 px-6 rounded-lg hover:outline outline-3 outline-teal-500 disabled:bg-stone-600 transition-colors"
+          >
+              Load More
+          </button>
+            )}
+        </div>
       </div>
     </main>
   );
