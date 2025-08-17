@@ -2,6 +2,7 @@ import { Client, Databases, Query } from 'appwrite';
 
 const MAX_LIMIT_QUERY = Query.limit(9999)
 const DATE_DESC_QUERY = Query.orderDesc("date")
+const PAGE_SIZE = 25
 
 export default class AppWriteHelper {
 
@@ -18,6 +19,12 @@ export default class AppWriteHelper {
 
   getAllPhotos = async () => this.#getPhotosHelper([
                               DATE_DESC_QUERY, MAX_LIMIT_QUERY]);
+
+  getPhotoPage = async (idx) => this.#getPhotosHelper([
+                              Query.limit(PAGE_SIZE),
+                              Query.offset(PAGE_SIZE * idx),
+                              Query.orderDesc("date")
+]);
 
   getPhoto = async (id) => this.#getPhotosHelper([Query.equal("id", id)]);
 }
