@@ -21,7 +21,7 @@ function setShuffledList(setter, list) {
 export default function Home() {
   const [photos, setPhotos] = useState([]);
   const [isFetching, setIsFetching] = useState(true); // For initial page load
-  
+
   const [pageIndex, setPageIndex] = useState(0); // Start at page 0
   const [isPageLoading, setIsPageLoading] = useState(false); // For "Load More" button
   const [hasMore, setHasMore] = useState(true); // To hide the button when done
@@ -39,9 +39,9 @@ export default function Home() {
           } else {
               setIsPageLoading(true);
           }
-          
+
           const result = await client.getPhotoPage(pageIndex);
-          
+
           // Only update state if the effect has not been cleaned up
           if (!ignore) {
               if (result.documents && result.documents.length > 0) {
@@ -67,7 +67,7 @@ export default function Home() {
 
   const photoColumns = useMemo(() => {
     if (photos.length === 0 || !size.width) return [];
-    
+
     const numCols = Math.max(1, Math.round(size.width / (COL_SIZE_SCALE * 100)));
     const columns = Array.from({ length: numCols }, () => ({ photos: [], heightRatio: 0 }));
 
