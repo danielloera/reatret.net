@@ -113,13 +113,13 @@ export default function Home() {
                           className="w-full h-auto rounded-md object-cover hover:outline outline-3 outline-teal-500"
                           width={colWidth}
                           height={adjustedPhotoHeight}
-                          quality={50} // Quality can be slightly higher for better visuals
+                          quality={50}
                           src={photo.thumbnail_url}
                           alt={photo.description}
                           priority={true}
                         />
                       ) : (
-                        // This div acts as a placeholder, preventing layout shift
+                        // This acts as a placeholder, preventing layout shift
                         <Image
                           className="w-full h-full rounded-md object-cover
                                      hover:outline outline-3 outline-teal-500
@@ -144,20 +144,18 @@ export default function Home() {
           <button
               onClick={() => setPageIndex(prev => prev + 1)}
               disabled={isPageLoading}
-              className="bg-transparent pt-mono-regular text-white py-2 px-6 rounded-lg hover:outline outline-3 outline-teal-500 disabled:bg-stone-600 transition-colors"
-          >
+              className="bg-transparent pt-mono-regular text-white py-2 px-6 rounded-lg
+                         hover:outline outline-3 outline-teal-500 disabled:bg-stone-600">
               load more
           </button>
             )}
         </div>
 
-       <div className="flex justify-center mt-8">
+       <div className="flex justify-center">
         {!hasMore && (
           <div
-              className="pt-mono-regular mb-4 lg:mb-10
-                         text-sm
-                         sm:text-base text-center"
-          >
+              className="pt-mono-regular text-sm
+                         sm:text-base text-center">
               no more.
           </div>
             )}
