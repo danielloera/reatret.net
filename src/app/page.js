@@ -23,8 +23,8 @@ export default function Home() {
   const [isFetching, setIsFetching] = useState(true); // For initial page load
 
   const [pageIndex, setPageIndex] = useState(0); // Start at page 0
-  const [isPageLoading, setIsPageLoading] = useState(false); // For "Load More" button
-  const [hasMore, setHasMore] = useState(true); // To hide the button when done
+  const [isPageLoading, setIsPageLoading] = useState(false); // For subsequent page loads
+  const [hasMore, setHasMore] = useState(true); // To stop fetching when done
 
   const size = useWindowSize();
   const client = useAppWriteContext();
@@ -55,15 +55,15 @@ export default function Home() {
           }
       };
 
-      if (hasMore) {
+      // We only fetch if we are not already loading and there are more pages
+      if (hasMore && !isPageLoading) {
           fetchData();
       }
 
-      // This is the cleanup function. It runs when the component unmounts.
       return () => {
           ignore = true;
       };
-  }, [client, pageIndex, hasMore]); // Added hasMore to dependency array for correctness
+  }, [client, pageIndex, hasMore]);
 
   const photoColumns = useMemo(() => {
     if (photos.length === 0 || !size.width) return [];
@@ -139,25 +139,28 @@ export default function Home() {
         ))}
        </div>
 
-       <div className="flex justify-center mt-8">
-        {hasMore && (
-          <button
-              onClick={() => setPageIndex(prev => prev + 1)}
-              disabled={isPageLoading}
-              className="bg-transparent pt-mono-regular text-white py-2 px-6 rounded-lg
-                         hover:outline outline-3 outline-teal-500 disabled:bg-stone-600">
-              load more
-          </button>
+        <InView
+            as="div"
+            threshold={0}
+            onChange={(inView) => {
+                if (inView && hasMore && !isPageLoading) {
+                    setPageIndex((prev) => prev + 1);
+                }
+            }}>
+            {isPageLoading && (
+                <div className="flex justify-center my-8">
+                    <span className="pt-mono-regular text-white">Loading...</span>
+                </div>
             )}
-        </div>
+        </InView>
 
-       <div className="flex justify-center">
+        <div className="flex justify-center mt-4">
         {!hasMore && (
-          <div
-              className="pt-mono-regular text-sm
-                         sm:text-base text-center">
-              no more.
-          </div>
+            <div
+                className="pt-mono-regular text-sm
+                           sm:text-base text-center text-stone-400">
+                no more.
+            </div>
             )}
         </div>
       </div>
