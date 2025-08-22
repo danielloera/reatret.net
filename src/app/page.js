@@ -63,7 +63,7 @@ export default function Home() {
       return () => {
           ignore = true;
       };
-  }, [client, pageIndex, hasMore]);
+  }, [client, pageIndex, hasMore, isPageLoading]);
 
   const photoColumns = useMemo(() => {
     if (photos.length === 0 || !size.width) return [];
