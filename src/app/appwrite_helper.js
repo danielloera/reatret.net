@@ -2,7 +2,7 @@ import { Client, Databases, Query } from 'appwrite';
 
 const MAX_LIMIT_QUERY = Query.limit(9999)
 const DATE_DESC_QUERY = Query.orderDesc("date")
-const PAGE_SIZE = 25
+const PAGE_SIZE = 15
 
 export default class AppWriteHelper {
 
