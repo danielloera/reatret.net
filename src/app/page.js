@@ -56,14 +56,14 @@ export default function Home() {
       };
 
       // We only fetch if we are not already loading and there are more pages
-      if (hasMore && !isPageLoading) {
+      if (hasMore) {
           fetchData();
       }
 
       return () => {
           ignore = true;
       };
-  }, [client, pageIndex, hasMore, isPageLoading]);
+  }, [client, pageIndex, hasMore]);
 
   const photoColumns = useMemo(() => {
     if (photos.length === 0 || !size.width) return [];
