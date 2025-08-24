@@ -13,7 +13,6 @@ const COL_SIZE_SCALE = 6;
 
 const SCROLL_POSITION_KEY = "scrollPosition";
 const IMAGE_GRID_KEY = "imageGrid";
-const PAGE_KEY = "page";
 
 function setShuffledList(setter, list) {
   let shuffled = list
@@ -44,20 +43,19 @@ export default function Home() {
     window.history.scrollRestoration = 'manual';
 
     const cachedPhotos = sessionStorage.getItem(IMAGE_GRID_KEY);
-    const pageIdx = sessionStorage.getItem(PAGE_KEY);
 
     if (cachedPhotos && pageIndex != null) {
-      setPhotos(JSON.parse(cachedPhotos));
-      setPageIndex(pageIdx);
+      const photoArr = JSON.parse(cachedPhotos);
+      setPhotos(photoArr);
+      setPageIndex((photoArr.length % 15) - 1);
       setIsFetching(false);
       setIsPageLoading(false);
       setIsFetchEnabled(false);
-      sessionStorage.removeItem(IMAGE_GRID_KEY);
-      sessionStorage.removeItem(PAGE_KEY);
     } else {
       setIsFetchEnabled(true);
     }
 
+    sessionStorage.removeItem(IMAGE_GRID_KEY);
     }, []);
 
   useEffect(() => {
@@ -188,11 +186,7 @@ export default function Home() {
             threshold={0}
             onChange={(inView) => {
                 if (inView && hasMore && !isPageLoading) {
-                   setPageIndex((prev) => {
-                      var newIdx = prev + 1;
-                      sessionStorage.setItem(PAGE_KEY, newIdx);
-                      return newIdx;
-                    });
+                   setPageIndex((prev) => prev + 1);
                    setIsFetchEnabled(true);
                 }
             }}>
