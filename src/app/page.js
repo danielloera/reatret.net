@@ -7,8 +7,13 @@ import Loader from './common/loader';
 import AppBar from './common/app_bar';
 import { useState, useEffect, useMemo } from 'react';
 import { InView } from "react-intersection-observer";
+import Link from 'next/link';
 
 const COL_SIZE_SCALE = 6;
+
+const SCROLL_POSITION_KEY = "scrollPosition";
+const IMAGE_GRID_KEY = "imageGrid";
+const PAGE_KEY = "page";
 
 function setShuffledList(setter, list) {
   let shuffled = list
@@ -18,9 +23,15 @@ function setShuffledList(setter, list) {
   setter(shuffled);
 }
 
+const handleNavigation = () => {
+  sessionStorage.setItem(SCROLL_POSITION_KEY, window.scrollY.toString());
+};
+
 export default function Home() {
   const [photos, setPhotos] = useState([]);
-  const [isFetching, setIsFetching] = useState(true); // For initial page load
+  const [isFetching, setIsFetching] = useState(true);
+  const [isCacheLoading, setIsCacheLoading] = useState(true);
+  const [isFetchEnabled, setIsFetchEnabled] = useState(false);
 
   const [pageIndex, setPageIndex] = useState(0); // Start at page 0
   const [isPageLoading, setIsPageLoading] = useState(false); // For subsequent page loads
@@ -30,9 +41,41 @@ export default function Home() {
   const client = useAppWriteContext();
 
   useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+
+    const cachedPhotos = sessionStorage.getItem(IMAGE_GRID_KEY);
+    const pageIdx = sessionStorage.getItem(PAGE_KEY);
+
+    if (cachedPhotos && pageIndex != null) {
+      setPhotos(JSON.parse(cachedPhotos));
+      setPageIndex(pageIdx);
+      setIsFetching(false);
+      setIsPageLoading(false);
+      setIsFetchEnabled(false);
+      sessionStorage.removeItem(IMAGE_GRID_KEY);
+      sessionStorage.removeItem(PAGE_KEY);
+    } else {
+      setIsFetchEnabled(true);
+    }
+
+    }, []);
+
+  useEffect(() => {
+    if (photos.length === 0) return;
+    const savedPosition = sessionStorage.getItem(SCROLL_POSITION_KEY);
+
+    if (savedPosition) {
+      setTimeout(() => {
+            window.scrollTo(0, parseInt(savedPosition, 10));
+      }, 0);
+    }
+
+    sessionStorage.removeItem(SCROLL_POSITION_KEY);
+    }, [photos]);
+
+  useEffect(() => {
       // This flag will be used to ignore the result of the first, outdated fetch
       let ignore = false;
-
       const fetchData = async () => {
           if (pageIndex === 0) {
               setIsFetching(true);
@@ -56,17 +99,18 @@ export default function Home() {
       };
 
       // We only fetch if we are not already loading and there are more pages
-      if (hasMore) {
+      if (hasMore && isFetchEnabled) {
           fetchData();
       }
 
       return () => {
           ignore = true;
       };
-  }, [client, pageIndex, hasMore]);
+  }, [client, pageIndex, hasMore, isFetchEnabled]);
 
   const photoColumns = useMemo(() => {
     if (photos.length === 0 || !size.width) return [];
+    sessionStorage.setItem(IMAGE_GRID_KEY, JSON.stringify(photos));
 
     const numCols = Math.max(1, Math.round(size.width / (COL_SIZE_SCALE * 100)));
     const columns = Array.from({ length: numCols }, () => ({ photos: [], heightRatio: 0 }));
@@ -107,7 +151,7 @@ export default function Home() {
               <InView key={photo.id} triggerOnce={true} rootMargin="300px">
                 {({ inView, ref }) => (
                   <div ref={ref} className="bg-stone-800 rounded-lg">
-                    <a href={`/photo/${photo.id}`} target="_blank">
+                    <Link href={`/photo/${photo.id}`} onClick={handleNavigation}>
                       {inView ? (
                         <Image
                           className="w-full h-auto rounded-md object-cover hover:outline outline-3 outline-teal-500"
@@ -130,7 +174,7 @@ export default function Home() {
                           unoptimized
                           src="gray.svg"
                           alt={photo.description}/>)}
-                    </a>
+                    </Link>
                   </div>
                 )}
               </InView>
@@ -144,7 +188,12 @@ export default function Home() {
             threshold={0}
             onChange={(inView) => {
                 if (inView && hasMore && !isPageLoading) {
-                    setPageIndex((prev) => prev + 1);
+                   setPageIndex((prev) => {
+                      var newIdx = prev + 1;
+                      sessionStorage.setItem(PAGE_KEY, newIdx);
+                      return newIdx;
+                    });
+                   setIsFetchEnabled(true);
                 }
             }}>
             {isPageLoading && (
