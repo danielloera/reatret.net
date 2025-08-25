@@ -7,6 +7,7 @@ import Loader from './common/loader';
 import AppBar from './common/app_bar';
 import { useState, useEffect, useMemo } from 'react';
 import { InView } from "react-intersection-observer";
+import Link from 'next/link'
 
 const COL_SIZE_SCALE = 6;
 
@@ -107,7 +108,7 @@ export default function Home() {
               <InView key={photo.id} triggerOnce={true} rootMargin="300px">
                 {({ inView, ref }) => (
                   <div ref={ref} className="bg-stone-800 rounded-lg">
-                    <a href={`/photo/${photo.id}`} target="_blank">
+                    <Link href={`/photo/${photo.id}`}>
                       {inView ? (
                         <Image
                           className="w-full h-auto rounded-md object-cover hover:outline outline-3 outline-teal-500"
@@ -130,7 +131,7 @@ export default function Home() {
                           unoptimized
                           src="gray.svg"
                           alt={photo.description}/>)}
-                    </a>
+                    </Link>
                   </div>
                 )}
               </InView>
