@@ -99,10 +99,10 @@ export default function Home() {
         </span>}/>
       <div className="w-full min-h-[200vh] p-3 m-auto">
        <div className="flex flex-row justify-center gap-3">
-        {photoColumns.map((col, cIdx) => (
-          <div key={cIdx} className="flex flex-col gap-3 w-full">
+        {photoColumns.map((col, cIdx) => {
+          const colWidth = Math.round(size.width / photoColumns.length);
+          return <div key={cIdx} className="flex flex-col gap-3 w-full">
             {col.photos.map((photo, pIdx) => {
-              const colWidth = Math.round(size.width / photoColumns.length);
               const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
               return (
               <InView key={photo.id} triggerOnce={true} rootMargin="300px">
@@ -125,7 +125,7 @@ export default function Home() {
               </InView>
             )})}
           </div>
-        ))}
+        })}
        </div>
 
         <InView
