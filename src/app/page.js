@@ -23,9 +23,9 @@ function shuffleArray(array) {
 export default function Home() {
   const [photos, setPhotos] = useState([]);
 
-  const [pageIndex, setPageIndex] = useState(0); // Start at page 0
-  const [isPageLoading, setIsPageLoading] = useState(false); // For subsequent page loads
-  const [hasMore, setHasMore] = useState(true); // To stop fetching when done
+  const [pageIndex, setPageIndex] = useState(0);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const size = useWindowSize();
   const client = useAppWriteContext();
@@ -51,7 +51,6 @@ export default function Home() {
           }
       };
 
-      // We only fetch if we are not already loading and there are more pages
       if (hasMore) {
           fetchData();
       }
@@ -109,10 +108,10 @@ export default function Home() {
                         width={colWidth}
                         height={adjustedPhotoHeight}
                         quality={50}
-                        src={inView ? photo.thumbnail_url : "/gray.svg"} // Conditionally set the source
+                        src={inView ? photo.thumbnail_url : "/gray.svg"}
                         alt={photo.description}
-                        unoptimized={!inView} // Only unoptimize the placeholder
-                        priority={pIdx < 2} // Apply priority only to the first few images
+                        unoptimized={!inView}
+                        priority={pIdx < 2}
                       />
                     </Link>
                   </div>
