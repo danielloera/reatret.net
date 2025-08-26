@@ -61,7 +61,7 @@
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="pt-mono-regular  flex flex-col items-center text-center gap-4">
-          <h2 className="text-2xl md:text-3xl text-white">Hi, I'm Danny</h2>
+          <h2 className="text-2xl md:text-3xl text-white">Hi, I&apos;m Danny</h2>
           <p className="text-center">
             Welcome to my site. I love building things, riding bikes,
             taking photos, and other stuff and things.<br/>
