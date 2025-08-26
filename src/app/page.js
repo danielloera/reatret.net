@@ -109,28 +109,16 @@ export default function Home() {
                 {({ inView, ref }) => (
                   <div ref={ref} className="bg-stone-800 rounded-lg">
                     <Link href={`/photo/${photo.id}`}>
-                      {inView ? (
-                        <Image
-                          className="w-full h-auto rounded-md object-cover hover:outline outline-3 outline-teal-500"
-                          width={colWidth}
-                          height={adjustedPhotoHeight}
-                          quality={50}
-                          src={photo.thumbnail_url}
-                          alt={photo.description}
-                          priority={true}
-                        />
-                      ) : (
-                        // This acts as a placeholder, preventing layout shift
-                        <Image
-                          className="w-full h-full rounded-md object-cover
-                                     hover:outline outline-3 outline-teal-500
-                                     animate-[pulse_1s_linear_infinite]"
-                          width={colWidth}
-                          height={adjustedPhotoHeight}
-                          priority={true}
-                          unoptimized
-                          src="gray.svg"
-                          alt={photo.description}/>)}
+                      <Image
+                        className={`w-full h-auto rounded-md object-cover hover:outline outline-3 outline-teal-500 ${!inView && "animate-[pulse_1s_linear_infinite]"}`}
+                        width={colWidth}
+                        height={adjustedPhotoHeight}
+                        quality={50}
+                        src={inView ? photo.thumbnail_url : "/gray.svg"} // Conditionally set the source
+                        alt={photo.description}
+                        unoptimized={!inView} // Only unoptimize the placeholder
+                        priority={pIdx < 2} // Apply priority only to the first few images
+                      />
                     </Link>
                   </div>
                 )}
