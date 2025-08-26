@@ -87,7 +87,7 @@ export default function Home() {
     <main className="">
       <AppBar buttons={
         <span
-          className="cursor-pointer"
+          className="cursor-pointer pl-4"
           onClick={() => setPhotos(currentPhotos => shuffleArray(currentPhotos))}>
           🔀
         </span>}/>
