@@ -22,7 +22,6 @@ function shuffleArray(array) {
 
 export default function Home() {
   const [photos, setPhotos] = useState([]);
-  const [isFetching, setIsFetching] = useState(true); // For initial page load
 
   const [pageIndex, setPageIndex] = useState(0); // Start at page 0
   const [isPageLoading, setIsPageLoading] = useState(false); // For subsequent page loads
@@ -36,11 +35,7 @@ export default function Home() {
       let ignore = false;
 
       const fetchData = async () => {
-          if (pageIndex === 0) {
-              setIsFetching(true);
-          } else {
-              setIsPageLoading(true);
-          }
+          setIsPageLoading(true);
 
           const result = await client.getPhotoPage(pageIndex);
 
@@ -52,7 +47,6 @@ export default function Home() {
                   setHasMore(false);
               }
 
-              setIsFetching(false);
               setIsPageLoading(false);
           }
       };
@@ -88,7 +82,7 @@ export default function Home() {
   }, [photos, size.width]);
 
 
-  if (isFetching && pageIndex === 0) return <Loader/>;
+  if (isPageLoading && pageIndex === 0) return <Loader/>;
 
   return (
     <main className="">
