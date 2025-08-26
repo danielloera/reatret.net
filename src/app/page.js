@@ -11,12 +11,13 @@ import Link from 'next/link'
 
 const COL_SIZE_SCALE = 6;
 
-function setShuffledList(setter, list) {
-  let shuffled = list
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
-  setter(shuffled);
+function shuffleArray(array) {
+  const newArray = [...array]; // Create a copy to avoid mutating the original
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]]; // Swap elements
+  }
+  return newArray;
 }
 
 export default function Home() {
@@ -94,7 +95,7 @@ export default function Home() {
       <AppBar buttons={
         <span
           className="cursor-pointer"
-          onClick={() => setShuffledList(setPhotos, photos)}>
+          onClick={() => setPhotos(currentPhotos => shuffleArray(currentPhotos))}>
           🔀
         </span>}/>
       <div className="w-full min-h-[200vh] p-3 m-auto">
