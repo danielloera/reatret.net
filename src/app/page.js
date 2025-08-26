@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { InView } from "react-intersection-observer";
 import Link from 'next/link'
 
-const COL_SIZE_SCALE = 6;
+const COL_SIZE_SCALE = 4;
 
 function shuffleArray(array) {
   const newArray = [...array]; // Create a copy to avoid mutating the original
