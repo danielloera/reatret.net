@@ -99,7 +99,7 @@ export default function Home() {
             {col.photos.map((photo, pIdx) => {
               const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
               return (
-              <InView key={photo.id} triggerOnce={true} rootMargin="300px">
+              <InView key={photo.id} triggerOnce={true} rootMargin="600px">
                 {({ inView, ref }) => (
                   <div ref={ref} className="bg-stone-800 rounded-lg">
                     <Link href={`/photo/${photo.id}`}>
