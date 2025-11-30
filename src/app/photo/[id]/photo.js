@@ -52,14 +52,23 @@ export default function Photo(props) {
   const cameraModel = photo.camera_model ?? DEFAULT_EXIF;
   const lensMake = photo.lens_make ?? DEFAULT_EXIF;
   const lensModel = photo.lens_model ?? DEFAULT_EXIF;
+  let photoDate = photo.date;
+  if (photoDate == null) {
+     photoDate = '404:04:04 404';
+  }
+  if (photoDate.includes('Z')) {
+     photoDate = new Date(photoDate);
+  } else {
+     photoDate = new Date(photoDate.split(' ')[0].replace(':', '-'));
+  }
   let dateElement = null;
-  if (photo.date != null) {
+  if (photoDate != null) {
     dateElement = (
       <div className="courier-prime-regular
                       pt-1 lg:pt-2
                       ps-4 sm:ps-8 lg:ps-12
                       text-sm md:text-base lg:text-lg">
-        {new Date(photo.date).toLocaleDateString(
+        {photoDate.toLocaleDateString(
           "en-US",
           {year: 'numeric', month: 'short', day: 'numeric' })}
       </div>);
