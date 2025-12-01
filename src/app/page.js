@@ -30,10 +30,23 @@ export default function Home() {
   const size = useWindowSize();
   const client = useAppWriteContext();
 
+   useEffect(() => {
+       // Disable browser's automatic scroll restoration
+       if (window.history.scrollRestoration) {
+         window.history.scrollRestoration = 'manual';
+       }
+   
+       // Optional: Re-enable it when the component unmounts if needed
+       return () => {
+         if (window.history.scrollRestoration) {
+           window.history.scrollRestoration = 'auto';
+         }
+       };
+     }, []);
+
   useEffect(() => {
       // This flag will be used to ignore the result of the first, outdated fetch
       let ignore = false;
-
       const fetchData = async () => {
           setIsPageLoading(true);
 
