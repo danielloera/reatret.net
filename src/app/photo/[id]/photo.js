@@ -33,8 +33,7 @@ export default function Photo(props) {
 
   const shutterSpeed =
           photo.shutter_speed  == null ?
-          DEFAULT_EXIF :
-          `1/${Math.round(photo.shutter_speed)}`;
+          DEFAULT_EXIF : `${photo.shutter_speed}s`;
   const focalLength =
           photo.focal_length == null ?
           DEFAULT_EXIF :
