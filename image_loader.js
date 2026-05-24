@@ -3,6 +3,11 @@ export default function loader({
   width,
   quality,
 }) {
-  return `${src.replace('/view?', '/preview?')}&width=${width}&quality=${quality}`;
+  const url = new URL(src.replace('/view?', '/preview?'));
+  url.searchParams.set('width', width);
+  if (quality) {
+    url.searchParams.set('quality', quality);
+  }
+  return url.toString();
 }
 
