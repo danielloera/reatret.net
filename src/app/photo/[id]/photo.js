@@ -76,23 +76,23 @@ export default function Photo(props) {
     }
   };
 
-  if (photo == null) return <Loader/>;
+  if (photo == null) return <Loader />;
 
   const shutterSpeed =
-          photo.shutter_speed  == null ?
-          DEFAULT_EXIF : `${photo.shutter_speed}s`;
+    photo.shutter_speed == null ?
+      DEFAULT_EXIF : `${photo.shutter_speed}s`;
   const focalLength =
-          photo.focal_length == null ?
-          DEFAULT_EXIF :
-          `${photo.focal_length}mm`;
+    photo.focal_length == null ?
+      DEFAULT_EXIF :
+      `${photo.focal_length}mm`;
   const exposureTime =
-          photo.exposure_time  == null ?
-          DEFAULT_EXIF :
-          `1/${Math.round(1/photo.exposure_time)}`;
+    photo.exposure_time == null ?
+      DEFAULT_EXIF :
+      `1/${Math.round(1 / photo.exposure_time)}`;
   const fNumber =
-          photo.f_number == null ?
-          DEFAULT_EXIF :
-          `f/${photo.f_number}`;
+    photo.f_number == null ?
+      DEFAULT_EXIF :
+      `f/${photo.f_number}`;
   const iso = photo.iso ?? DEFAULT_EXIF;
   const cameraMake = photo.camera_make ?? DEFAULT_EXIF;
   const cameraModel = photo.camera_model ?? DEFAULT_EXIF;
@@ -100,12 +100,12 @@ export default function Photo(props) {
   const lensModel = photo.lens_model ?? DEFAULT_EXIF;
   let photoDate = photo.date;
   if (photoDate == null) {
-     photoDate = '404:04:04 404';
+    photoDate = '404:04:04 404';
   }
   if (photoDate.includes('Z')) {
-     photoDate = new Date(photoDate);
+    photoDate = new Date(photoDate);
   } else {
-     photoDate = new Date(photoDate.split(' ')[0].replace(':', '-'));
+    photoDate = new Date(photoDate.split(' ')[0].replace(':', '-'));
   }
   let dateElement = null;
   if (photoDate != null) {
@@ -116,14 +116,14 @@ export default function Photo(props) {
                       text-sm md:text-base lg:text-lg">
         {photoDate.toLocaleDateString(
           "en-US",
-          {year: 'numeric', month: 'short', day: 'numeric' })}
+          { year: 'numeric', month: 'short', day: 'numeric' })}
       </div>);
   }
   const photoAnimation = isLoading ? "animate-[pulse_5s_linear_infinite]" : '';
 
   return (
     <main className="relative min-h-screen">
-      <AppBar/>
+      <AppBar />
       <div className={`gradient-bg ${photoAnimation} relative overflow-hidden flex justify-center items-center`}>
         <div className="relative group max-h-[80vh] max-w-full">
           <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh]">
@@ -137,7 +137,7 @@ export default function Photo(props) {
               width={photo.width}
               height={photo.height} />
           </a>
-          
+
           {showLeftArrow && (
             <button
               onClick={(e) => handleNavigate(e, 'prev')}
