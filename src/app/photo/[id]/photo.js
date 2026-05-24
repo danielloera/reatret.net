@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import './styles.css'
 import Image from 'next/image'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const DEFAULT_EXIF = "N/A";
 const ALLOWED_EXIF_REGEX = /[^0-9a-zA-Z\ -_\.]/g;
@@ -19,15 +20,61 @@ function filterStr(str) {
 export default function Photo(props) {
   const [photo, setPhoto] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showLeftArrow, setShowLeftArrow] = useState(true);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   const client = useAppWriteContext();
+  const router = useRouter();
+
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const result = await client.getPhoto(props.id);
       setPhoto(result.documents[0]);
+      setShowLeftArrow(true);
+      setShowRightArrow(true);
     };
     fetchData();
   }, [client, props.id]);
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
+  const triggerToast = (msg) => {
+    setToastMessage(msg);
+    setShowToast(true);
+  };
+
+  const handleNavigate = async (e, direction) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      const adjacentPhoto = await client.getAdjacentPhoto(photo, direction);
+      if (adjacentPhoto) {
+        router.push(`/photo/${adjacentPhoto.id}`);
+      } else {
+        if (direction === 'prev') {
+          triggerToast("No newer images found.");
+          setShowLeftArrow(false);
+        } else {
+          triggerToast("No older images found.");
+          setShowRightArrow(false);
+        }
+      }
+    } catch (err) {
+      console.error("Navigation error:", err);
+      triggerToast("Error loading adjacent image.");
+    }
+  };
 
   if (photo == null) return <Loader/>;
 
@@ -75,20 +122,46 @@ export default function Photo(props) {
   const photoAnimation = isLoading ? "animate-[pulse_5s_linear_infinite]" : '';
 
   return (
-    <main>
+    <main className="relative min-h-screen">
       <AppBar/>
-      <div className={`gradient-bg ${photoAnimation}`}>
-        <a href={photo.full_res_url} target="_blank">
-        <Image
-          className="m-auto w-auto h-fit max-h-[80vh]"
-          key={photo.id}
-          src={photo.full_res_url}
-          alt={photo.description}
-          onLoad={() => setIsLoading(false)}
-          unoptimized
-          width={photo.width}
-          height={photo.height} />
-        </a>
+      <div className={`gradient-bg ${photoAnimation} relative overflow-hidden flex justify-center items-center`}>
+        <div className="relative group max-h-[80vh] max-w-full">
+          <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh]">
+            <Image
+              className="m-auto w-auto h-fit max-h-[80vh]"
+              key={photo.id}
+              src={photo.full_res_url}
+              alt={photo.description}
+              onLoad={() => setIsLoading(false)}
+              unoptimized
+              width={photo.width}
+              height={photo.height} />
+          </a>
+          
+          {showLeftArrow && (
+            <button
+              onClick={(e) => handleNavigate(e, 'prev')}
+              className="nav-arrow left"
+              aria-label="Previous image (newer)"
+            >
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
+
+          {showRightArrow && (
+            <button
+              onClick={(e) => handleNavigate(e, 'next')}
+              className="nav-arrow right"
+              aria-label="Next image (older)"
+            >
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
       <h1
         className="
@@ -153,6 +226,15 @@ export default function Photo(props) {
           </tr>
         </tbody>
       </table>
+
+      {showToast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-stone-900/95 border border-teal-500/40 text-teal-400 px-6 py-3 rounded-xl shadow-2xl backdrop-blur-md transition-all duration-300 animate-fade-in-up flex items-center gap-2 pt-mono-regular text-sm sm:text-base">
+          <svg className="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {toastMessage}
+        </div>
+      )}
     </main>
   );
 }
