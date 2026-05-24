@@ -125,8 +125,8 @@ export default function Photo(props) {
     <main className="relative min-h-screen">
       <AppBar />
       <div className={`gradient-bg ${photoAnimation} relative overflow-hidden flex justify-center items-center`}>
-        <div className="relative group max-h-[80vh] max-w-full">
-          <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh]">
+        <div className="relative group max-h-[80vh] w-full max-w-full flex justify-center" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
+          <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh] w-full">
             <Image
               className="m-auto w-auto h-fit max-h-[80vh]"
               key={photo.id}
