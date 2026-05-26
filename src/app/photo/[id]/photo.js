@@ -13,6 +13,13 @@ const DEFAULT_EXIF = "N/A";
 const ALLOWED_EXIF_REGEX = /[^0-9a-zA-Z\ -_\.]/g;
 const EMPTY_STR = '';
 
+const NAV_PREV = 'prev';
+const NAV_NEXT = 'next';
+const KEY_ARROW_LEFT = 'ArrowLeft';
+const KEY_ARROW_RIGHT = 'ArrowRight';
+const KEY_H = 'h';
+const KEY_L = 'l';
+
 function filterStr(str) {
   return str.replace(ALLOWED_EXIF_REGEX, EMPTY_STR);
 }
@@ -55,15 +62,19 @@ export default function Photo(props) {
   };
 
   const handleNavigate = async (e, direction) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (!photo) return;
 
     try {
       const adjacentPhoto = await client.getAdjacentPhoto(photo, direction);
       if (adjacentPhoto) {
         router.push(`/photo/${adjacentPhoto.id}`);
       } else {
-        if (direction === 'prev') {
+        if (direction === NAV_PREV) {
           triggerToast("No newer images found.");
           setShowLeftArrow(false);
         } else {
@@ -76,6 +87,18 @@ export default function Photo(props) {
       triggerToast("Error loading adjacent image.");
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === KEY_ARROW_LEFT || e.key === KEY_H) {
+        handleNavigate(null, NAV_PREV);
+      } else if (e.key === KEY_ARROW_RIGHT || e.key === KEY_L) {
+        handleNavigate(null, NAV_NEXT);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [photo, client, router]);
 
   const shutterSpeed =
     photo?.shutter_speed == null ?
@@ -147,7 +170,7 @@ export default function Photo(props) {
 
             {showLeftArrow && (
               <button
-                onClick={(e) => handleNavigate(e, 'prev')}
+                onClick={(e) => handleNavigate(e, NAV_PREV)}
                 className="nav-arrow left"
                 aria-label="Previous image (newer)"
               >
@@ -159,7 +182,7 @@ export default function Photo(props) {
 
             {showRightArrow && (
               <button
-                onClick={(e) => handleNavigate(e, 'next')}
+                onClick={(e) => handleNavigate(e, NAV_NEXT)}
                 className="nav-arrow right"
                 aria-label="Next image (older)"
               >
