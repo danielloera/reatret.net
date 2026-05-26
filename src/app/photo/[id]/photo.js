@@ -77,29 +77,27 @@ export default function Photo(props) {
     }
   };
 
-  if (photo == null) return <Loader />;
-
   const shutterSpeed =
-    photo.shutter_speed == null ?
+    photo?.shutter_speed == null ?
       DEFAULT_EXIF : `${photo.shutter_speed}s`;
   const focalLength =
-    photo.focal_length == null ?
+    photo?.focal_length == null ?
       DEFAULT_EXIF :
       `${photo.focal_length}mm`;
   const exposureTime =
-    photo.exposure_time == null ?
+    photo?.exposure_time == null ?
       DEFAULT_EXIF :
       `1/${Math.round(1 / photo.exposure_time)}`;
   const fNumber =
-    photo.f_number == null ?
+    photo?.f_number == null ?
       DEFAULT_EXIF :
       `f/${photo.f_number}`;
-  const iso = photo.iso ?? DEFAULT_EXIF;
-  const cameraMake = photo.camera_make ?? DEFAULT_EXIF;
-  const cameraModel = photo.camera_model ?? DEFAULT_EXIF;
-  const lensMake = photo.lens_make ?? DEFAULT_EXIF;
-  const lensModel = photo.lens_model ?? DEFAULT_EXIF;
-  let photoDate = photo.date;
+  const iso = photo?.iso ?? DEFAULT_EXIF;
+  const cameraMake = photo?.camera_make ?? DEFAULT_EXIF;
+  const cameraModel = photo?.camera_model ?? DEFAULT_EXIF;
+  const lensMake = photo?.lens_make ?? DEFAULT_EXIF;
+  const lensModel = photo?.lens_model ?? DEFAULT_EXIF;
+  let photoDate = photo?.date;
   if (photoDate == null) {
     photoDate = '404:04:04 404';
   }
@@ -109,7 +107,7 @@ export default function Photo(props) {
     photoDate = new Date(photoDate.split(' ')[0].replace(':', '-'));
   }
   let dateElement = null;
-  if (photoDate != null) {
+  if (photoDate != null && photo != null) {
     dateElement = (
       <div className="courier-prime-regular
                       pt-1 lg:pt-2
@@ -125,44 +123,53 @@ export default function Photo(props) {
   return (
     <main className="relative min-h-screen">
       <AppBar />
-      <div className={`gradient-bg ${photoAnimation} relative overflow-hidden flex justify-center items-center`}>
-        <div className="relative group max-h-[80vh] w-full max-w-full flex justify-center" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
-          <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh] w-full">
-            <Image
-              className="m-auto w-auto h-fit max-h-[80vh]"
-              key={photo.id}
-              src={photo.full_res_url}
-              alt={photo.description}
-              onLoad={() => setIsLoading(false)}
-              unoptimized
-              width={photo.width}
-              height={photo.height} />
-          </a>
 
-          {showLeftArrow && (
-            <button
-              onClick={(e) => handleNavigate(e, 'prev')}
-              className="nav-arrow left"
-              aria-label="Previous image (newer)"
-            >
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-          )}
-
-          {showRightArrow && (
-            <button
-              onClick={(e) => handleNavigate(e, 'next')}
-              className="nav-arrow right"
-              aria-label="Next image (older)"
-            >
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          )}
+      {(isLoading || photo == null) && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300">
+          <div className="loader"></div>
         </div>
+      )}
+
+      <div className={`gradient-bg ${photoAnimation} relative overflow-hidden flex justify-center items-center`}>
+        {photo && (
+          <div className="relative group max-h-[80vh] w-full max-w-full flex justify-center" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
+            <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh] w-full">
+              <Image
+                className="m-auto w-auto h-fit max-h-[80vh]"
+                key={photo.id}
+                src={photo.full_res_url}
+                alt={photo.description}
+                onLoad={() => setIsLoading(false)}
+                unoptimized
+                width={photo.width}
+                height={photo.height} />
+            </a>
+
+            {showLeftArrow && (
+              <button
+                onClick={(e) => handleNavigate(e, 'prev')}
+                className="nav-arrow left"
+                aria-label="Previous image (newer)"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {showRightArrow && (
+              <button
+                onClick={(e) => handleNavigate(e, 'next')}
+                className="nav-arrow right"
+                aria-label="Next image (older)"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <h1
         className="
@@ -171,7 +178,7 @@ export default function Photo(props) {
           ps-4 sm:ps-8 lg:ps-12
           pt-4 sm:pt-8
           text-2xl sm:text-3xl lg:text-4xl">
-        {photo.title}
+        {photo?.title}
       </h1>
       {dateElement}
       <p
@@ -182,7 +189,7 @@ export default function Photo(props) {
           pt-2 lg:pt-8
           pb-6 lg:pb-12
           text-base md:text-xl">
-        {photo.description}
+        {photo?.description}
       </p>
       <table className="
                 m-auto md:ms-12
