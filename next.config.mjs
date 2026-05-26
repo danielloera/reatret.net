@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile: './image_loader.js',
+    qualities: [50, 75],
   },
 };
 
