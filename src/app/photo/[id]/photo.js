@@ -31,6 +31,7 @@ export default function Photo(props) {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      setPhoto(null);
       const result = await client.getPhoto(props.id);
       setPhoto(result.documents[0]);
       setShowLeftArrow(true);
