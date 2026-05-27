@@ -136,7 +136,7 @@ export default function PhotoDetails({ id }) {
     const photoAnimation = isLoading ? "animate-[pulse_5s_linear_infinite]" : '';
 
     return (
-        <main className="relative min-h-screen pt-20">
+        <main className="relative min-h-screen" >
             <AppBar />
 
             {(isLoading || photo == null) && (
@@ -145,7 +145,7 @@ export default function PhotoDetails({ id }) {
                 </div>
             )}
 
-            <div className={`gradient-bg ${photoAnimation} relative overflow-hidden flex justify-center items-center`}>
+            <div className={`gradient-bg ${photoAnimation} pt-20 relative overflow-hidden flex justify-center items-start`}>
                 {photo && (
                     <div className="relative group max-h-[80vh] w-full max-w-full flex justify-center" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
                         <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh] w-full">
