@@ -160,7 +160,7 @@ export default function PhotoDetails({ id: propId }) {
                     <div className="relative group max-h-[80vh] w-full max-w-full flex justify-center" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
                         <a href={photo.full_res_url} target="_blank" className="block max-h-[80vh] w-full">
                             <img
-                                className="m-auto w-auto h-fit max-h-[80vh]"
+                                className="mx-0 sm:mx-auto w-full sm:w-auto h-fit max-h-[80vh]"
                                 key={photo.id}
                                 src={photo.full_res_url}
                                 alt={photo.description}
