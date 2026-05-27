@@ -6,19 +6,16 @@
 @tailwind utilities;
 
 :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
@@ -27,13 +24,15 @@ body {
   }
 }
 
-.courier-prime-regular, td {
+.courier-prime-regular,
+td {
   font-family: "Courier Prime", monospace;
   font-weight: 400;
   font-style: normal;
 }
 
-.courier-prime-bold, th {
+.courier-prime-bold,
+th {
   font-family: "Courier Prime", monospace;
   font-weight: 700;
   font-style: normal;
@@ -70,4 +69,54 @@ body {
   left: 0;
   z-index: 999;
   width: 100%;
+}
+
+@layer components {
+  .loader {
+    width: 60px;
+    aspect-ratio: 1;
+    position: relative;
+    @apply text-stone-700;
+  }
+
+  .loader::before,
+  .loader::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(currentColor 0 0) 0 calc(var(--s, 0)*-100%)/100% calc(100%/3),
+      repeating-linear-gradient(90deg, currentColor 0 25%, #0000 0 50%) calc(var(--s, 0)*100%) 50%/calc(4*100%/3) calc(100%/3);
+    background-repeat: no-repeat;
+    animation: l26 2s infinite;
+  }
+
+  .loader::after {
+    --s: -1;
+  }
+}
+
+@keyframes l26 {
+
+  0%,
+  10% {
+    transform: translateY(calc(var(--s, 1)*0));
+    background-position: 0 calc(var(--s, 0)*-100%), calc(var(--s, 0)*100%) 50%
+  }
+
+  33% {
+    transform: translateY(calc(var(--s, 1)*-20%));
+    background-position: 0 calc(var(--s, 0)*-100%), calc(var(--s, 0)*100%) 50%
+  }
+
+  66% {
+    transform: translateY(calc(var(--s, 1)*-20%));
+    background-position: 0 calc(var(--s, 0)*-100%), calc(var(--s, 0)*100% + 100%) 50%
+  }
+
+  90%,
+  100% {
+    transform: translateY(calc(var(--s, 1)*0));
+    background-position: 0 calc(var(--s, 0)*-100%), calc(var(--s, 0)*100% + 100%) 50%
+  }
 }

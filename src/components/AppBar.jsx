@@ -41,10 +41,10 @@ export default function AppBar(props) {
     return (
         <>
             <div className="
-        pt-mono-regular bg-stone-900/95 h-fit fixed top-0 left-0 right-0 z-50
+        pt-mono-regular bg-stone-900/95 h-20 fixed top-0 left-0 right-0 z-50
         text-fuchsia-300
-        text-xl    ps-4    pt-4    pb-4
-        md:text-2xl lg:text-3xl sm:ps-6 sm:pt-4 sm:pb-4
+        text-xl    ps-4
+        md:text-2xl lg:text-3xl sm:ps-6
         flex items-center">
 
                 <a href="/">reatret.net</a> {props.buttons}

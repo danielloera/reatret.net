@@ -1,4 +1,3 @@
-import '../styles/common.css'
 
 export default function Loader() {
     return (
