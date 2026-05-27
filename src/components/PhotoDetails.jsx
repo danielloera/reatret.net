@@ -19,7 +19,8 @@ function filterStr(str) {
     return str.replace(ALLOWED_EXIF_REGEX, EMPTY_STR);
 }
 
-export default function PhotoDetails({ id }) {
+export default function PhotoDetails({ id: propId }) {
+    const [id, setId] = useState(propId);
     const [photo, setPhoto] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [showLeftArrow, setShowLeftArrow] = useState(true);
@@ -28,6 +29,15 @@ export default function PhotoDetails({ id }) {
     const [showToast, setShowToast] = useState(false);
 
     useEffect(() => {
+        if (!id) {
+            const pathParts = window.location.pathname.split('/');
+            const extractedId = pathParts.pop() || pathParts.pop(); // handle trailing slash
+            setId(extractedId);
+        }
+    }, [propId]);
+
+    useEffect(() => {
+        if (!id) return;
         const fetchData = async () => {
             setIsLoading(true);
             setPhoto(null);
