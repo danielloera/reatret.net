@@ -30,12 +30,50 @@ export default function PhotoGallery() {
             window.history.scrollRestoration = 'manual';
         }
         setHasMounted(true);
+
+        // Restore state from sessionStorage
+        const savedState = sessionStorage.getItem('reatret-gallery-state');
+        if (savedState) {
+            try {
+                const { photos: savedPhotos, pageIndex: savedPageIndex, hasMore: savedHasMore, scrollY: savedScrollY } = JSON.parse(savedState);
+                if (savedPhotos && savedPhotos.length > 0) {
+                    setPhotos(savedPhotos);
+                    setPageIndex(savedPageIndex);
+                    setHasMore(savedHasMore);
+                    // Scroll restoration will happen in a separate useEffect once photos are rendered
+                    if (savedScrollY) {
+                        setTimeout(() => {
+                            window.scrollTo(0, savedScrollY);
+                        }, 100);
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to restore gallery state", e);
+            }
+        }
+
         return () => {
             if (window.history.scrollRestoration) {
                 window.history.scrollRestoration = 'auto';
             }
         };
     }, []);
+
+    const saveState = () => {
+        const state = {
+            photos,
+            pageIndex,
+            hasMore,
+            scrollY: window.scrollY
+        };
+        sessionStorage.setItem('reatret-gallery-state', JSON.stringify(state));
+    };
+
+    useEffect(() => {
+        if (photos.length > 0) {
+            saveState();
+        }
+    }, [photos, pageIndex, hasMore]);
 
     useEffect(() => {
         let ignore = false;
@@ -44,7 +82,11 @@ export default function PhotoGallery() {
             const result = await appwrite.getPhotoPage(pageIndex);
             if (!ignore) {
                 if (result.documents && result.documents.length > 0) {
-                    setPhotos(prevPhotos => [...prevPhotos, ...result.documents]);
+                    setPhotos(prevPhotos => {
+                        const existingIds = new Set(prevPhotos.map(p => p.id));
+                        const newPhotos = result.documents.filter(p => !existingIds.has(p.id));
+                        return [...prevPhotos, ...newPhotos];
+                    });
                 } else {
                     setHasMore(false);
                 }
@@ -52,8 +94,14 @@ export default function PhotoGallery() {
             }
         };
 
-        if (hasMore) {
+        // Only fetch if we don't already have photos for this page index (or if we are starting fresh)
+        // This is a bit tricky because pageIndex increments. 
+        // If we restored state, pageIndex might be 5, but we have all photos for pages 0-5.
+        // So we only fetch if we are moving to a NEW pageIndex that hasn't been loaded.
+        if (hasMore && photos.length <= pageIndex * 15) { // 15 is PAGE_SIZE from appwrite_helper
             fetchData();
+        } else {
+            setIsPageLoading(false);
         }
 
         return () => {
@@ -81,14 +129,18 @@ export default function PhotoGallery() {
         return columns;
     }, [photos, size.width, hasMounted]);
 
-    if (!hasMounted || (isPageLoading && pageIndex === 0)) return <Loader />;
+    if (!hasMounted || (isPageLoading && pageIndex === 0 && photos.length === 0)) return <Loader />;
 
     return (
         <main className="relative pt-20">
             <AppBar buttons={
                 <span
                     className="cursor-pointer pl-4"
-                    onClick={() => setPhotos(currentPhotos => shuffleArray(currentPhotos))}>
+                    onClick={() => {
+                        const shuffled = shuffleArray(photos);
+                        setPhotos(shuffled);
+                        saveState();
+                    }}>
                     🔀
                 </span>} />
             <div className="w-full min-h-[200vh] p-3 m-auto">
@@ -99,10 +151,13 @@ export default function PhotoGallery() {
                             {col.photos.map((photo, pIdx) => {
                                 const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
                                 return (
-                                    <InView key={photo.id} triggerOnce={true} rootMargin="1000px">
+                                    <InView key={photo.id} triggerOnce={false} rootMargin="1000px">
                                         {({ inView, ref }) => (
-                                            <div ref={ref} className="bg-stone-900 rounded-lg overflow-hidden relative group">
-                                                <a href={`/photo/${photo.id}`}>
+                                            <div
+                                                ref={ref}
+                                                className="bg-stone-900 rounded-lg overflow-hidden relative group"
+                                            >
+                                                <a href={`/photo/${photo.id}`} onClick={saveState} className="block w-full">
                                                     <img
                                                         className={`w-full h-auto rounded-md object-cover transition-all duration-500 ease-in-out group-hover:scale-[1.05] transform-gpu ${!inView ? "animate-pulse opacity-0" : "opacity-100"}`}
                                                         width={colWidth}
