@@ -216,9 +216,9 @@ export default function PhotoDetails({ id: propId }) {
                 {photo?.description}
             </p>
             <table className="
-                m-auto md:ms-12
-                text-sm md:text-base
-                min-w-[95%] md:min-w-fit">
+                ml-4 mr-4 md:mr-0 md:ml-12
+                text-sm md:text-base mb-4
+                w-[calc(100%-2rem)] md:w-auto md:min-w-fit">
                 <tbody>
                     <tr>
                         <th>Shutter Speed</th>
