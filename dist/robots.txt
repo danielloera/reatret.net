@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://reatret.net
+
+# Sitemaps
+Sitemap: https://reatret.net/sitemap.xml

@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PhotoDetails from '../../components/PhotoDetails.jsx';
+import AppWriteHelper from '../../lib/appwrite_helper';
+
+export async function getStaticPaths() {
+  const client = new AppWriteHelper();
+  const result = await client.getAllPhotos();
+  return result.documents.map((photo) => ({
+    params: { id: photo.id.toString() },
+  }));
+}
+
+const { id } = Astro.params;
+---
+
+<Layout title="Photo Details | reatret.net">
+  <PhotoDetails id={id} client:load />
+</Layout>
