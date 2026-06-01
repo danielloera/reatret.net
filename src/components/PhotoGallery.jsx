@@ -156,7 +156,6 @@ export default function PhotoGallery() {
                                             <div
                                                 ref={ref}
                                                 className="bg-stone-900 rounded-lg overflow-hidden relative group"
-                                                style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
                                             >
                                                 <a href={`/photo/${photo.id}`} onClick={saveState} className="block w-full">
                                                     <img
