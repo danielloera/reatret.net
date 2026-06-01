@@ -151,11 +151,12 @@ export default function PhotoGallery() {
                             {col.photos.map((photo, pIdx) => {
                                 const adjustedPhotoHeight = Math.round((colWidth / photo.width) * photo.height);
                                 return (
-                                    <InView key={photo.id} triggerOnce={false} rootMargin="1000px">
+                                    <InView key={photo.id} triggerOnce={true} rootMargin="1000px">
                                         {({ inView, ref }) => (
                                             <div
                                                 ref={ref}
                                                 className="bg-stone-900 rounded-lg overflow-hidden relative group"
+                                                style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
                                             >
                                                 <a href={`/photo/${photo.id}`} onClick={saveState} className="block w-full">
                                                     <img
@@ -185,11 +186,11 @@ export default function PhotoGallery() {
                             setPageIndex((prev) => prev + 1);
                         }
                     }}>
-                    {isPageLoading && (
-                        <div className="flex justify-center my-8">
+                    <div className="flex justify-center min-h-[80px] my-8">
+                        {isPageLoading && (
                             <span className="pt-mono-regular text-white">Loading...</span>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </InView>
 
                 <div className="flex justify-center mt-4">
