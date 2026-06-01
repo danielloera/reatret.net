@@ -27,7 +27,7 @@ function Modal({ isOpen, onClose, children }) {
         border border-stone-800 rounded-md shadow-lg
         p-6
         max-w-md w-full
-        bg-stone-800 text-fuchsia-300
+        bg-stone-800 text-fuchsia-300 m-auto
       "
         >
             {children}
@@ -66,7 +66,7 @@ export default function AppBar(props) {
                     </p>
                     <button
                         onClick={() => setIsModalOpen(false)}
-                        className="mt-4 px-4 py-2 bg-fuchsia-500/80 text-white rounded-md hover:bg-fuchsia-400"
+                        className="mt-4 px-4 py-2 bg-fuchsia-500 text-white rounded-md hover:bg-fuchsia-400"
                     >
                         Close
                     </button>
