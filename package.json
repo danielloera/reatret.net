@@ -10,15 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/react": "^5.0.5",
+    "@astrojs/react": "^6.0.1",
     "@astrojs/sitemap": "^3.7.3",
     "@tailwindcss/vite": "^4.0.0",
     "@uidotdev/usehooks": "^2.4.1",
     "appwrite": "^16.1.0",
-    "astro": "^6.3.8",
+    "astro": "^7.0.7",
     "lucide-react": "^1.16.0",
-    "next": "^16.2.6",
-    "next-sitemap": "^4.2.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-intersection-observer": "^9.16.0",
@@ -27,7 +25,6 @@
   },
   "devDependencies": {
     "eslint": "^9.18.0",
-    "eslint-config-next": "^15.1.5",
     "postcss": "^8.5.10"
   },
   "overrides": {
