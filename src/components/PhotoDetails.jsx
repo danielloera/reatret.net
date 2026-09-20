@@ -122,6 +122,9 @@ export default function PhotoDetails({ id: propId }) {
     const cameraModel = photo?.camera_model ?? DEFAULT_EXIF;
     const lensMake = photo?.lens_make ?? DEFAULT_EXIF;
     const lensModel = photo?.lens_model ?? DEFAULT_EXIF;
+    const filmType = photo?.film_type || DEFAULT_EXIF;
+    const isFilm = Boolean(photo?.is_film);
+
     let photoDate = photo?.date;
     if (photoDate == null) {
         photoDate = '404:04:04 404';
@@ -131,18 +134,10 @@ export default function PhotoDetails({ id: propId }) {
     } else {
         photoDate = new Date(photoDate.split(' ')[0].replace(':', '-'));
     }
-    let dateElement = null;
-    if (photoDate != null && photo != null) {
-        dateElement = (
-            <div className="courier-prime-regular
-                      pt-1 lg:pt-2
-                      ps-4 sm:ps-8 lg:ps-12
-                      text-sm md:text-base lg:text-lg">
-                {photoDate.toLocaleDateString(
-                    "en-US",
-                    { year: 'numeric', month: 'short', day: 'numeric' })}
-            </div>);
-    }
+    const formattedDate = (photoDate != null && photo != null) ? photoDate.toLocaleDateString(
+        "en-US",
+        { year: 'numeric', month: 'short', day: 'numeric' }) : null;
+
     const photoAnimation = isLoading ? "animate-[pulse_5s_linear_infinite]" : '';
 
     return (
@@ -204,60 +199,107 @@ export default function PhotoDetails({ id: propId }) {
           text-2xl sm:text-3xl lg:text-4xl">
                 {photo?.title}
             </h1>
-            {dateElement}
-            <p
-                className="
-          text-fuchsia-300
-          pt-mono-regular
-          pl-4 sm:pl-8 lg:pl-12
-          pt-2 lg:pt-8
-          pb-6 lg:pb-12
-          text-base md:text-xl">
-                {photo?.description}
-            </p>
-            <table className="
-                ml-4 mr-4 md:mr-0 md:ml-12
-                text-sm md:text-base mb-4
-                w-[calc(100%-2rem)] md:w-auto md:min-w-fit">
-                <tbody>
-                    <tr>
-                        <th>Shutter Speed</th>
-                        <td>{shutterSpeed}</td>
-                    </tr>
-                    <tr>
-                        <th>Focal Length</th>
-                        <td>{focalLength}</td>
-                    </tr>
-                    <tr>
-                        <th>Exposure Time</th>
-                        <td>{exposureTime}</td>
-                    </tr>
-                    <tr>
-                        <th>F Number</th>
-                        <td>{fNumber}</td>
-                    </tr>
-                    <tr>
-                        <th>ISO</th>
-                        <td>{iso}</td>
-                    </tr>
-                    <tr>
-                        <th>Camera Make</th>
-                        <td>{filterStr(cameraMake)}</td>
-                    </tr>
-                    <tr>
-                        <th>Camera Model</th>
-                        <td>{filterStr(cameraModel)}</td>
-                    </tr>
-                    <tr>
-                        <th>Lens Make</th>
-                        <td>{filterStr(lensMake)}</td>
-                    </tr>
-                    <tr>
-                        <th>Lens Model</th>
-                        <td>{filterStr(lensModel)}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+            {isFilm ? (
+                <>
+                    {photo?.description && (
+                        <p
+                            className="
+                      text-fuchsia-300
+                      pt-mono-regular
+                      pl-4 sm:pl-8 lg:pl-12
+                      pt-2 lg:pt-8
+                      pb-2 lg:pb-4
+                      text-base md:text-xl">
+                            {photo.description}
+                        </p>
+                    )}
+                    {formattedDate && (
+                        <div className="courier-prime-regular
+                                  pt-1 lg:pt-2
+                                  pb-6 lg:pb-12
+                                  ps-4 sm:ps-8 lg:ps-12
+                                  text-sm md:text-base lg:text-lg">
+                            {formattedDate}
+                        </div>
+                    )}
+                    <table className="
+                        ml-4 mr-4 md:mr-0 md:ml-12
+                        text-sm md:text-base mb-4
+                        w-[calc(100%-2rem)] md:w-auto md:min-w-fit">
+                        <tbody>
+                            <tr>
+                                <th>Film Type</th>
+                                <td>{filmType}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </>
+            ) : (
+                <>
+                    {formattedDate && (
+                        <div className="courier-prime-regular
+                                  pt-1 lg:pt-2
+                                  ps-4 sm:ps-8 lg:ps-12
+                                  text-sm md:text-base lg:text-lg">
+                            {formattedDate}
+                        </div>
+                    )}
+                    <p
+                        className="
+                  text-fuchsia-300
+                  pt-mono-regular
+                  pl-4 sm:pl-8 lg:pl-12
+                  pt-2 lg:pt-8
+                  pb-6 lg:pb-12
+                  text-base md:text-xl">
+                        {photo?.description}
+                    </p>
+                    <table className="
+                        ml-4 mr-4 md:mr-0 md:ml-12
+                        text-sm md:text-base mb-4
+                        w-[calc(100%-2rem)] md:w-auto md:min-w-fit">
+                        <tbody>
+                            <tr>
+                                <th>Shutter Speed</th>
+                                <td>{shutterSpeed}</td>
+                            </tr>
+                            <tr>
+                                <th>Focal Length</th>
+                                <td>{focalLength}</td>
+                            </tr>
+                            <tr>
+                                <th>Exposure Time</th>
+                                <td>{exposureTime}</td>
+                            </tr>
+                            <tr>
+                                <th>F Number</th>
+                                <td>{fNumber}</td>
+                            </tr>
+                            <tr>
+                                <th>ISO</th>
+                                <td>{iso}</td>
+                            </tr>
+                            <tr>
+                                <th>Camera Make</th>
+                                <td>{filterStr(cameraMake)}</td>
+                            </tr>
+                            <tr>
+                                <th>Camera Model</th>
+                                <td>{filterStr(cameraModel)}</td>
+                            </tr>
+                            <tr>
+                                <th>Lens Make</th>
+                                <td>{filterStr(lensMake)}</td>
+                            </tr>
+                            <tr>
+                                <th>Lens Model</th>
+                                <td>{filterStr(lensModel)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </>
+            )}
 
             {showToast && (
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-stone-900/95 border border-teal-500/40 text-teal-400 px-6 py-3 rounded-xl shadow-2xl backdrop-blur-md transition-all duration-300 animate-fade-in-up flex items-center gap-2 pt-mono-regular text-sm sm:text-base">
